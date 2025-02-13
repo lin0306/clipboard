@@ -1,0 +1,35 @@
+# Byte-compiled files
+*.pyc
+__pycache__/
+
+# Environment variables
+.env
+
+# Log files
+*.log
+
+# Node modules
+node_modules/
+
+# Other common ignores
+.DS_Store
+Thumbs.db
+
+# Build and release directories
+build/
+release/
+
+# Build files
+Makefile
+Makefile.Debug
+Makefile.Release
+.qmake.stash
+CMakeCache.txt
+CMakeFiles/
+Makefile.in
+install_manifest.txt
+compile_commands.json
+
+# Project files
+clipboard.pro
+clipboard.pro.user
