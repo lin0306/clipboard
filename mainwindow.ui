@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="copyButton">
+      <property name="text">
+       <string>Copy Text to Clipboard</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pasteButton">
+      <property name="text">
+       <string>Paste Text from Clipboard</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <centralwidget name="centralwidget"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
