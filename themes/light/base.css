@@ -1,0 +1,91 @@
+/* Light Theme */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --border-color: #e0e0e0;
+  --hover-bg-color: #f5f5f5;
+  --selected-bg-color: #f0f0f0;
+  --button-bg-color: #f0f0f0;
+  --button-hover-bg-color: #e0e0e0;
+  --search-bg-color: #e1e1e1;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.clipboard-search {
+  background-color: var(--search-bg-color);
+  border: 1px solid var(--border-color);
+}
+
+.clipboard-search-input {
+  background-color: var(--bg-color);
+  border-color: var(--border-color);
+}
+
+.clipboard-item {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+}
+
+.clipboard-item:hover {
+  background-color: var(--hover-bg-color);
+}
+
+.clipboard-item.selected {
+  background-color: var(--selected-bg-color);
+}
+
+.clear-button {
+  background-color: var(--button-bg-color);
+}
+
+.clear-button:hover {
+  background-color: var(--button-hover-bg-color);
+}
+
+.empty-state {
+  color: var(--text-color);
+}
+
+/* 删除按钮和置顶按钮样式 */
+.delete-button {
+  background-image: url('./trash.svg');
+  opacity: 0.7;
+  filter: brightness(0.9);
+  transition: all 0.3s ease;
+}
+
+.delete-button:hover {
+  opacity: 0.9;
+  filter: brightness(1.1);
+  transform: scale(1.1);
+}
+
+.top-button {
+  background-image: url('./top.svg');
+  opacity: 0.7;
+  filter: brightness(0.9);
+  transition: all 0.3s ease;
+}
+
+.top-button:hover {
+  opacity: 0.9;
+  filter: brightness(1.1);
+  transform: scale(1.15);
+}
+
+.top-button.topped {
+  background-image: url('./untop.svg');
+  opacity: 0.9;
+  filter: brightness(1.1);
+}
+
+.top-button.topped:hover {
+  opacity: 1;
+  filter: brightness(1.2);
+  transform: scale(1.15);
+}

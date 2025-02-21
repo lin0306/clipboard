@@ -1,0 +1,63 @@
+.message-notification {
+    position: fixed;
+    padding: 7px 16px;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transform: translateX(-50%) translateY(-100%);
+    color: #000000;
+    font-size: 13px;
+}
+
+.message-notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.message-notification::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.message-notification.success {
+    /* 使用统一的黑色文本 */
+}
+
+.message-notification.success::before {
+    background-image: url('../images/success.svg');
+}
+
+.message-notification.info {
+    /* 使用统一的黑色文本 */
+}
+
+.message-notification.info::before {
+    background-image: url('../images/info.svg');
+}
+
+.message-notification.warning {
+    /* 使用统一的黑色文本 */
+}
+
+.message-notification.warning::before {
+    background-image: url('../images/warning.svg');
+}
+
+.message-notification.error {
+    /* 使用统一的黑色文本 */
+}
+
+.message-notification.error::before {
+    background-image: url('../images/error.svg');
+}

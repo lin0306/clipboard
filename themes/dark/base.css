@@ -1,0 +1,116 @@
+/* 深色主题基础样式 */
+
+/* 基础颜色变量 */
+:root {
+    --bg-primary: #1e1e1e;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --shadow-color: rgba(0, 0, 0, 0.15);
+    --hover-shadow: rgba(0, 0, 0, 0.25);
+    --accent-color: #666666;
+    --accent-hover: #808080;
+    --danger-color: #ff5f5f;
+    --danger-hover: #ff4d4d;
+    --item-hover-bg: #353535;
+    --item-selected-bg: #404040;
+    --content-text: #d4d4d4;
+    --search-bg-color: #5b5b5b;
+}
+
+/* 应用主题样式 */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* 搜索框样式 */
+.clipboard-search {
+    background-color: var(--search-bg-color);
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.clipboard-search-input {
+    background-color: #353535;
+    border-bottom-color: var(--text-secondary);
+    color: var(--text-primary);
+}
+
+.clipboard-search-input:focus {
+    background-color: #404040;
+    border-bottom-color: var(--accent-color);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+/* 列表项样式 */
+.clipboard-item {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    box-shadow: 0 2px 8px var(--shadow-color);
+    color: var(--content-text);
+}
+
+.clipboard-item:hover {
+    background-color: var(--item-hover-bg);
+    box-shadow: 0 4px 12px var(--hover-shadow);
+}
+
+.clipboard-item.selected {
+    background-color: var(--item-selected-bg);
+    border-color: var(--accent-color);
+}
+
+/* 按钮样式 */
+.clear-button {
+    background-color: var(--bg-secondary);
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.clear-button:hover {
+    background-color: var(--danger-color);
+    color: var(--bg-secondary);
+}
+
+/* 删除按钮和置顶按钮样式 */
+.delete-button {
+    background-image: url('./trash.svg');
+    opacity: 0.7;
+    filter: brightness(1.5);
+    transition: all 0.3s ease;
+}
+
+.delete-button:hover {
+    opacity: 1;
+    filter: brightness(2);
+    transform: scale(1.1);
+}
+
+.top-button {
+    background-image: url('./top.svg');
+    opacity: 0.85;
+    filter: brightness(2);
+    transition: all 0.3s ease;
+}
+
+.top-button:hover {
+    opacity: 1;
+    filter: brightness(2.5);
+    transform: scale(1.15);
+}
+
+.top-button.topped {
+    background-image: url('./untop.svg');
+    opacity: 1;
+    filter: brightness(2.5);
+}
+
+/* 滚动条样式 */
+.clipboard-container::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.clipboard-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}

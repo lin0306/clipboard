@@ -1,0 +1,265 @@
+/* 搜索框样式 */
+.clipboard-search {
+  position: fixed;
+  top: 20px;
+  width: 80%;
+  left: 10%;
+  padding: 5px;
+  background-color: var(--search-bg-color);
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: none;
+  border-radius: 6px;
+}
+
+.clipboard-search-input {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+  padding: 12px 55px 12px 15px;
+  width: 100%;
+  font-size: 14px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background-color: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.clipboard-search-input:focus {
+  background-color: white;
+  border-bottom: 2px solid #666666;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.clipboard-search-button {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  bottom: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding-right: 15px;
+}
+
+.clipboard-search-button img {
+  vertical-align: middle;
+  -webkit-user-drag: none;
+  width: 25px;
+  height: 25px;
+}
+
+/* 列表容器样式 */
+.clipboard-container {
+  height: calc(100vh - 10px);
+  overflow-y: auto;
+  position: relative;
+  padding: 0px 2% 0px 2%;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.clipboard-container::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 6px;
+}
+
+.clipboard-container::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 6px;
+}
+
+.clipboard-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.clipboard-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* 列表项样式 */
+.clipboard-item {
+  position: relative;
+  padding: 15px;
+  margin: 10px 0;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.clipboard-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.clipboard-item.selected {
+  background-color: #f0f0f0;
+  border-color: #666666;
+}
+
+.clipboard-content {
+  padding-bottom: 10px;
+  width: 94%;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  text-overflow: ellipsis;
+  line-clamp: 3;
+  overflow: hidden;
+  line-height: 1em;
+  height: 3em;
+  word-wrap: break-word;
+}
+
+/* 清除按钮样式 */
+.clear-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 8px 15px;
+  background-color: #f8f9fa;
+  color: #dc3545;
+  border: #dc3545 2px solid;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  font-weight: 500;
+}
+
+.clear-button:hover {
+  background-color: #dc3545;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
+}
+
+/* 空状态样式 */
+.empty-state {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  user-select: none;
+}
+
+.empty-state img {
+  width: 200px;
+  height: auto;
+  margin-bottom: 20px;
+  -webkit-user-drag: none;
+  opacity: 0.8;
+}
+
+.empty-state p {
+  color: var(--text-color);
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.6;
+}
+
+/* 清除按钮样式 */
+.clear-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 8px 15px;
+  background-color: #f8f9fa;
+  color: #dc3545;
+  border: #dc3545 2px solid;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  font-weight: 500;
+}
+
+.clear-button:hover {
+  background-color: #dc3545;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
+}
+
+/* 空状态样式 */
+.empty-state {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  user-select: none;
+}
+
+.empty-state img {
+  width: 200px;
+  height: auto;
+  margin-bottom: 20px;
+  -webkit-user-drag: none;
+  opacity: 0.8;
+}
+
+.empty-state p {
+  color: var(--text-color);
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.6;
+}
+
+/* 删除按钮样式 */
+.delete-button {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delete-button:hover {
+  opacity: 1;
+}
+
+/* 置顶按钮样式 */
+.top-button {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.top-button:hover {
+  opacity: 0.8;
+}
+
+.top-button.topped {
+}
+
+/* 基础样式 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--search-bg-color);
+  overflow: hidden;
+  user-select: none;
+}
+
+* {
+  box-sizing: border-box;
+}

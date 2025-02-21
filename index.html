@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>剪贴板</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/message.css">
+  </head>
+  <body>
+    <div class="clipboard-search">
+      <label>
+        <input class="clipboard-search-input" type="text" placeholder="搜索剪贴板内容" />
+      </label>
+      <button  class="clipboard-search-button">
+        <img src="themes/light/search.svg" alt="搜索" id="search-icon">
+      </button>
+    </div>
+    <div class="clipboard-container" id="clipboard-list">
+      <div class="empty-state" id="empty-state">
+        <img src="themes/light/empty.svg" alt="暂无内容" id="empty-state-icon">
+        <p>暂无内容</p>
+      </div>
+    </div>
+    <script src="js/db.js"></script>
+    <script src="js/message.js"></script>
+    <script src="js/electron.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>
