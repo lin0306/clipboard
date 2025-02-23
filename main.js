@@ -276,18 +276,166 @@ function createWindow() {
     win.webContents.send('change-theme', savedTheme);
   });
 
-  let lastText = clipboard.readText();
+  let lastText = null;
+  let lastFiles = [];
+  let lastImage = clipboard.readImage().isEmpty() ? null : clipboard.readImage().toPNG();
+  let clipboardTimer = null;
 
   function checkClipboard() {
-    const currentText = clipboard.readText();
-    if (currentText && currentText !== lastText) {
-      lastText = currentText;
-      win.webContents.send('clipboard-text', currentText);
+    // 首先检查窗口和渲染进程状态
+    if (!win || win.isDestroyed() || !win.webContents || win.webContents.isDestroyed()) {
+      console.log('[主进程] 窗口或渲染进程不可用，跳过剪贴板检查');
+      return;
     }
-    setTimeout(checkClipboard, 100); // 每100毫秒检查一次
+
+    try {
+      const currentText = clipboard.readText();
+      const currentFiles = clipboard.readBuffer('FileNameW');
+      const currentImage = clipboard.readImage();
+      
+      // 检查图片变化
+      if (!currentImage.isEmpty()) {
+        const currentImageBuffer = currentImage.toPNG();
+        const isImageChanged = !lastImage || Buffer.compare(currentImageBuffer, lastImage) !== 0;
+      
+        if (isImageChanged) {
+          console.log('[主进程] 检测到剪贴板中有图片');
+          console.log('[主进程] 检测到新的图片内容');
+          lastImage = currentImageBuffer;
+          const timestamp = Date.now();
+          const tempDir = path.join(config.tempPath || path.join(__dirname, 'temp'));
+          
+          // 检查是否存在相同内容的图片文件
+          let existingImagePath = null;
+          if (fs.existsSync(tempDir)) {
+            const files = fs.readdirSync(tempDir);
+            for (const file of files) {
+              if (file.endsWith('.png')) {
+                const filePath = path.join(tempDir, file);
+                const fileContent = fs.readFileSync(filePath);
+                if (Buffer.compare(fileContent, currentImageBuffer) === 0) {
+                  existingImagePath = filePath;
+                  break;
+                }
+              }
+            }
+          } else {
+            fs.mkdirSync(tempDir, { recursive: true });
+          }
+          
+          let imagePath;
+          if (existingImagePath) {
+            // 使用已存在的图片文件
+            imagePath = existingImagePath;
+            console.log('[主进程] 找到相同内容的图片文件:', imagePath);
+          } else {
+            // 创建新的图片文件
+            imagePath = path.join(tempDir, `clipboard_${timestamp}.png`);
+            fs.writeFileSync(imagePath, currentImageBuffer);
+            console.log('[主进程] 图片已保存到临时目录:', imagePath);
+          }
+          
+          // 添加更严格的渲染进程状态检查
+          if (win && !win.isDestroyed()) {
+            const webContents = win.webContents;
+            if (webContents && !webContents.isDestroyed()) {
+              // 确保渲染进程已完全加载
+              if (webContents.getProcessId() && !webContents.isLoading()) {
+                try {
+                  console.log('[主进程] 准备发送图片信息到渲染进程');
+                  win.webContents.send('clipboard-file', {
+                    name: path.basename(imagePath),
+                    path: imagePath,
+                    type: 'image',
+                    isNewImage: !existingImagePath // 标记是否为新图片
+                  });
+                  console.log('[主进程] 图片信息已发送到渲染进程');
+                } catch (error) {
+                  console.error('[主进程] 发送图片信息到渲染进程时出错:', error);
+                  if (!existingImagePath) {
+                    try {
+                      fs.unlinkSync(imagePath);
+                    } catch (unlinkError) {
+                      console.error('[主进程] 清理临时文件时出错:', unlinkError);
+                    }
+                  }
+                }
+              }
+            } else if (!existingImagePath) {
+              try {
+                fs.unlinkSync(imagePath);
+              } catch (unlinkError) {
+                console.error('[主进程] 清理临时文件时出错:', unlinkError);
+              }
+            }
+          }
+        }
+      }
+
+      // 检查文本变化
+      if (currentText && currentText !== lastText) {
+        lastText = currentText;
+        if (win && !win.isDestroyed()) {
+          try {
+            const webContents = win.webContents;
+            if (webContents && !webContents.isDestroyed()) {
+              webContents.send('clipboard-text', currentText);
+            }
+          } catch (error) {
+            console.error('[主进程] 发送文本消息时出错:', error);
+          }
+        }
+      }
+
+      // 检查文件变化
+      if (currentFiles && currentFiles.length > 0) {
+        try {
+          const filesString = currentFiles.toString('utf16le').replace(/\x00/g, '');
+          const files = filesString.split('\r\n').filter(Boolean);
+          
+          // 检查是否与上次的文件列表不同
+          if (JSON.stringify(files) !== JSON.stringify(lastFiles)) {
+            lastFiles = files;
+            if (win && !win.isDestroyed()) {
+              const webContents = win.webContents;
+              if (webContents && !webContents.isDestroyed()) {
+                files.forEach(filePath => {
+                  const fileName = path.basename(filePath);
+                  webContents.send('clipboard-file', {
+                    name: fileName,
+                    path: filePath,
+                    type: 'file'
+                  });
+                });
+              }
+            }
+          }
+        } catch (error) {
+          console.error('处理剪贴板文件时出错:', error);
+        }
+      }
+    } catch (error) {
+      console.error('[主进程] 检查剪贴板时出错:', error);
+    }
+
+    clipboardTimer = setTimeout(checkClipboard, 100); // 每100毫秒检查一次
   }
 
-  checkClipboard();
+  // 延迟启动剪贴板监听，等待窗口完全加载并设置初始状态
+  win.webContents.on('did-finish-load', () => {
+    // 初始化时不触发剪贴板检查，而是在一段延时后开始监听
+    setTimeout(() => {
+      checkClipboard();
+    }, 1000);
+  });
+
+  // 监听窗口关闭事件，清理定时器
+  win.on('closed', () => {
+    if (clipboardTimer) {
+      clearTimeout(clipboardTimer);
+      clipboardTimer = null;
+    }
+  });
 
   // 监听窗口移动请求
   ipcMain.on('move-window', (event, offsetX, offsetY) => {

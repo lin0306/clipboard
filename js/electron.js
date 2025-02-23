@@ -8,6 +8,23 @@ class ElectronManager {
         message.success('内容已复制到剪贴板');
     }
 
+    // 写入图片到剪贴板
+    static writeImageToClipboard(imagePath) {
+        try {
+            const nativeImage = require('electron').nativeImage;
+            const image = nativeImage.createFromPath(imagePath);
+            if (image.isEmpty()) {
+                message.error('无法读取图片文件');
+                return;
+            }
+            clipboard.writeImage(image);
+            message.success('图片已复制到剪贴板');
+        } catch (error) {
+            console.error('写入图片到剪贴板失败:', error);
+            message.error('复制图片失败');
+        }
+    }
+
     // 清空剪贴板
     static clearClipboard() {
         clipboard.clear();
