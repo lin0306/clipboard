@@ -1,13 +1,13 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const fs = require('fs');
-
+require('electron');
 class ClipboardDB {
     constructor() {
         // 读取配置文件
         const configPath = path.join(__dirname, 'conf', 'settings.conf');
         const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-        
+
         // 使用配置的数据库路径
         const dbPath = path.join(config.dbPath, 'clipboard.db');
         this.db = new sqlite3.Database(dbPath);
@@ -16,19 +16,42 @@ class ClipboardDB {
 
     init() {
         return new Promise((resolve, reject) => {
-            this.db.run(`
-                CREATE TABLE IF NOT EXISTS clipboard_items (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    content TEXT NOT NULL,
-                    copy_time INTEGER NOT NULL,
-                    is_topped BOOLEAN DEFAULT 0,
-                    top_time INTEGER,
-                    type TEXT DEFAULT 'text',
-                    file_path TEXT
-                )
-            `, (err) => {
-                if (err) reject(err);
-                else resolve();
+            this.db.serialize(() => {
+                // 创建剪贴板条目表
+                this.db.run(`
+                    CREATE TABLE IF NOT EXISTS clipboard_items (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        content TEXT NOT NULL,
+                        copy_time INTEGER NOT NULL,
+                        is_topped BOOLEAN DEFAULT 0,
+                        top_time INTEGER,
+                        type TEXT DEFAULT 'text',
+                        file_path TEXT
+                    )
+                `);
+
+                // 创建标签表
+                this.db.run(`
+                    CREATE TABLE IF NOT EXISTS tags (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        name TEXT NOT NULL UNIQUE,
+                        created_at INTEGER NOT NULL
+                    )
+                `);
+
+                // 创建剪贴板条目和标签的关联表
+                this.db.run(`
+                    CREATE TABLE IF NOT EXISTS item_tags (
+                        item_id INTEGER,
+                        tag_id INTEGER,
+                        FOREIGN KEY (item_id) REFERENCES clipboard_items (id) ON DELETE CASCADE,
+                        FOREIGN KEY (tag_id) REFERENCES tags (id) ON DELETE CASCADE,
+                        PRIMARY KEY (item_id, tag_id)
+                    )
+                `, (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                });
             });
         });
     }
@@ -37,7 +60,7 @@ class ClipboardDB {
         return new Promise(async (resolve, reject) => {
             try {
                 let copyTime = Date.now();
-                
+
                 // 删除相同内容的旧记录
                 if (type === 'text') {
                     await new Promise((resolve, reject) => {
@@ -53,14 +76,14 @@ class ClipboardDB {
                             else resolve(row);
                         });
                     });
-                    
+
                     if (row) {
                         copyTime = row.copy_time;
                     }
-                    
+
                     await this.db.run('DELETE FROM clipboard_items WHERE type = ? AND file_path = ?', ['image', filePath]);
                 }
-                
+
                 const stmt = this.db.prepare('INSERT INTO clipboard_items (content, copy_time, type, file_path) VALUES (?, ?, ?, ?)');
                 stmt.run(content, copyTime, type, filePath, (err) => {
                     if (err) reject(err);
@@ -213,6 +236,108 @@ class ClipboardDB {
                     else resolve();
                 }
             );
+        });
+    }
+
+    // 标签相关的方法
+    addTag(name) {
+        return new Promise((resolve, reject) => {
+            this.db.run(
+                'INSERT INTO tags (name, created_at) VALUES (?, ?)',
+                [name, Date.now()],
+                (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                }
+            );
+        });
+    }
+
+    deleteTag(id) {
+        return new Promise((resolve, reject) => {
+            this.db.run('DELETE FROM tags WHERE id = ?', [id], (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+    }
+
+    getAllTags() {
+        return new Promise((resolve, reject) => {
+            this.db.all('SELECT * FROM tags ORDER BY created_at DESC', [], (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+    }
+
+    addItemTag(itemId, tagId) {
+        return new Promise((resolve, reject) => {
+            this.db.run(
+                'INSERT INTO item_tags (item_id, tag_id) VALUES (?, ?)',
+                [itemId, tagId],
+                (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                }
+            );
+        });
+    }
+
+    removeItemTag(itemId, tagId) {
+        return new Promise((resolve, reject) => {
+            this.db.run(
+                'DELETE FROM item_tags WHERE item_id = ? AND tag_id = ?',
+                [itemId, tagId],
+                (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                }
+            );
+        });
+    }
+
+    getItemTags(itemId) {
+        return new Promise((resolve, reject) => {
+            this.db.all(
+                'SELECT t.* FROM tags t INNER JOIN item_tags it ON t.id = it.tag_id WHERE it.item_id = ?',
+                [itemId],
+                (err, rows) => {
+                    if (err) reject(err);
+                    else resolve(rows);
+                }
+            );
+        });
+    }
+
+    bindItemToTag(itemId, tagName) {
+        return new Promise((resolve, reject) => {
+            this.db.get('SELECT id FROM tags WHERE name = ?', [tagName], (err, tag) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                if (!tag) {
+                    reject(new Error('标签不存在'));
+                    return;
+                }
+                // 检查标签是否已经绑定
+                this.db.get('SELECT * FROM item_tags WHERE item_id = ? AND tag_id = ?', [itemId, tag.id], (err, existingTag) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    if (existingTag) {
+                        // 如果标签已经绑定，直接返回成功
+                        resolve();
+                        return;
+                    }
+                    // 标签未绑定，执行绑定操作
+                    this.addItemTag(itemId, tag.id)
+                        .then(resolve)
+                        .catch(reject);
+                });
+            });
         });
     }
 }

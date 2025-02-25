@@ -1,14 +1,31 @@
 /* Light Theme */
 :root {
   --bg-color: #ffffff;
+  --bg-secondary: #f8f8f8;
   --text-color: #333333;
+  --text-primary: #333333;
   --border-color: #e0e0e0;
   --hover-bg-color: #f5f5f5;
+  --item-hover-bg: #f5f5f5;
   --selected-bg-color: #f0f0f0;
   --button-bg-color: #f0f0f0;
   --button-hover-bg-color: #e0e0e0;
   --search-bg-color: #e1e1e1;
   --shadow-color: rgba(0, 0, 0, 0.1);
+  --tag-bg-color: #ffffff;
+  --tag-text-color: #333333;
+  --tag-border-color: #e0e0e0;
+  --tag-hover-bg-color: #f5f5f5;
+  --tag-hover-border-color: #666666;
+  --tag-active-bg-color: #f0f0f0;
+  --tag-active-border-color: #666666;
+  --tag-active-text-color: #333333;
+  --add-tag-bg-color: #ffffff;
+  --add-tag-text-color: #666666;
+  --add-tag-border-color: #e0e0e0;
+  --accent-color: #666666;
+  --accent-hover: #808080;
+  --arrow-icon: url('right_arrow.svg');
 }
 
 body {
@@ -47,22 +64,122 @@ body {
   background-color: var(--button-hover-bg-color);
 }
 
-.empty-state {
-  color: var(--text-color);
+.tags-toggle {
+  background-color: var(--bg-color);
+  box-shadow: 3px 2px 4px var(--shadow-color);
 }
 
-/* 删除按钮和置顶按钮样式 */
+.tags-img {
+  background-image: url('./right_arrow.svg');
+}
+
+.tags-toggle.collapsed {
+  transform: translateX(-24px);
+}
+
+.tags-container {
+  background-color: var(--bg-color);
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.tag-item {
+  background-color: var(--tag-bg-color);
+  color: var(--tag-text-color);
+  border: 1px solid var(--tag-border-color);
+}
+
+.tag-item:hover {
+  background-color: var(--tag-hover-bg-color);
+  border-color: var(--tag-hover-border-color);
+}
+
+.tag-item.active {
+  background-color: var(--tag-active-bg-color);
+  border-color: var(--tag-active-border-color);
+  color: var(--tag-active-text-color);
+}
+
+.add-tag-button {
+  background-color: var(--add-tag-bg-color);
+  color: var(--add-tag-text-color);
+  border: 1px dashed var(--add-tag-border-color);
+}
+
+.add-tag-button:hover {
+  background-color: var(--tag-hover-bg-color);
+  border-color: var(--tag-hover-border-color);
+  color: var(--tag-text-color);
+}
+
 .delete-button {
-  background-image: url('./trash.svg');
-  opacity: 0.7;
+  display: none;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 10px;
+  top: 30px;
+  transform: translateY(0);
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  z-index: 1000;
+  min-width: 120px;
+  padding: 6px 0;
+}
+
+.dropdown-item {
+  padding: 6px 16px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 13px;
+}
+
+.dropdown-item:hover {
+  background-color: var(--hover-bg-color);
+}
+
+.set-tag-item {
+  padding: 6px 16px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+}
+
+.set-tag-item::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  background-image: url('./drag.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+  cursor: move;
+}
+
+.set-tag-item:active::before {
+  opacity: 1;
+  cursor: grabbing;
+}
+
+.more-button {
+  background-image: url('./more.svg');
   filter: brightness(0.9);
+  opacity: 0.5;
   transition: all 0.3s ease;
 }
 
-.delete-button:hover {
-  opacity: 0.9;
+.more-button:hover {
+  opacity: 1;
   filter: brightness(1.1);
-  transform: scale(1.1);
 }
 
 .top-button {
@@ -73,9 +190,8 @@ body {
 }
 
 .top-button:hover {
-  opacity: 0.9;
+  opacity: 1;
   filter: brightness(1.1);
-  transform: scale(1.15);
 }
 
 .top-button.topped {
@@ -84,8 +200,24 @@ body {
   filter: brightness(1.1);
 }
 
-.top-button.topped:hover {
+/* 自定义标签删除按钮样式 */
+.custom-tag-delete {
+  background-image: url('./trash.svg');
+  opacity: 0.5;
+  filter: brightness(0.9);
+}
+
+.custom-tag-delete:hover {
   opacity: 1;
-  filter: brightness(1.2);
-  transform: scale(1.15);
+  filter: brightness(1.1);
+}
+
+/* 标签对话框按钮样式 */
+.tag-dialog-confirm {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.tag-dialog-confirm:hover {
+    background-color: var(--accent-hover);
 }

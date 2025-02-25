@@ -4,10 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>剪贴板</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/list.css">
     <link rel="stylesheet" href="css/message.css">
+    <link rel="stylesheet" href="css/tag-dialog.css">
   </head>
   <body>
+    <div class="tags-toggle">
+      <div class="tags-img"></div>
+    </div>
+    <div class="tags-container">
+      <div class="tag-item active">全部</div>
+      <div class="add-tag-button">+ 添加标签</div>
+    </div>
+    <div class="tag-dialog-overlay" style="display: none;">
+      <div class="tag-dialog">
+        <h2>添加标签</h2>
+        <div class="tag-dialog-form">
+          <div class="tag-dialog-input-group">
+            <label>标签名称</label>
+            <input type="text" placeholder="请输入标签名称">
+            <div class="tag-dialog-error">请输入标签名称</div>
+          </div>
+          <div class="tag-dialog-input-group">
+            <label>标签描述</label>
+            <textarea placeholder="请输入标签描述"></textarea>
+          </div>
+          <div class="tag-dialog-buttons">
+            <button class="tag-dialog-button tag-dialog-cancel">取消</button>
+            <button class="tag-dialog-button tag-dialog-confirm">确定</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="clipboard-search">
       <label>
         <input class="clipboard-search-input" type="text" placeholder="搜索剪贴板内容" />

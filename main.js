@@ -276,8 +276,8 @@ function createWindow() {
     win.webContents.send('change-theme', savedTheme);
   });
 
-  let lastText = null;
-  let lastFiles = [];
+  let lastText = clipboard.readText();
+  let lastFiles = clipboard.readBuffer('FileNameW');
   let lastImage = clipboard.readImage().isEmpty() ? null : clipboard.readImage().toPNG();
   let clipboardTimer = null;
 
@@ -296,7 +296,7 @@ function createWindow() {
       // 检查图片变化
       if (!currentImage.isEmpty()) {
         const currentImageBuffer = currentImage.toPNG();
-        const isImageChanged = !lastImage || Buffer.compare(currentImageBuffer, lastImage) !== 0;
+        const isImageChanged = lastImage !== null && Buffer.compare(currentImageBuffer, lastImage) !== 0;
       
         if (isImageChanged) {
           console.log('[主进程] 检测到剪贴板中有图片');
@@ -421,12 +421,11 @@ function createWindow() {
     clipboardTimer = setTimeout(checkClipboard, 100); // 每100毫秒检查一次
   }
 
-  // 延迟启动剪贴板监听，等待窗口完全加载并设置初始状态
+  // 窗口加载完成后的处理
   win.webContents.on('did-finish-load', () => {
-    // 初始化时不触发剪贴板检查，而是在一段延时后开始监听
-    setTimeout(() => {
-      checkClipboard();
-    }, 1000);
+    // 启动剪贴板监听
+    console.log('[主进程] 窗口加载完成，开始监听剪贴板');
+    checkClipboard();
   });
 
   // 监听窗口关闭事件，清理定时器

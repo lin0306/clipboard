@@ -1,0 +1,144 @@
+.tag-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.tag-dialog {
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.tag-dialog h2 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: var(--content-text);
+}
+
+.tag-dialog-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tag-dialog-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tag-dialog-input-group label {
+    font-size: 12px;
+    color: var(--content-text);
+}
+
+.tag-dialog-input-group input,
+.tag-dialog-input-group textarea {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--bg-secondary);
+    color: var(--content-text);
+    font-size: 14px;
+    resize: vertical;
+}
+
+.tag-dialog-input-group textarea {
+    min-height: 60px;
+}
+
+.tag-dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.tag-dialog-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tag-item {
+    text-align: center;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 4px;
+    background-color: var(--tag-bg-color);
+    border: 1px solid var(--tag-border-color);
+    color: var(--tag-text-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 12px;
+    position: relative;
+}
+
+.tag-item .tag-delete {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tag-item:hover .tag-delete {
+    opacity: 0.7;
+}
+
+.tag-item .tag-delete:hover {
+    opacity: 1;
+}
+
+.tag-dialog-cancel {
+    background-color: var(--bg-secondary);
+    color: var(--content-text);
+}
+
+.tag-dialog-confirm {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.tag-dialog-button:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.tag-dialog-error {
+    color: #ff4d4f;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+}
