@@ -105,6 +105,23 @@ class ClipboardDB {
         });
     }
 
+    getItemsByTag(tagName) {
+        return new Promise((resolve, reject) => {
+            this.db.all(
+                'SELECT ci.* FROM clipboard_items ci ' +
+                'INNER JOIN item_tags it ON ci.id = it.item_id ' +
+                'INNER JOIN tags t ON it.tag_id = t.id ' +
+                'WHERE t.name = ? ' +
+                'ORDER BY ci.is_topped DESC, CASE WHEN ci.is_topped = 1 THEN ci.top_time ELSE ci.copy_time END DESC',
+                [tagName],
+                (err, rows) => {
+                    if (err) reject(err);
+                    else resolve(rows);
+                }
+            );
+        });
+    }
+
     deleteItem(id) {
         return new Promise(async (resolve, reject) => {
             try {
@@ -245,9 +262,9 @@ class ClipboardDB {
             this.db.run(
                 'INSERT INTO tags (name, created_at) VALUES (?, ?)',
                 [name, Date.now()],
-                (err) => {
+                function(err) {
                     if (err) reject(err);
-                    else resolve();
+                    else resolve(this.lastID);
                 }
             );
         });
@@ -264,7 +281,7 @@ class ClipboardDB {
 
     getAllTags() {
         return new Promise((resolve, reject) => {
-            this.db.all('SELECT * FROM tags ORDER BY created_at DESC', [], (err, rows) => {
+            this.db.all('SELECT * FROM tags ORDER BY created_at ASC', [], (err, rows) => {
                 if (err) reject(err);
                 else resolve(rows);
             });

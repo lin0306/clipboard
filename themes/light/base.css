@@ -99,6 +99,12 @@ body {
   color: var(--tag-active-text-color);
 }
 
+.custom-tag-item.active {
+  background-color: var(--tag-active-bg-color);
+  border-color: var(--tag-active-border-color);
+  color: var(--tag-active-text-color);
+}
+
 .add-tag-button {
   background-color: var(--add-tag-bg-color);
   color: var(--add-tag-text-color);

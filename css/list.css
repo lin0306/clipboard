@@ -272,12 +272,31 @@ body {
   width: 150px;
   background-color: var(--bg-color);
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
   transition: transform 0.3s ease;
   z-index: 1000;
-  padding: 15px;
+  padding: 5px;
   border-radius: 8px;
   opacity: 1;
+  max-height: 100vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.tags-container::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 6px;
+}
+
+.tags-container::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 6px;
+}
+
+.tags-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  transition: background-color 0.3s;
 }
 
 .tags-container.collapsed {
@@ -292,7 +311,7 @@ body {
 .tags-toggle {
   position: fixed;
   left: 0;
-  top: 20px;
+  bottom: 20px;
   width: 30px;
   height: 30px;
   border-radius: 0 15px 15px 0;
@@ -319,7 +338,7 @@ body {
 }
 
 .tags-toggle.expanded {
-  transform: translateX(180px);
+  transform: translateX(160px);
 }
 
 .custom-tag-content {
