@@ -12,6 +12,10 @@
     z-index: 1000;
 }
 
+#title-bar.fixed {
+    -webkit-app-region: no-drag;
+}
+
 .window-title {
     font-size: 12px;
 }
@@ -44,6 +48,10 @@
     opacity: 0.7;
 }
 
+.unfixation-button {
+    display: none;
+}
+
 #close-button-img:hover {
     transform: rotate(180deg);
     opacity: 1;
@@ -55,4 +63,116 @@
 
 #unfixation-button-img:hover {
     opacity: 1;
+}
+
+/* 菜单栏样式 */
+#menu-bar {
+    list-style: none;
+    margin: 0;
+    padding: 4px 0px;
+    display: flex;
+    align-items: center;
+    height: 15px;
+    background-color: var(--menu-bg-color);
+    position: relative;
+    z-index: 999;
+}
+
+#menu-bar > li {
+    position: relative;
+    padding: 0px 5px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#menu-bar > li > div {
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--menu-text-color);
+    transition: all 0.2s ease;
+}
+
+#menu-bar > li:hover > div {
+    color: var(--menu-hover-text-color);
+}
+
+/* 二级菜单样式 */
+.secondary-menu {
+    position: absolute;
+    top: 100%;
+    left: 3px;
+    background-color: var(--submenu-bg-color);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-width: 100px;
+    display: none;
+    padding: 5px 0;
+    list-style: none;
+    margin: 0;
+}
+
+#menu-bar > li:hover .secondary-menu {
+    display: block;
+}
+
+.secondary-menu li {
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.secondary-menu li:hover {
+    background-color: var(--submenu-hover-bg-color);
+}
+.secondary-menu li div:hover {
+    color: var(--submenu-hover-text-color);
+}
+
+.secondary-menu li div {
+    font-size: 12px;
+    color: var(--submenu-text-color);
+}
+
+.split-line {
+    height: 0.01em;
+    background-color: var(--submenu-border-color);
+    margin: 0px 1px;
+    pointer-events: none;
+}
+
+/* 主题菜单样式 */
+.themes-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    cursor: pointer;
+    position: relative;
+}
+
+.themes-hook {
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: opacity 0.2s ease;
+}
+
+.themes-item.active .themes-hook {
+    opacity: 1;
+}
+
+.themes-item:hover {
+    background-color: var(--menu-hover-bg-color);
+}
+
+.themes-item div:last-child {
+    font-size: 12px;
+    color: var(--menu-text-color);
+}
+
+.themes-item:hover div:last-child {
+    color: var(--menu-hover-text-color);
 }

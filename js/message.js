@@ -1,7 +1,7 @@
 class Message {
   constructor() {
     this.defaultDuration = 2000;
-    this.defaultPosition = { top: '10px', left: '30%' };
+    this.defaultPosition = { top: '50px', left: '30%' };
   }
 
   show(text, type = 'success', duration = this.defaultDuration) {

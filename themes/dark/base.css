@@ -29,6 +29,14 @@
     --add-tag-text-color: #a0a0a0;
     --add-tag-border-color: rgba(255, 255, 255, 0.15);
     --arrow-icon: url('right_arrow.svg');
+    --menu-bg-color: #3c3b3b;
+    --menu-text-color: #b0b0b0;
+    --menu-hover-text-color: #fff;
+    --submenu-bg-color: #424242;
+    --submenu-text-color: #c4c4c4;
+    --submenu-hover-bg-color: #606060;
+    --submenu-hover-text-color: #fff;
+    --submenu-border-color: #797979;
 }
 
 /* 应用主题样式 */
@@ -398,4 +406,8 @@ body {
 
 #title-bar {
     background: #757575dd;
+}
+
+.themes-hook {
+    background-image: url("./hook.svg");
 }

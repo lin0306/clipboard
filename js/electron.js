@@ -1,5 +1,10 @@
 const { ipcRenderer, clipboard } = require('electron');
 
+// 窗口控制功能
+function closeWindow() {
+    ipcRenderer.send('close-window');
+}
+
 // 剪贴板操作封装
 class ElectronManager {
     // 写入文本到剪贴板
@@ -38,6 +43,20 @@ class ElectronManager {
                 await callback(text);
             }
         });
+    }
+
+    // 关闭应用程序
+    static closeApp() {
+        ipcRenderer.send('close-window');
+    }
+
+    // 重新加载应用程序
+    static reloadApp() {
+        ipcRenderer.send('reload-app');
+        // 等待一段时间后关闭当前窗口
+        setTimeout(() => {
+            window.close();
+        }, 100);
     }
 }
 

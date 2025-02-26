@@ -1,75 +1,135 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>剪贴板</title>
-    <link rel="stylesheet" href="css/program.css">
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/search.css">
-    <link rel="stylesheet" href="css/list.css">
-    <link rel="stylesheet" href="css/message.css">
-    <link rel="stylesheet" href="css/tag-dialog.css">
-  </head>
-  <body>
-    <div id="title-bar">
-      <div class="window-title">剪贴板</div>
-      <div class="window-controls">
-        <div class="control-button fixation-button">
-          <div class="program-btn" id="fixation-button-img"></div>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>剪贴板</title>
+  <link rel="stylesheet" href="css/program.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/search.css">
+  <link rel="stylesheet" href="css/list.css">
+  <link rel="stylesheet" href="css/message.css">
+  <link rel="stylesheet" href="css/tag-dialog.css">
+</head>
+
+<body>
+  <div id="title-bar">
+    <div class="window-title">剪贴板</div>
+    <div class="window-controls">
+      <div class="control-button fixation-button">
+        <div class="program-btn" id="fixation-button-img"></div>
+      </div>
+      <div class="control-button unfixation-button">
+        <div class="program-btn" id="unfixation-button-img"></div>
+      </div>
+      <div class="control-button close-button">
+        <div class="program-btn" id="close-button-img"></div>
+      </div>
+    </div>
+  </div>
+  <ul id="menu-bar">
+    <li>
+      <div id="program">程序</div>
+      <ul class="secondary-menu">
+        <li>
+          <div id="setting">偏好设置</div>
+        </li>
+        <li>
+          <div id="reload">重新加载</div>
+        </li>
+        <div class="split-line"></div>
+        <li>
+          <div id="close">关闭</div>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <div id="find">查找</div>
+    </li>
+    <li>
+      <div id="clear-clipboard">清空剪贴板</div>
+    </li>
+    <li>
+      <div id="themes">主题</div>
+      <ul class="secondary-menu">
+        <li class="themes-item">
+          <div class="themes-hook" data-id="light"></div>
+          <div id="light">浅色主题</div>
+        </li>
+        <li class="themes-item">
+          <div class="themes-hook" data-id="dark"></div>
+          <div id="dark">深色主题</div>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <div id="help">帮助</div>
+      <ul class="secondary-menu">
+        <li>
+          <div id="instruction">使用说明</div>
+        </li>
+          <div class="split-line"></div>
+        <li>
+          <div id="update-log">更新日志</div>
+        </li>
+        <li>
+          <div id="check-update">检查更新</div>
+        </li>
+          <div class="split-line"></div>
+        <li>
+          <div id="as-for">关于</div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <div class="tags-toggle">
+    <div class="tags-img"></div>
+  </div>
+  <div class="tags-container">
+    <div class="tag-item active">全部</div>
+    <div class="tag-item add-tag-button">+ 添加标签</div>
+  </div>
+  <div class="tag-dialog-overlay" style="display: none;">
+    <div class="tag-dialog">
+      <h2>添加标签</h2>
+      <div class="tag-dialog-form">
+        <div class="tag-dialog-input-group">
+          <label>标签名称</label>
+          <input type="text" placeholder="请输入标签名称">
+          <div class="tag-dialog-error">请输入标签名称</div>
         </div>
-        <div class="control-button unfixation-button">
-          <div class="program-btn" id="unfixation-button-img"></div>
+        <div class="tag-dialog-input-group">
+          <label>标签描述</label>
+          <textarea placeholder="请输入标签描述"></textarea>
         </div>
-        <div class="control-button close-button">
-          <div class="program-btn" id="close-button-img"></div>
+        <div class="tag-dialog-buttons">
+          <button class="tag-dialog-button tag-dialog-cancel">取消</button>
+          <button class="tag-dialog-button tag-dialog-confirm">确定</button>
         </div>
       </div>
     </div>
-    <div class="tags-toggle">
-      <div class="tags-img"></div>
+  </div>
+  <div class="clipboard-search">
+    <label>
+      <input class="clipboard-search-input" type="text" placeholder="搜索剪贴板内容" />
+    </label>
+    <button class="clipboard-search-button">
+      <img src="themes/light/search.svg" alt="搜索" id="search-icon">
+    </button>
+  </div>
+  <div class="clipboard-container" id="clipboard-list">
+    <div class="empty-state" id="empty-state">
+      <img src="themes/light/empty.svg" alt="暂无内容" id="empty-state-icon">
+      <p>暂无内容</p>
     </div>
-    <div class="tags-container">
-      <div class="tag-item active">全部</div>
-      <div class="tag-item add-tag-button">+ 添加标签</div>
-    </div>
-    <div class="tag-dialog-overlay" style="display: none;">
-      <div class="tag-dialog">
-        <h2>添加标签</h2>
-        <div class="tag-dialog-form">
-          <div class="tag-dialog-input-group">
-            <label>标签名称</label>
-            <input type="text" placeholder="请输入标签名称">
-            <div class="tag-dialog-error">请输入标签名称</div>
-          </div>
-          <div class="tag-dialog-input-group">
-            <label>标签描述</label>
-            <textarea placeholder="请输入标签描述"></textarea>
-          </div>
-          <div class="tag-dialog-buttons">
-            <button class="tag-dialog-button tag-dialog-cancel">取消</button>
-            <button class="tag-dialog-button tag-dialog-confirm">确定</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="clipboard-search">
-      <label>
-        <input class="clipboard-search-input" type="text" placeholder="搜索剪贴板内容" />
-      </label>
-      <button  class="clipboard-search-button">
-        <img src="themes/light/search.svg" alt="搜索" id="search-icon">
-      </button>
-    </div>
-    <div class="clipboard-container" id="clipboard-list">
-      <div class="empty-state" id="empty-state">
-        <img src="themes/light/empty.svg" alt="暂无内容" id="empty-state-icon">
-        <p>暂无内容</p>
-      </div>
-    </div>
-    <script src="js/db.js"></script>
-    <script src="js/message.js"></script>
-    <script src="js/electron.js"></script>
-    <script src="js/index.js"></script>
-  </body>
+  </div>
+  <script src="js/db.js"></script>
+  <script src="js/message.js"></script>
+  <script src="js/electron.js"></script>
+  <script src="js/index.js"></script>
+  <script src="js/titlebar.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+
 </html>

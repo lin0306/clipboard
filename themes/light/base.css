@@ -26,6 +26,14 @@
   --accent-color: #666666;
   --accent-hover: #808080;
   --arrow-icon: url('right_arrow.svg');
+  --menu-bg-color: #000;
+  --menu-text-color: #000;
+  --menu-hover-text-color: #000;
+  --submenu-bg-color: #000;
+  --submenu-text-color: #000;
+  --submenu-hover-bg-color: #000;
+  --submenu-hover-text-color: #fff;
+  --submenu-border-color: #fff;
 }
 
 body {
@@ -242,4 +250,8 @@ body {
 
 #title-bar {
   background: #f3f3f3dd;
+}
+
+.themes-hook {
+    background-image: url("./hook.svg");
 }
