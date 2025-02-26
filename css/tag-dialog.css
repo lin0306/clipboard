@@ -99,14 +99,6 @@
     position: relative;
 }
 
-.custom-tag-item {
-    cursor: grab;
-}
-
-.custom-tag-item.dragging {
-    cursor: grabbing;
-}
-
 .tag-item .tag-delete {
     position: absolute;
     right: 8px;

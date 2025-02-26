@@ -35,8 +35,7 @@ class ClipboardDB {
                     CREATE TABLE IF NOT EXISTS tags (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         name TEXT NOT NULL UNIQUE,
-                        created_at INTEGER NOT NULL,
-                        sort_order INTEGER DEFAULT 0
+                        created_at INTEGER NOT NULL
                     )
                 `);
 
@@ -282,23 +281,10 @@ class ClipboardDB {
 
     getAllTags() {
         return new Promise((resolve, reject) => {
-            this.db.all('SELECT * FROM tags ORDER BY sort_order DESC, created_at ASC', [], (err, rows) => {
+            this.db.all('SELECT * FROM tags ORDER BY created_at ASC', [], (err, rows) => {
                 if (err) reject(err);
                 else resolve(rows);
             });
-        });
-    }
-
-    updateTagOrder(tagId, newOrder) {
-        return new Promise((resolve, reject) => {
-            this.db.run(
-                'UPDATE tags SET sort_order = ? WHERE id = ?',
-                [newOrder, tagId],
-                (err) => {
-                    if (err) reject(err);
-                    else resolve();
-                }
-            );
         });
     }
 
