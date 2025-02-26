@@ -424,19 +424,17 @@ body {
 }
 
 .clipboard-tag {
-  border: #666666 1px solid;
-  font-size: 12px;
+  border: #666666 1px dashed;
+  font-size: 8px;
   padding: 2px 8px;
   border-radius: 4px;
   background-color: var(--tag-bg-color);
   color: var(--tag-text-color);
   transition: all 0.2s ease;
+  max-width: 4em;
+  opacity: 0.8;
 }
 
-.clipboard-tag:hover {
-  background-color: var(--tag-hover-bg-color);
-  border-color: var(--tag-hover-border-color);
-}
 
 .custom-tag-content {
   text-align: center;
@@ -542,15 +540,6 @@ body {
   cursor: not-allowed;
 }
 
-.clipboard-tags {
-  display: flex;
-}
-
-.clipboard-tag {
-  border: #666666 1px solid;
-  font-size: 8px;
-  width: 4em;
-}
 
 .tag-disable {
   opacity: 0.6;
@@ -574,16 +563,6 @@ body {
 .custom-tag-item.over {
   border-color: var(--accent-color) !important;
   box-shadow: 0 0 10px var(--shadow-color);
-}
-
-.clipboard-tags {
-  display: flex;
-}
-
-.clipboard-tag {
-  border: #666666 1px solid;
-  font-size: 8px;
-  width: 4em;
 }
 
 .tag-disable {

@@ -12,6 +12,7 @@ const tagDialogError = tagDialog.querySelector('.tag-dialog-error');
 const tagsContainer = document.querySelector('.tags-container');
 let selectedIndex = 0; // 当前选中项的索引
 let openTagDialog = 0; // 是否打开新增标签对话框
+let draggedItem = null; // 当前被拖拽的元素
 
 // 标签相关功能
 // 处理标签点击事件
@@ -203,6 +204,11 @@ tagDialogConfirm.addEventListener('click', async () => {
               clipboardTagsContainer.appendChild(tagElement);
             });
             message.success(`已将内容添加到标签"${tagName}"`);
+            const allDropdowns = document.querySelectorAll('.dropdown-menu');
+            // 绑定成功隐藏所有下拉列表
+            allDropdowns.forEach(menu => {
+              menu.style.display = 'none';
+            });
           }
         } catch (error) {
           console.error('[标签绑定] 绑定标签失败:', error);
@@ -281,6 +287,23 @@ async function initializeClipboard() {
           console.log('[标签删除] 标签已从数据库中删除:', tag.name);
           tagsContainer.removeChild(tagItem);
           console.log('[标签删除] 标签已从界面移除:', tag.name);
+
+          // 更新内容列表中的标签显示
+          const clipboardItems = document.querySelectorAll('.clipboard-item');
+          clipboardItems.forEach(async (item) => {
+            const itemId = item.dataset.id;
+            if (itemId) {
+              const clipboardTagsContainer = item.querySelector('.clipboard-tags');
+              clipboardTagsContainer.innerHTML = '';
+              const tags = await db.getItemTags(parseInt(itemId));
+              tags.forEach(tag => {
+                const tagElement = document.createElement('div');
+                tagElement.classList.add('clipboard-tag');
+                tagElement.textContent = tag.name;
+                clipboardTagsContainer.appendChild(tagElement);
+              });
+            }
+          });
         } catch (error) {
           console.error('[标签删除] 删除标签失败:', error);
           message.error('删除标签失败');
@@ -415,7 +438,9 @@ function createClipboardItem(text, isTopped = false, id = null, copyTime = Date.
 
   // 获取并显示标签
   if (id) {
-    db.getItemTags(id).then(tags => {
+    const itemTags = db.getItemTags(id);
+    console.log(itemTags)
+    itemTags.then(tags => {
       tags.forEach(tag => {
         const tagElement = document.createElement('div');
         tagElement.classList.add('clipboard-tag');
@@ -504,6 +529,11 @@ function createClipboardItem(text, isTopped = false, id = null, copyTime = Date.
                   clipboardTagsContainer.appendChild(tagElement);
                 });
                 message.success(`已将内容添加到标签"${tagName}"`);
+            const allDropdowns = document.querySelectorAll('.dropdown-menu');
+            // 绑定成功隐藏所有下拉列表
+            allDropdowns.forEach(menu => {
+              menu.style.display = 'none';
+            });
               }
             } catch (error) {
               console.error('[标签绑定] 绑定标签失败:', error);
@@ -535,7 +565,6 @@ function createClipboardItem(text, isTopped = false, id = null, copyTime = Date.
 
   // 设置标签按钮可拖动
   tagOption.draggable = true;
-  let draggedItem = null;
 
   // 拖动开始
   tagOption.addEventListener('dragstart', (e) => {
@@ -573,6 +602,12 @@ function createClipboardItem(text, isTopped = false, id = null, copyTime = Date.
       return;
     }
 
+    // 移除已有的drop事件监听器
+    const oldListener = tag._dropListener;
+    if (oldListener) {
+      tag.removeEventListener('drop', oldListener);
+    }
+
     // 处理拖动悬停
     tag.addEventListener('dragover', async (e) => {
       e.preventDefault();
@@ -605,7 +640,7 @@ function createClipboardItem(text, isTopped = false, id = null, copyTime = Date.
     });
 
     // 处理放置
-    tag.addEventListener('drop', async (e) => {
+    const dropListener = async (e) => {
       e.preventDefault();
       tag.classList.remove('over');
       tag.classList.remove('tag-disable');
@@ -635,6 +670,11 @@ function createClipboardItem(text, isTopped = false, id = null, copyTime = Date.
               clipboardTagsContainer.appendChild(tagElement);
             });
             message.success(`已将内容添加到标签"${tagName}"`);
+            const allDropdowns = document.querySelectorAll('.dropdown-menu');
+            // 绑定成功隐藏所有下拉列表
+            allDropdowns.forEach(menu => {
+              menu.style.display = 'none';
+            });
           }
         } catch (error) {
           console.error('[标签绑定] 绑定标签失败:', error);
@@ -643,6 +683,7 @@ function createClipboardItem(text, isTopped = false, id = null, copyTime = Date.
       }
 
       // 清理拖拽状态
+      document.body.removeAttribute('data-is-dragging');
       const tagsToggle = document.querySelector('.tags-toggle');
       const tagsContainer = document.querySelector('.tags-container');
       tagsToggle.classList.remove('expanded');
@@ -653,7 +694,10 @@ function createClipboardItem(text, isTopped = false, id = null, copyTime = Date.
         tag.classList.remove('over');
         tag.classList.remove('tag-disable');
       });
-    });
+    };
+
+    tag.addEventListener('drop', dropListener);
+    tag._dropListener = dropListener; // 保存监听器引用以便后续移除
   });
 
   // 阻止冒泡，避免触发其他点击事件

@@ -350,9 +350,14 @@ class ClipboardDB {
                         return;
                     }
                     // 标签未绑定，执行绑定操作
-                    this.addItemTag(itemId, tag.id)
-                        .then(resolve)
-                        .catch(reject);
+                    this.db.run(
+                        'INSERT OR IGNORE INTO item_tags (item_id, tag_id) VALUES (?, ?)',
+                        [itemId, tag.id],
+                        (err) => {
+                            if (err) reject(err);
+                            else resolve();
+                        }
+                    );
                 });
             });
         });
