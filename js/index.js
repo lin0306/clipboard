@@ -266,6 +266,8 @@ async function initializeClipboard() {
       const tagItem = document.createElement('div');
       tagItem.classList.add('custom-tag-item');
       tagItem.dataset.id = tag.id;
+      tagItem.draggable = true;
+      tagItem.setAttribute('draggable', 'true');
 
       const tagContent = document.createElement('div');
       tagContent.classList.add('custom-tag-content');
@@ -288,6 +290,73 @@ async function initializeClipboard() {
       });
 
       tagItem.appendChild(deleteButton);
+
+      // 添加拖拽相关事件
+      tagItem.addEventListener('dragstart', (e) => {
+        if (!tagItem.classList.contains('all-tags') && !tagItem.classList.contains('add-tag-button')) {
+          e.stopPropagation();
+          tagItem.classList.add('dragging');
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/plain', tag.id);
+        }
+      });
+
+      tagItem.addEventListener('dragend', () => {
+        tagItem.classList.remove('dragging');
+      });
+
+      tagItem.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (!tagItem.classList.contains('all-tags') && !tagItem.classList.contains('add-tag-button')) {
+          const draggingItem = tagsContainer.querySelector('.dragging');
+          if (draggingItem && draggingItem !== tagItem) {
+            const allTags = [...tagsContainer.querySelectorAll('.custom-tag-item:not(.all-tags):not(.add-tag-button)')];
+            const currentPos = allTags.indexOf(tagItem);
+            const draggingPos = allTags.indexOf(draggingItem);
+            if (currentPos > draggingPos) {
+              tagItem.classList.add('drag-after');
+              tagItem.classList.remove('drag-before');
+            } else {
+              tagItem.classList.add('drag-before');
+              tagItem.classList.remove('drag-after');
+            }
+          }
+        }
+      });
+
+      tagItem.addEventListener('dragleave', () => {
+        tagItem.classList.remove('drag-before', 'drag-after');
+      });
+
+      tagItem.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        tagItem.classList.remove('drag-before', 'drag-after');
+        if (!tagItem.classList.contains('all-tags') && !tagItem.classList.contains('add-tag-button')) {
+          const draggedId = e.dataTransfer.getData('text/plain');
+          const draggingItem = tagsContainer.querySelector(`[data-id="${draggedId}"]`);
+          if (draggingItem && draggingItem !== tagItem) {
+            const allTags = [...tagsContainer.querySelectorAll('.custom-tag-item:not(.all-tags):not(.add-tag-button)')];
+            const currentPos = allTags.indexOf(tagItem);
+            const draggingPos = allTags.indexOf(draggingItem);
+            
+            // 更新DOM顺序
+            if (currentPos > draggingPos) {
+              tagItem.parentNode.insertBefore(draggingItem, tagItem.nextSibling);
+            } else {
+              tagItem.parentNode.insertBefore(draggingItem, tagItem);
+            }
+
+            // 更新数据库中的排序
+            const reorderedTags = [...tagsContainer.querySelectorAll('.custom-tag-item:not(.all-tags):not(.add-tag-button)')];
+            for (let i = 0; i < reorderedTags.length; i++) {
+              const tagId = reorderedTags[i].dataset.id;
+              if (tagId) {
+                await db.updateTagOrder(parseInt(tagId), i);
+              }
+            }
+          }
+        }
+      });
 
       // 获取"全部"标签元素
       const allTagItem = tagsContainer.querySelector('.tag-item');
