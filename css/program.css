@@ -1,0 +1,58 @@
+/* 标题栏样式 */
+#title-bar {
+    height: 25px;
+    -webkit-app-region: drag;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5px;
+    border-radius: 8px 8px 0 0;
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1000;
+}
+
+.window-title {
+    font-size: 12px;
+}
+
+.window-controls {
+    display: flex;
+    gap: 8px;
+    -webkit-app-region: no-drag;
+}
+
+.control-button {
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 20px;
+    height: 20px;
+    -webkit-app-region: no-drag;
+}
+
+.program-btn {
+    width: 60%;
+    height: 60%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.3s ease;
+    opacity: 0.7;
+}
+
+#close-button-img:hover {
+    transform: rotate(180deg);
+    opacity: 1;
+}
+
+#fixation-button-img:hover {
+    opacity: 1;
+}
+
+#unfixation-button-img:hover {
+    opacity: 1;
+}

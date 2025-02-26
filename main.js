@@ -40,7 +40,7 @@ function createWindow() {
   const win = new BrowserWindow({
     width: windowWidth,
     height: windowHeight,
-    frame: true,
+    frame: false,
     resizable: false, // 禁止调整窗口大小
     minimizable: false, // 禁止最小化
     maximizable: false, // 禁止最大化

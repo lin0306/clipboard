@@ -383,3 +383,19 @@ body {
     opacity: 1;
     filter: brightness(2.5);
 }
+
+#close-button-img {
+    background-image: url('./close.svg');
+}
+
+#unfixation-button-img {
+    background-image: url('./unfixation.svg');
+}
+
+#fixation-button-img {
+    background-image: url('./fixation.svg');
+}
+
+#title-bar {
+    background: #757575dd;
+}

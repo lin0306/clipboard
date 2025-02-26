@@ -227,3 +227,19 @@ body {
 .tag-dialog-confirm:hover {
     background-color: var(--accent-hover);
 }
+
+#close-button-img {
+  background-image: url('./close.svg');
+}
+
+#unfixation-button-img {
+  background-image: url('./unfixation.svg');
+}
+
+#fixation-button-img {
+  background-image: url('./fixation.svg');
+}
+
+#title-bar {
+  background: #f3f3f3dd;
+}
