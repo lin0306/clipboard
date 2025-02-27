@@ -2,12 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 获取菜单项元素
     const programMenu = document.getElementById('program');
     const settingMenu = document.getElementById('setting');
+    const debuggingToolMenu = document.getElementById('debugging-tool');
     const reloadMenu = document.getElementById('reload');
     const closeMenu = document.getElementById('close');
     const findMenu = document.getElementById('find');
     const clearClipboardMenu = document.getElementById('clear-clipboard');
-    const lightThemeMenu = document.getElementById('light');
-    const darkThemeMenu = document.getElementById('dark');
     const instructionMenu = document.getElementById('instruction');
     const updateLogMenu = document.getElementById('update-log');
     const checkUpdateMenu = document.getElementById('check-update');
@@ -35,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     reloadMenu.addEventListener('click', () => {
-        console.log(1)
         // 重新加载应用
         ElectronManager.reloadApp();
     });
@@ -43,6 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
     closeMenu.addEventListener('click', () => {
         // 关闭应用
         ElectronManager.closeApp();
+    });
+
+    // 调试工具菜单项事件处理
+    debuggingToolMenu.addEventListener('click', () => {
+        // 打开开发者工具
+        ElectronManager.openDevTools();
     });
 
     // 查找功能
@@ -64,19 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 主题切换
-    lightThemeMenu.addEventListener('click', () => {
-        // 更新主题配置
-        changeTheme('light');
-        updateThemeToConf('light');
-    });
-
-    darkThemeMenu.addEventListener('click', () => {
-        // 更新主题配置
-        changeTheme('dark');
-        updateThemeToConf('dark');
-    });
-
     // 帮助菜单项事件处理
     instructionMenu.addEventListener('click', () => {
         window.electron.openInstruction();
@@ -95,66 +86,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// 监听主题切换事件
-ipcRenderer.on('change-theme', (event, theme) => {
-    changeTheme(theme);
-});
-
-// 切换主题
-function changeTheme(theme) {
-    console.log('收到主题切换消息:', theme);
-    document.body.classList.remove('theme-light', 'theme-dark');
-    document.body.classList.add(`theme-${theme}`);
-    console.log('已更新DOM类名:', document.body.className);
-    localStorage.setItem('theme', theme);
-    console.log('已保存主题设置到localStorage');
-    loadThemeCSS(theme);
-    console.log('已加载主题CSS文件:', theme);
-  
-    // 更新搜索图标
-    const searchIcon = document.getElementById('search-icon');
-    searchIcon.src = `themes/${theme}/search.svg`;
-    console.log('已更新搜索图标:', theme);
-
-    // 更新主题菜单勾选图标
-    const themesHooks = document.querySelectorAll('.themes-hook');
-    themesHooks.forEach(hook => {
-        const hookId = hook.getAttribute('data-id');
-        console.log('主题勾选图标ID:', hookId);
-        // 根据data-id判断是否为当前主题
-        if (hookId === theme) {
-            hook.style.opacity = '1';
-        } else {
-            hook.style.opacity = '0';
-        }
-    });
-    console.log('已更新主题勾选图标:', theme);
-}
-
-// 加载主题CSS文件
-function loadThemeCSS(theme) {
-    const existingThemeLink = document.getElementById('theme-css');
-    if (existingThemeLink) {
-      existingThemeLink.remove();
-    }
-  
-    const themeLink = document.createElement('link');
-    themeLink.id = 'theme-css';
-    themeLink.rel = 'stylesheet';
-    themeLink.href = `themes/${theme}/base.css`;
-    document.head.appendChild(themeLink);
-  
-    // 更新空状态图片
-    const emptyStateImg = document.querySelector('#empty-state img');
-    if (emptyStateImg) {
-      emptyStateImg.src = `themes/${theme}/empty.svg`;
-    }
-}
-// 更新主题配置
-function updateThemeToConf(theme) {
-    const configPath = path.join(__dirname, 'conf', 'settings.conf');
-    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-    config.theme = theme;
-    fs.writeFileSync(configPath, JSON.stringify(config, null, 4));
-    win.webContents.send('change-theme', config.theme);
-}

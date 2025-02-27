@@ -36,6 +36,9 @@
           <div id="setting">偏好设置</div>
         </li>
         <li>
+          <div id="debugging-tool">调试工具</div>
+        </li>
+        <li>
           <div id="reload">重新加载</div>
         </li>
         <div class="split-line"></div>
@@ -52,15 +55,7 @@
     </li>
     <li>
       <div id="themes">主题</div>
-      <ul class="secondary-menu">
-        <li class="themes-item">
-          <div class="themes-hook" data-id="light"></div>
-          <div id="light">浅色主题</div>
-        </li>
-        <li class="themes-item">
-          <div class="themes-hook" data-id="dark"></div>
-          <div id="dark">深色主题</div>
-        </li>
+      <ul class="secondary-menu" id="themes-menu">
       </ul>
     </li>
     <li>
@@ -90,6 +85,7 @@
     <div class="tag-item active">全部</div>
     <div class="tag-item add-tag-button">+ 添加标签</div>
   </div>
+  <div style="width: 100%;height: 50px;"></div>
   <div class="tag-dialog-overlay" style="display: none;">
     <div class="tag-dialog">
       <h2>添加标签</h2>
@@ -130,6 +126,7 @@
   <script src="js/index.js"></script>
   <script src="js/titlebar.js"></script>
   <script src="js/menu.js"></script>
+  <script src="js/themes.js"></script>
 </body>
 
 </html>

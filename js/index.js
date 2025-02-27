@@ -20,7 +20,7 @@ const handleTagClick = async (tagElement) => {
   const allTags = document.querySelectorAll('.tag-item, .custom-tag-item');
   // openTagDialog 更新有延迟，这里需要延迟处理
   setTimeout(() => {
-    if(openTagDialog !== 1) {
+    if (openTagDialog !== 1) {
       allTags.forEach(tag => tag.classList.remove('active'));
     }
   }, 10);
@@ -34,7 +34,7 @@ const handleTagClick = async (tagElement) => {
   // 获取标签名称
   const tagName = tagElement.textContent;
   const isAllTag = tagName === '全部';
-  if(tagName === '+ 添加标签') {
+  if (tagName === '+ 添加标签') {
     return;
   }
 
@@ -60,7 +60,7 @@ const handleTagClick = async (tagElement) => {
 function bindTagClickEvents() {
   const allTags = document.querySelectorAll('.tag-item, .custom-tag-item');
   allTags.forEach(tag => {
-    tag.addEventListener('click', function() {
+    tag.addEventListener('click', function () {
       handleTagClick(this);
     });
   });
@@ -104,7 +104,7 @@ tagDialogConfirm.addEventListener('click', async () => {
     const tags = await db.getAllTags();
     const newTag = tags.find(t => t.name === tagName);
     if (!newTag) {
-        throw new Error('无法获取新创建的标签');
+      throw new Error('无法获取新创建的标签');
     }
 
     // 创建新标签元素
@@ -323,18 +323,28 @@ async function initializeClipboard() {
  * @param {string} searchText - 搜索关键词
  */
 async function filterClipboardItems(searchText) {
-  if (searchText === '') {
-    // 搜索框为空时显示所有项
-    const items = await db.getAllItems();
-    clearClipboardList();
-    items.forEach(item => createClipboardItem(item.content, item.is_topped === 1, item.id, item.copy_time, item.top_time, item.type, item.file_path));
-  } else {
-    // 根据搜索文本过滤项
-    const items = await db.searchItems(searchText);
-    clearClipboardList();
-    items.forEach(item => createClipboardItem(item.content, item.is_topped === 1, item.id, item.copy_time, item.top_time, item.type, item.file_path));
+  message.showLoading('搜索中...');
+  try {
+    // 获取当前选中的标签
+    const activeTag = document.querySelector('.tag-item.active, .custom-tag-item.active');
+    const tagName = activeTag ? activeTag.textContent : null;
+    const isAllTag = tagName === '全部';
+
+    if (searchText === '') {
+      // 搜索框为空时，根据标签显示项目
+      const items = isAllTag || !tagName ? await db.getAllItems() : await db.getItemsByTag(tagName);
+      clearClipboardList();
+      items.forEach(item => createClipboardItem(item.content, item.is_topped === 1, item.id, item.copy_time, item.top_time, item.type, item.file_path));
+    } else {
+      // 根据搜索文本和标签过滤项
+      const items = await db.searchItems(searchText, isAllTag || !tagName ? null : tagName);
+      clearClipboardList();
+      items.forEach(item => createClipboardItem(item.content, item.is_topped === 1, item.id, item.copy_time, item.top_time, item.type, item.file_path));
+    }
+    updateEmptyState();
+  } finally {
+    message.hideLoading();
   }
-  updateEmptyState();
 }
 
 /**
@@ -833,37 +843,20 @@ function updateSelection(index) {
   }
 }
 
-// 监听主进程发送的菜单事件
-ipcRenderer.on('clear-clipboard', async () => {
-  await db.clearAll();
-  clearClipboardList();
-  ElectronManager.clearClipboard();
-  message.info('剪贴板内容已清空');
-  selectedIndex = -1;
-  updateEmptyState();
-});
-
-ipcRenderer.on('open-settings', () => {
-  // TODO: 实现设置面板功能
-  message.info('设置功能即将上线');
-});
-
-// 监听主进程发送的toggle-search事件
-ipcRenderer.on('toggle-search', () => {
-  const searchContainer = document.querySelector('.clipboard-search');
-  if (searchContainer.style.display === 'none' || !searchContainer.style.display) {
-    searchContainer.style.display = 'block';
-    searchInput.focus();
-  } else {
-    searchContainer.style.display = 'none';
-  }
-});
-
-// 监听ESC键关闭搜索框
+// 监听ESC键关闭搜索框和Ctrl+F打开搜索框
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     const searchContainer = document.querySelector('.clipboard-search');
     searchContainer.style.display = 'none';
+  }
+  // 检查是否按下了Ctrl+F
+  if (e.ctrlKey && e.key.toLowerCase() === 'f') {
+    e.preventDefault(); // 阻止浏览器默认的查找行为
+    const searchBox = document.querySelector('.clipboard-search');
+    searchBox.style.display = searchBox.style.display === 'block' ? 'none' : 'block';
+    if (searchBox.style.display === 'block') {
+      searchBox.querySelector('input').focus();
+    }
   }
 });
 
@@ -905,8 +898,3 @@ function updateEmptyState() {
   );
   emptyState.style.display = items.length === 0 ? 'flex' : 'none';
 }
-// 添加关闭按钮点击事件监听
-const closeButton = document.querySelector('.close-button');
-closeButton.addEventListener('click', () => {
-  closeWindow();
-});

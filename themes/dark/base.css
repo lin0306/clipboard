@@ -378,7 +378,6 @@ body {
     background-image: url('./top.svg');
     opacity: 0.5;
     filter: brightness(1.5);
-    transition: all 0.3s ease;
 }
 
 .top-button:hover {

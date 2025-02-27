@@ -230,16 +230,27 @@ class ClipboardDB {
         });
     }
 
-    searchItems(query) {
+    searchItems(query, tagName = null) {
         return new Promise((resolve, reject) => {
-            this.db.all(
-                'SELECT * FROM clipboard_items WHERE content LIKE ? ORDER BY is_topped DESC, CASE WHEN is_topped = 1 THEN top_time ELSE copy_time END DESC',
-                [`%${query}%`],
-                (err, rows) => {
-                    if (err) reject(err);
-                    else resolve(rows);
-                }
-            );
+            let sql = 'SELECT DISTINCT ci.* FROM clipboard_items ci';
+            const params = [];
+
+            if (tagName) {
+                sql += ' INNER JOIN item_tags it ON ci.id = it.item_id'
+                    + ' INNER JOIN tags t ON it.tag_id = t.id'
+                    + ' WHERE t.name = ? AND ci.content LIKE ?';
+                params.push(tagName, `%${query}%`);
+            } else {
+                sql += ' WHERE content LIKE ?';
+                params.push(`%${query}%`);
+            }
+
+            sql += ' ORDER BY ci.is_topped DESC, CASE WHEN ci.is_topped = 1 THEN ci.top_time ELSE ci.copy_time END DESC';
+
+            this.db.all(sql, params, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
         });
     }
 

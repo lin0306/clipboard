@@ -17,3 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
         fixationButton.style.display = 'flex';
     });
 });
+// 添加关闭按钮点击事件监听
+const closeButton = document.querySelector('.close-button');
+closeButton.addEventListener('click', () => {
+    ElectronManager.closeApp();
+});

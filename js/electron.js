@@ -1,10 +1,5 @@
 const { ipcRenderer, clipboard } = require('electron');
 
-// 窗口控制功能
-function closeWindow() {
-    ipcRenderer.send('close-window');
-}
-
 // 剪贴板操作封装
 class ElectronManager {
     // 写入文本到剪贴板
@@ -57,6 +52,11 @@ class ElectronManager {
         setTimeout(() => {
             window.close();
         }, 100);
+    }
+
+    // 打开开发者工具
+    static openDevTools() {
+        ipcRenderer.send('open-devtools');
     }
 }
 

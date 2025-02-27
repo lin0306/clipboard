@@ -61,8 +61,8 @@ function createWindow() {
     win.webContents.send('change-theme', savedTheme);
   });
 
-  // 打开调试工具，设置为单独窗口
-  win.webContents.openDevTools({ mode: 'detach' });
+  // // 打开调试工具，设置为单独窗口
+  // win.webContents.openDevTools({ mode: 'detach' });
 
   let lastText = clipboard.readText();
   let lastFiles = clipboard.readBuffer('FileNameW');
@@ -247,6 +247,13 @@ function createWindow() {
     const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     const dbPath = path.join(config.dbPath, 'clipboard.db');
     event.returnValue = dbPath;
+  });
+
+  // 监听打开开发者工具的请求
+  ipcMain.on('open-devtools', () => {
+    if (win && !win.isDestroyed()) {
+      win.webContents.openDevTools({ mode: 'detach' });
+    }
   });
 }
 
