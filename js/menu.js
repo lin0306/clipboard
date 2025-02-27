@@ -12,6 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkUpdateMenu = document.getElementById('check-update');
     const asForMenu = document.getElementById('as-for');
 
+    // 获取清空确认弹窗元素
+    const clearDialogOverlay = document.querySelector('.clear-dialog-overlay');
+    const clearDialogConfirm = document.querySelector('.clear-dialog-confirm');
+    const clearDialogCancel = document.querySelector('.clear-dialog-cancel');
+
     // 处理二级菜单的显示和隐藏
     const handleSubMenu = (menuItem) => {
         const subMenu = menuItem.parentElement.querySelector('.secondary-menu');
@@ -59,13 +64,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 清空剪贴板
-    clearClipboardMenu.addEventListener('click', async () => {
-        if (confirm('确定要清空剪贴板吗？')) {
-            await db.clearAll();
-            clearClipboardList();
-            updateEmptyState();
-            showMessage('success', '剪贴板已清空');
-        }
+    clearClipboardMenu.addEventListener('click', () => {
+        clearDialogOverlay.classList.add('show');
+    });
+
+    // 清空确认弹窗 - 确认按钮
+    clearDialogConfirm.addEventListener('click', async () => {
+        await db.clearAll();
+        clearClipboardList();
+        updateEmptyState();
+        clearDialogOverlay.classList.remove('show');
+        showMessage('success', '剪贴板已清空');
+    });
+
+    // 清空确认弹窗 - 取消按钮
+    clearDialogCancel.addEventListener('click', () => {
+        clearDialogOverlay.classList.remove('show');
     });
 
     // 帮助菜单项事件处理

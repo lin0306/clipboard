@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="css/list.css">
   <link rel="stylesheet" href="css/message.css">
   <link rel="stylesheet" href="css/tag-dialog.css">
+  <link rel="stylesheet" href="css/clear-dialog.css">
 </head>
 
 <body>
@@ -48,6 +49,25 @@
       </ul>
     </li>
     <li>
+      <div id="program">数据</div>
+      <ul class="secondary-menu">
+        <li>
+          <div id="setting">标签管理</div>
+        </li>
+        <div class="split-line"></div>
+        <li>
+          <div id="debugging-tool">数据视图</div>
+        </li>
+        <div class="split-line"></div>
+        <li>
+          <div id="reload">数据导入</div>
+        </li>
+        <li>
+          <div id="close">数据导出</div>
+        </li>
+      </ul>
+    </li>
+    <li>
       <div id="find">查找</div>
     </li>
     <li>
@@ -64,14 +84,14 @@
         <li>
           <div id="instruction">使用说明</div>
         </li>
-          <div class="split-line"></div>
+        <div class="split-line"></div>
         <li>
           <div id="update-log">更新日志</div>
         </li>
         <li>
           <div id="check-update">检查更新</div>
         </li>
-          <div class="split-line"></div>
+        <div class="split-line"></div>
         <li>
           <div id="as-for">关于</div>
         </li>
@@ -120,13 +140,26 @@
       <p>暂无内容</p>
     </div>
   </div>
-  <script src="js/db.js"></script>
-  <script src="js/message.js"></script>
-  <script src="js/electron.js"></script>
-  <script src="js/index.js"></script>
-  <script src="js/titlebar.js"></script>
-  <script src="js/menu.js"></script>
-  <script src="js/themes.js"></script>
+  <div class="clear-dialog-overlay">
+    <div class="clear-dialog">
+      <h2>确认清空</h2>
+      <p>确定要清空剪贴板吗？此操作不可撤销。</p>
+      <div class="clear-dialog-buttons">
+        <button class="clear-dialog-button clear-dialog-cancel">取消</button>
+        <button class="clear-dialog-button clear-dialog-confirm">确定</button>
+      </div>
+    </div>
+  </div>
 </body>
+<script src="js/global_parameter.js"></script>
+<script src="js/db.js"></script>
+<script src="js/message.js"></script>
+<script src="js/electron.js"></script>
+<script src="js/index.js"></script>
+<script src="js/titlebar.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/themes.js"></script>
+<script src="js/search.js"></script>
+<script src="js/tag.js"></script>
 
 </html>

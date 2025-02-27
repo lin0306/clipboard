@@ -1,18 +1,15 @@
-/* 深色主题基础样式 */
+/* 黑色主题配置 */
 
-/* 基础颜色变量 */
+/* 主题色配置 */
 :root {
     --bg-primary: #1e1e1e;
     --bg-secondary: #2d2d2d;
     --text-primary: #e0e0e0;
     --text-secondary: #a0a0a0;
+    --focus-bg_primary: #404040;
     --border-color: rgba(255, 255, 255, 0.08);
-    --shadow-color: rgba(0, 0, 0, 0.15);
-    --hover-shadow: rgba(0, 0, 0, 0.25);
     --accent-color: #666666;
-    --accent-hover: #808080;
-    --danger-color: #ff5f5f;
-    --danger-hover: #ff4d4d;
+    --hover-bg-color: #f5f5f5 
     --item-hover-bg: #353535;
     --item-selected-bg: #404040;
     --content-text: #d4d4d4;
@@ -28,7 +25,6 @@
     --add-tag-bg-color: #2d2d2d;
     --add-tag-text-color: #a0a0a0;
     --add-tag-border-color: rgba(255, 255, 255, 0.15);
-    --arrow-icon: url('right_arrow.svg');
     --menu-bg-color: #3c3b3b;
     --menu-text-color: #b0b0b0;
     --menu-hover-text-color: #fff;
@@ -37,6 +33,12 @@
     --submenu-hover-bg-color: #606060;
     --submenu-hover-text-color: #fff;
     --submenu-border-color: #797979;
+    --title-bg-color: #757575dd;
+    --danger-hover-color: #fff;
+    --bg-hover: #fff;
+    --danger-color: #fff;
+    --shadow-color: #fff;
+    --expand-shadow-color: #f2f2f2;
 }
 
 /* 应用主题样式 */
@@ -52,34 +54,19 @@ body {
 }
 
 .clipboard-search-input {
-    background-color: #353535;
+    background-color: var(--bg-primary);
     border-bottom-color: var(--text-secondary);
     color: var(--text-primary);
 }
 
 .clipboard-search-input:focus {
-    background-color: #404040;
+    background-color: var(--focus-bg_primary);
     border-bottom-color: var(--accent-color);
     box-shadow: 0 4px 12px var(--shadow-color);
 }
 
-/* 标签样式 */
-.tags-toggle {
-    background-color: var(--bg-secondary);
-    box-shadow: 3px 2px 4px var(--shadow-color);
-}
-
-.tags-toggle.collapsed {
-    transform: translateX(-24px);
-}
-
 .tags-img {
     background-image: url('./right_arrow.svg');
-}
-
-.tags-container {
-    background-color: var(--bg-secondary);
-    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .tag-item {
@@ -117,7 +104,6 @@ body {
     color: var(--tag-text-color);
 }
 
-/* 列表项样式 */
 .clipboard-item {
     background-color: var(--bg-secondary);
     border-color: var(--border-color);
@@ -135,24 +121,6 @@ body {
     border-color: var(--accent-color);
 }
 
-/* 按钮样式 */
-.clear-button {
-    background-color: var(--bg-secondary);
-    color: var(--danger-color);
-    border-color: var(--danger-color);
-}
-
-.clear-button:hover {
-    background-color: var(--danger-color);
-    color: var(--bg-secondary);
-}
-
-.delete-button {
-    background-image: url('./trash.svg');
-    display: none;
-}
-
-/* 自定义标签删除按钮样式 */
 .custom-tag-delete {
     background-image: url('./trash.svg');
     opacity: 0.5;
@@ -164,7 +132,6 @@ body {
     filter: brightness(1.1);
 }
 
-/* 标签对话框样式 */
 .tag-dialog-overlay {
     background-color: rgba(0, 0, 0, 0.7);
 }
@@ -205,52 +172,18 @@ body {
     border: 1px solid var(--border-color);
 }
 
-.tag-dialog-confirm {
-    background-color: var(--accent-color);
-    color: var(--text-primary);
-}
-
 .tag-dialog-cancel:hover {
     background-color: var(--item-hover-bg);
     color: var(--text-primary);
 }
 
+.tag-dialog-confirm {
+    background-color: var(--accent-color);
+    color: var(--text-primary);
+}
+
 .tag-dialog-confirm:hover {
     background-color: var(--accent-hover);
-}
-
-/* 列表项样式 */
-.clipboard-item {
-    background-color: var(--bg-secondary);
-    border-color: var(--border-color);
-    box-shadow: 0 2px 8px var(--shadow-color);
-    color: var(--content-text);
-}
-
-.clipboard-item:hover {
-    background-color: var(--item-hover-bg);
-    box-shadow: 0 4px 12px var(--hover-shadow);
-}
-
-.clipboard-item.selected {
-    background-color: var(--item-selected-bg);
-    border-color: var(--accent-color);
-}
-
-/* 按钮样式 */
-.clear-button {
-    background-color: var(--bg-secondary);
-    color: var(--danger-color);
-    border-color: var(--danger-color);
-}
-
-.clear-button:hover {
-    background-color: var(--danger-color);
-    color: var(--bg-secondary);
-}
-
-.delete-button {
-    display: none;
 }
 
 .dropdown-menu {
@@ -277,7 +210,7 @@ body {
 }
 
 .dropdown-item:hover {
-    background-color: var(--item-hover-bg);
+    background-color: var(--hover-bg-color);
 }
 
 .set-tag-item {
@@ -306,60 +239,6 @@ body {
 .set-tag-item:active::before {
     opacity: 1;
     cursor: grabbing;
-}
-
-.tag-dialog-cancel {
-    background-color: var(--bg-primary);
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
-}
-
-.tag-dialog-confirm {
-    background-color: var(--accent-color);
-    color: var(--text-primary);
-}
-
-.tag-dialog-cancel:hover {
-    background-color: var(--item-hover-bg);
-    color: var(--text-primary);
-}
-
-.tag-dialog-confirm:hover {
-    background-color: var(--accent-hover);
-}
-
-/* 列表项样式 */
-.clipboard-item {
-    background-color: var(--bg-secondary);
-    border-color: var(--border-color);
-    box-shadow: 0 2px 8px var(--shadow-color);
-    color: var(--content-text);
-}
-
-.clipboard-item:hover {
-    background-color: var(--item-hover-bg);
-    box-shadow: 0 4px 12px var(--hover-shadow);
-}
-
-.clipboard-item.selected {
-    background-color: var(--item-selected-bg);
-    border-color: var(--accent-color);
-}
-
-/* 按钮样式 */
-.clear-button {
-    background-color: var(--bg-secondary);
-    color: var(--danger-color);
-    border-color: var(--danger-color);
-}
-
-.clear-button:hover {
-    background-color: var(--danger-color);
-    color: var(--bg-secondary);
-}
-
-.delete-button {
-    display: none;
 }
 
 .more-button {
@@ -404,7 +283,7 @@ body {
 }
 
 #title-bar {
-    background: #757575dd;
+    background: var(--title-bg-color);
 }
 
 .themes-hook {

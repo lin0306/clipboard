@@ -12,7 +12,7 @@
 }
 
 .tag-dialog {
-    background-color: var(--bg-color);
+    background-color: var(--bg-primary);
     border-radius: 8px;
     padding: 20px;
     width: 300px;
@@ -84,9 +84,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     margin: 4px;
-    background-color: var(--tag-bg-color);
     border: 1px solid var(--tag-border-color);
-    color: var(--tag-text-color);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -111,6 +109,13 @@
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.3s ease;
+}
+
+.tag-item:hover {
+    background-color: var(--tag-hover-bg-color);
+    border-color: var(--tag-hover-border-color);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .tag-item:hover .tag-delete {

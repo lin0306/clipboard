@@ -1,7 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const fs = require('fs');
-require('electron');
 class ClipboardDB {
     constructor() {
         // 读取配置文件
