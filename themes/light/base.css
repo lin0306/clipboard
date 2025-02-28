@@ -3,15 +3,15 @@
 /* 主题色配置 */
 :root {
   --bg-primary: #ffffff;
-  --bg-secondary: #f8f8f8;
+  --bg-secondary: #fdfdfd;
   --text-primary: #151515;
   --text-secondary: #303030;
   --border-color: #e0e0e0;
   --accent-color: #666666;
   --hover-bg-color: #f5f5f5;
   --item-hover-bg: #f5f5f5;
-  --item-selected-bg: #404040;
-  --content-text: #d4d4d4;
+  --item-selected-bg: #dedede;
+  --content-text: #5e5e5e;
   --search-bg-color: #e1e1e1;
   --tag-bg-color: #ffffff;
   --tag-text-color: #333333;
@@ -39,6 +39,8 @@
   --shadow-color: #fff;
   --expand-bg-color: #ffffff;
   --expand-shadow-color: #cfcfcf;
+  --scrollbar-color: rgba(120, 120, 120, 0.2);
+  --scrollbar-hover-color: rgba(120, 120, 120, 0.5);
 }
 
 body {
@@ -169,6 +171,7 @@ body {
   color: var(--text-secondary);
   border: 1px solid var(--border-color);
 }
+
 .tag-dialog-cancel:hover {
   background-color: var(--item-hover-bg);
   color: var(--text-primary);
@@ -284,5 +287,5 @@ body {
 }
 
 .themes-hook {
-    background-image: url("./hook.svg");
+  background-image: url("./hook.svg");
 }

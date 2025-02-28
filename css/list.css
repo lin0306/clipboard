@@ -53,7 +53,6 @@ body {
   overflow-y: auto;
   position: relative;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
 .clipboard-container::-webkit-scrollbar {
@@ -67,13 +66,13 @@ body {
 }
 
 .clipboard-container::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: var(--scrollbar-color);
   border-radius: 6px;
   transition: background-color 0.3s;
 }
 
 .clipboard-container::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--scrollbar-color-hover);
 }
 
 .empty-state {
@@ -212,7 +211,7 @@ body {
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-    box-shadow: 0 2px 8px var(--expand-shadow-color);
+  box-shadow: 0 2px 8px var(--expand-shadow-color);
 }
 
 .tags-container::-webkit-scrollbar {
