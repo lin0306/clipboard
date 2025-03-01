@@ -14,21 +14,22 @@ body {
   position: relative;
   padding: 10px;
   margin: 5px 5px;
-  background-color: white;
+  background-color: var(--bg-secondary);
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--content-text);
 }
 
 .clipboard-item:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: var(--item-hover-bg);
+  box-shadow: 0 4px 12px var(--hover-shadow);
 }
 
 .clipboard-item.selected {
-  background-color: #f0f0f0;
-  border-color: #666666;
+  background-color: var(--item-selected-bg);
+  border-color: var(--accent-color);
 }
 
 .clipboard-content {
@@ -88,6 +89,7 @@ body {
   width: 200px;
   height: auto;
   margin-bottom: 20px;
+  margin-right: 10px;
   -webkit-user-drag: none;
   opacity: 0.8;
 }
@@ -253,7 +255,7 @@ body {
   align-items: center;
   justify-content: center;
   transition: transform 0.3s ease;
-  background-color: var(--expand-bg-color);
+  background-color: var(--bg-primary);
   box-shadow: 3px 2px 4px var(--expand-shadow-color);
 }
 
@@ -423,11 +425,6 @@ body {
 .set-tag-item.dragging {
   opacity: 0.5;
   transform: scale(0.95);
-}
-
-.custom-tag-item.over {
-  border-color: var(--accent-color) !important;
-  box-shadow: 0 0 10px var(--shadow-color);
 }
 
 .tag-disable {

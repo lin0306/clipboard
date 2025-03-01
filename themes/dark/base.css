@@ -3,12 +3,13 @@
 /* 主题色配置 */
 :root {
     --bg-primary: #1e1e1e;
-    --bg-secondary: #2d2d2d;
+    --bg-secondary: #484747;
     --text-primary: #e0e0e0;
     --text-secondary: #a0a0a0;
-    --focus-bg_primary: #404040;
+    --focus-bg_primary: #2d2d2d;
     --border-color: rgba(255, 255, 255, 0.08);
     --accent-color: #666666;
+    --search-input-focus-border-color: #afafaf;
     --hover-bg-color: #f5f5f5;
     --item-hover-bg: #353535;
     --item-selected-bg: #404040;
@@ -37,22 +38,17 @@
     --danger-hover-color: #fff;
     --bg-hover: #fff;
     --danger-color: #fff;
-    --shadow-color: #fff;
-    --expand-shadow-color: #f2f2f2;
+    --shadow-color: #383838;
+    --expand-shadow-color: #414141;
     --scrollbar-color: rgba(96, 96, 96, 0.2);
     --scrollbar-hover-color: rgba(192, 192, 192, 0.5);
+    --confirm-hover-bg-color: #353535;
 }
 
 /* 应用主题样式 */
 body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
-}
-
-/* 搜索框样式 */
-.clipboard-search {
-    background-color: var(--search-bg-color);
-    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .clipboard-search-input {
@@ -63,7 +59,7 @@ body {
 
 .clipboard-search-input:focus {
     background-color: var(--focus-bg_primary);
-    border-bottom-color: var(--accent-color);
+    border-bottom-color: var(--search-input-focus-border-color);
     box-shadow: 0 4px 12px var(--shadow-color);
 }
 
@@ -106,23 +102,6 @@ body {
     color: var(--tag-text-color);
 }
 
-.clipboard-item {
-    background-color: var(--bg-secondary);
-    border-color: var(--border-color);
-    box-shadow: 0 2px 8px var(--shadow-color);
-    color: var(--content-text);
-}
-
-.clipboard-item:hover {
-    background-color: var(--item-hover-bg);
-    box-shadow: 0 4px 12px var(--hover-shadow);
-}
-
-.clipboard-item.selected {
-    background-color: var(--item-selected-bg);
-    border-color: var(--accent-color);
-}
-
 .custom-tag-delete {
     background-image: url('./trash.svg');
     opacity: 0.5;
@@ -132,60 +111,6 @@ body {
 .custom-tag-delete:hover {
     opacity: 1;
     filter: brightness(1.1);
-}
-
-.tag-dialog-overlay {
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
-.tag-dialog {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-.tag-dialog h2 {
-    color: var(--text-primary);
-}
-
-.tag-dialog-input-group label {
-    color: var(--text-secondary);
-}
-
-.tag-dialog-input-group input,
-.tag-dialog-input-group textarea {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    border-color: var(--border-color);
-}
-
-.tag-dialog-input-group input:focus,
-.tag-dialog-input-group textarea:focus {
-    border-color: var(--accent-color);
-}
-
-.tag-dialog-error {
-    color: var(--danger-color);
-}
-
-.tag-dialog-cancel {
-    background-color: var(--bg-primary);
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
-}
-
-.tag-dialog-cancel:hover {
-    background-color: var(--item-hover-bg);
-    color: var(--text-primary);
-}
-
-.tag-dialog-confirm {
-    background-color: var(--accent-color);
-    color: var(--text-primary);
-}
-
-.tag-dialog-confirm:hover {
-    background-color: var(--accent-hover);
 }
 
 .dropdown-menu {

@@ -8,11 +8,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2000;
+    z-index: 999;
+    backdrop-filter: blur(4px);
 }
 
 .tag-dialog {
-    background-color: var(--bg-primary);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
     border-radius: 8px;
     padding: 20px;
     width: 300px;
@@ -22,7 +24,7 @@
 .tag-dialog h2 {
     margin: 0 0 15px 0;
     font-size: 16px;
-    color: var(--content-text);
+    color: var(--text-primary);
 }
 
 .tag-dialog-form {
@@ -39,7 +41,7 @@
 
 .tag-dialog-input-group label {
     font-size: 12px;
-    color: var(--content-text);
+    color: var(--text-secondary);
 }
 
 .tag-dialog-input-group input,
@@ -47,10 +49,15 @@
     padding: 8px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
-    background-color: var(--bg-secondary);
-    color: var(--content-text);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     font-size: 14px;
     resize: vertical;
+}
+
+.tag-dialog-input-group input:focus,
+.tag-dialog-input-group textarea:focus {
+    border-color: var(--accent-color);
 }
 
 .tag-dialog-input-group textarea {
@@ -127,18 +134,29 @@
 }
 
 .tag-dialog-cancel {
-    background-color: var(--bg-secondary);
-    color: var(--content-text);
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.tag-dialog-cancel:hover {
+    background-color: var(--item-hover-bg);
+    color: var(--text-primary);
 }
 
 .tag-dialog-confirm {
     background-color: var(--accent-color);
-    color: white;
+    color: var(--text-primary);
+}
+
+.tag-dialog-confirm:hover {
+    background-color: var(--confirm-hover-bg-color);
 }
 
 .tag-dialog-button:hover {
     opacity: 0.9;
     transform: scale(1.02);
+    
 }
 
 .tag-dialog-error {
