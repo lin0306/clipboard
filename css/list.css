@@ -249,7 +249,7 @@ body {
 }
 
 .clipboard-tag {
-  border: #666666 1px dashed;
+  border: var(--clipboard-tag-border-color) 1px dashed;
   font-size: 8px;
   padding: 2px 8px;
   border-radius: 4px;
