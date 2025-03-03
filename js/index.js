@@ -99,7 +99,10 @@ async function filterClipboardItems(searchText) {
     }
     updateEmptyState();
   } finally {
-    message.hideLoading();
+    setTimeout(() => {
+      message.hideLoading();
+    }, 10000);
+    // message.hideLoading();
   }
 }
 

@@ -52,12 +52,13 @@ class Message {
     const loader = document.createElement('div');
     loader.className = 'loader';
     
-    // 创建9个粒子元素
-    for (let i = 1; i <= 9; i++) {
-      const particle = document.createElement('div');
-      particle.className = `particle p${i}`;
-      loader.appendChild(particle);
-    }
+    // 使用SVG图标替代粒子元素
+    const loadingImg = document.createElement('img');
+    // 根据当前主题获取对应的loading.svg
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    loadingImg.src = `themes/${currentTheme}/loading.svg`;
+    loadingImg.className = 'loading-svg';
+    loader.appendChild(loadingImg);
     
     // 创建文本元素
     const textDiv = document.createElement('div');
