@@ -1,0 +1,261 @@
+/* 展开按钮样式设置 start */
+.tags-toggle {
+  position: fixed;
+  left: 0;
+  bottom: 20px;
+  width: 30px;
+  height: 30px;
+  border-radius: 0 15px 15px 0;
+  cursor: pointer;
+  z-index: 997;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  background-color: var(--bg-primary);
+  box-shadow: 3px 2px 4px var(--expand-shadow-color);
+}
+
+.tags-toggle.expanded .tags-img {
+  transform: rotate(180deg);
+}
+
+.tags-toggle.expanded {
+  transform: translateX(160px);
+}
+/* 展开按钮样式设置 end */
+
+/* 标签列表样式设置 start */
+.tags-container {
+  position: fixed;
+  left: -200px;
+  top: 45px;
+  bottom: 0;
+  width: 150px;
+  background-color: var(--bg-primary);
+  transition: transform 0.3s ease;
+  z-index: 996;
+  padding: 5px;
+  border-radius: 8px;
+  opacity: 1;
+  max-height: calc(100vh - 44px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  box-shadow: 0 2px 8px var(--expand-shadow-color);
+}
+
+.tags-container::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 6px;
+}
+
+.tags-container::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 6px;
+}
+
+.tags-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.tags-container.collapsed {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.tags-container.expanded {
+  transform: translateX(200px);
+}
+
+.tags-img {
+  width: 60%;
+  height: 60%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: transform 0.3s ease;
+}
+
+.all-tags,
+.add-tag-button {
+  cursor: not-allowed;
+}
+
+.tag-disable {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+/* 标签列表样式设置 end */
+
+/* 标签列表标签样式设置 start */
+.tag-item {
+  text-align: center;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 12px;
+  position: relative;
+  background-color: var(--tag-bg-color);
+  color: var(--tag-text-color);
+  border: 1px solid var(--tag-border-color);
+}
+
+.tag-item:hover {
+  background-color: var(--tag-hover-bg-color);
+  border-color: var(--tag-hover-border-color);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tag-item.active {
+  background-color: var(--tag-active-bg-color);
+  border-color: var(--tag-active-border-color);
+  color: var(--tag-active-text-color);
+}
+
+.tag-item:hover .tag-delete {
+  opacity: 1;
+}
+
+.tag-item .tag-delete:hover {
+  opacity: 1;
+}
+
+.tag-item .tag-delete {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+/* 标签列表标签样式设置 end */
+
+/* 自定义标签列表样式设置 start */
+
+.custom-tag-item {
+  text-align: center;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: var(--tag-bg-color);
+  border: 1px solid var(--tag-border-color);
+  color: var(--tag-text-color);
+  font-size: 13px;
+  margin: 4px;
+  position: relative;
+}
+
+.custom-tag-item:hover {
+  background-color: var(--tag-hover-bg-color);
+  border-color: var(--tag-hover-border-color);
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px var(--shadow-color);
+}
+
+.custom-tag-item:hover .custom-tag-delete {
+  opacity: 1;
+}
+
+.custom-tag-item.active {
+  background-color: var(--tag-active-bg-color);
+  border-color: var(--tag-active-border-color);
+  color: var(--tag-active-text-color);
+}
+
+
+.custom-tag-content {
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.custom-tag-content {
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.custom-tag-delete {
+  position: absolute;
+  right: 8px;
+  top: 57%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  filter: brightness(0.9);
+}
+
+.custom-tag-delete:hover {
+  opacity: 1;
+  filter: brightness(1.1);
+}
+
+.custom-tag-content {
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* 自定义标签列表样式设置 end */
+
+/* 添加自定义标签按钮样式设置 start */
+.add-tag-button {
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  margin: 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 13px;
+  background-color: var(--add-tag-bg-color);
+  color: var(--add-tag-text-color);
+  border: 1px dashed var(--add-tag-border-color);
+}
+
+.add-tag-button:hover {
+  border-color: var(--tag-hover-border-color);
+  background-color: var(--tag-hover-bg-color);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  color: var(--tag-text-color);
+}
+/* 添加自定义标签按钮样式设置 end */

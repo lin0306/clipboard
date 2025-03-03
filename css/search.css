@@ -11,21 +11,22 @@
 .clipboard-search-input {
   border: none;
   outline: none;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 2px solid var(--border-color);
   padding: 12px 55px 12px 15px;
   width: 100%;
   font-size: 14px;
   box-sizing: border-box;
   border-radius: 8px;
-  background-color: white;
+  background-color: var(--bg-primary);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
 }
 
 .clipboard-search-input:focus {
-  background-color: white;
-  border-bottom: 2px solid #666666;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: var(--focus-bg_primary);
+  border-bottom-color: var(--search-input-focus-border-color);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .clipboard-search-button {

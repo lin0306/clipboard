@@ -7,6 +7,37 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   overflow: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* 列表容器样式 start */
+.clipboard-container {
+  height: calc(100vh - 50px);
+  width: 100%;
+  overflow-y: auto;
+  position: relative;
+  scrollbar-width: thin;
+}
+
+.clipboard-container::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 6px;
+}
+
+.clipboard-container::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 6px;
+}
+
+.clipboard-container::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-color);
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.clipboard-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-color-hover);
 }
 
 /* 列表项样式 */
@@ -46,36 +77,18 @@ body {
   font-size: 14px;
 }
 
-
-/* 列表容器样式 */
-.clipboard-container {
-  height: calc(100vh - 50px);
+/* 图片项样式 */
+.clipboard-image {
+  height: 3em;
+  display: block;
+  margin-left: 0;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
-  overflow-y: auto;
-  position: relative;
-  scrollbar-width: thin;
 }
+/* 列表容器样式 end */
 
-.clipboard-container::-webkit-scrollbar {
-  width: 6px;
-  border-radius: 6px;
-}
-
-.clipboard-container::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 6px;
-}
-
-.clipboard-container::-webkit-scrollbar-thumb {
-  background-color: var(--scrollbar-color);
-  border-radius: 6px;
-  transition: background-color 0.3s;
-}
-
-.clipboard-container::-webkit-scrollbar-thumb:hover {
-  background-color: var(--scrollbar-color-hover);
-}
-
+/* 空状态样式 start */
 .empty-state {
   display: none;
   flex-direction: column;
@@ -100,23 +113,9 @@ body {
   margin: 0;
   opacity: 0.6;
 }
+/* 空状态样式 end */
 
-/* 更多按钮样式 */
-.more-button {
-  position: absolute;
-  right: 15px;
-  top: 15px;
-  width: 20px;
-  height: 20px;
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-.more-button:hover {
-  opacity: 1;
-}
-
-/* 置顶按钮样式 */
+/* 置顶按钮样式 start */
 .top-button {
   position: absolute;
   right: 15px;
@@ -127,255 +126,98 @@ body {
   background-repeat: no-repeat;
   cursor: pointer;
   transition: all 0.3s ease;
+  opacity: 0.5;
+  filter: brightness(0.9);
 }
 
 .top-button:hover {
-  opacity: 0.8;
+  opacity: 1;
+  filter: brightness(2);
 }
 
-/* 文件项样式 */
-.clipboard-image {
-  height: 3em;
-  display: block;
-  margin-left: 0;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
+.top-button.topped {
+  opacity: 0.9;
+  filter: brightness(1.1);
 }
+/* 置顶按钮样式 end */
 
-.add-tag-button {
-  align-items: center;
-  justify-content: center;
-  padding: 6px 16px;
-  margin: 4px;
-  border-radius: 6px;
-  border: 2px dashed var(--tag-border-color);
-  color: var(--tag-text-color);
-  background-color: transparent;
-  cursor: pointer;
+/* 【更多】按钮样式 start */
+.more-button {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  filter: brightness(0.9);
+  opacity: 0.5;
   transition: all 0.3s ease;
+}
+
+.more-button:hover {
+  opacity: 1;
+  filter: brightness(2);
+}
+/* 【更多】按钮样式 end */
+
+/* 【更多】下拉列表样式设置 start */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 10px;
+  top: 30px;
+  transform: translateY(0);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  z-index: 1000;
+  min-width: 120px;
+  padding: 6px 0;
+}
+
+.dropdown-item {
+  padding: 6px 16px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
   font-size: 13px;
 }
 
-.add-tag-button:hover {
-  border-color: var(--tag-hover-border-color);
-  background-color: var(--tag-hover-bg-color);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.dropdown-item:hover {
+  background-color: var(--hover-bg-color);
 }
+/* 【更多】下拉列表样式设置 end */
 
-.custom-tag-item {
-  text-align: center;
-  line-height: 1.5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* 列表设置标签按钮样式设置 start */
+.set-tag-item {
   padding: 6px 16px;
-  border-radius: 6px;
+  color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.3s ease;
-  background-color: var(--tag-bg-color);
-  border: 1px solid var(--tag-border-color);
-  color: var(--tag-text-color);
+  transition: background-color 0.2s ease;
   font-size: 13px;
-  margin: 4px;
-  position: relative;
-}
-
-.custom-tag-item:hover {
-  background-color: var(--tag-hover-bg-color);
-  border-color: var(--tag-hover-border-color);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.custom-tag-content {
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* 滚动条样式 */
-.tags-container {
-  position: fixed;
-  left: -200px;
-  top: 45px;
-  bottom: 0;
-  width: 150px;
-  background-color: var(--bg-primary);
-  transition: transform 0.3s ease;
-  z-index: 996;
-  padding: 5px;
-  border-radius: 8px;
-  opacity: 1;
-  max-height: calc(100vh - 44px);
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-  box-shadow: 0 2px 8px var(--expand-shadow-color);
-}
-
-.tags-container::-webkit-scrollbar {
-  width: 6px;
-  border-radius: 6px;
-}
-
-.tags-container::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 6px;
-}
-
-.tags-container::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.15);
-  border-radius: 6px;
-  transition: background-color 0.3s;
-}
-
-.tags-container.collapsed {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-
-.tags-container.expanded {
-  transform: translateX(200px);
-}
-
-.tags-toggle {
-  position: fixed;
-  left: 0;
-  bottom: 20px;
-  width: 30px;
-  height: 30px;
-  border-radius: 0 15px 15px 0;
-  cursor: pointer;
-  z-index: 997;
-  background-repeat: no-repeat;
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease;
-  background-color: var(--bg-primary);
-  box-shadow: 3px 2px 4px var(--expand-shadow-color);
-}
-
-.tags-toggle.expanded .tags-img {
-  transform: rotate(180deg);
-}
-
-.tags-toggle.expanded {
-  transform: translateX(160px);
-}
-
-.tags-img {
-  width: 60%;
-  height: 60%;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  transition: transform 0.3s ease;
-}
-
-.custom-tag-content {
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* 图片基础样式 */
-.clipboard-image {
-  height: 3em;
-  display: block;
-  margin-left: 0;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-}
-
-.custom-tag-delete {
-  position: absolute;
-  right: 8px;
-  top: 57%;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 16px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  opacity: 0;
-}
-
-.custom-tag-item:hover .custom-tag-delete {
-  opacity: 1;
-}
-
-.set-tag-item {
   opacity: 1;
   pointer-events: auto;
-  transition: opacity 0.3s ease;
 }
 
-.clipboard-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-top: 4px;
+.set-tag-item:active::before {
+  opacity: 1;
+  cursor: grabbing;
 }
 
-.clipboard-tag {
-  border: #666666 1px dashed;
-  font-size: 8px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  background-color: var(--tag-bg-color);
-  color: var(--tag-text-color);
-  transition: all 0.2s ease;
-  max-width: 4em;
-  opacity: 0.8;
-}
-
-
-.custom-tag-content {
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* 图片基础样式 */
-.clipboard-image {
-  height: 3em;
-  display: block;
-  margin-left: 0;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-}
-
-.custom-tag-delete {
-  position: absolute;
-  right: 8px;
-  top: 57%;
-  transform: translateY(-50%);
+.set-tag-item::before {
+  content: '';
+  display: inline-block;
   width: 16px;
   height: 16px;
+  margin-right: 8px;
   background-size: contain;
   background-repeat: no-repeat;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  opacity: 0;
-}
-
-.custom-tag-item:hover .custom-tag-delete {
-  opacity: 1;
-}
-
-.set-tag-item {
-  opacity: 1;
-  pointer-events: auto;
-  transition: all 0.3s ease;
+  opacity: 0.5;
+  cursor: move;
 }
 
 .set-tag-item.disabled {
@@ -396,37 +238,25 @@ body {
   opacity: 0.5;
   transform: scale(0.95);
 }
+/* 列表设置标签按钮样式设置 end */
 
-.custom-tag-item.over {
-  border-color: var(--accent-color) !important;
-  box-shadow: 0 0 10px var(--shadow-color);
+/* 列表展示的标签列表样式设置 start */
+.clipboard-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
 }
 
-.all-tags,
-.add-tag-button {
-  cursor: not-allowed;
+.clipboard-tag {
+  border: #666666 1px dashed;
+  font-size: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background-color: var(--tag-bg-color);
+  color: var(--tag-text-color);
+  transition: all 0.2s ease;
+  max-width: 4em;
+  opacity: 0.8;
 }
-
-
-.tag-disable {
-  opacity: 0.6;
-  pointer-events: none;
-  cursor: not-allowed;
-}
-
-.set-tag-item:not(.disabled):hover {
-  cursor: grab;
-}
-
-.set-tag-item:not(.disabled):active {
-  cursor: grabbing;
-}
-
-.set-tag-item.dragging {
-  opacity: 0.5;
-  transform: scale(0.95);
-}
-
-.tag-disable {
-  cursor: not-allowed;
-}
+/* 列表展示的标签列表样式设置 end */

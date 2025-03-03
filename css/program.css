@@ -12,6 +12,7 @@
     position: relative;
     z-index: 1000;
     position: fixed;
+    background: var(--title-bg-color);
 }
 
 #title-bar.fixed {
