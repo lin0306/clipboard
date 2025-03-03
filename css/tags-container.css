@@ -179,7 +179,7 @@
   background-color: var(--tag-hover-bg-color);
   border-color: var(--tag-hover-border-color);
   transform: translateY(-1px);
-  box-shadow: 0 0 10px var(--shadow-color);
+  box-shadow: 0 0 5px var(--shadow-color);
 }
 
 .custom-tag-item:hover .custom-tag-delete {

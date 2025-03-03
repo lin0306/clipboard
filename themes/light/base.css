@@ -8,11 +8,11 @@
   --text-secondary: #303030;
   --focus-bg_primary: #f8f8f8;
   --border-color: #e0e0e0;
-  --accent-color: #e4e4e4;
+  --accent-color: #000000;
   --search-input-focus-border-color: #7e7e7e;
   --hover-bg-color: #f5f5f5;
   --item-hover-bg: #f5f5f5;
-  --item-selected-bg: #f8f8f8;
+  --item-selected-bg: #f4f4f4;
   --content-text: #5e5e5e;
   --search-bg-color: #e1e1e1;
   --tag-bg-color: #ffffff;
@@ -38,7 +38,7 @@
   --danger-hover-color: #fff;
   --bg-hover: #fff;
   --danger-color: #fff;
-  --shadow-color: #767676;
+  --shadow-color: #c7c7c7;
   --expand-shadow-color: #cfcfcf;
   --scrollbar-color: rgba(120, 120, 120, 0.2);
   --scrollbar-hover-color: rgba(120, 120, 120, 0.5);
