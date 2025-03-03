@@ -16,9 +16,9 @@ function createWindow() {
   const { width, height } = primaryDisplay.workAreaSize;
   const mousePos = screen.getCursorScreenPoint();
   
-  // 计算窗口位置，确保不超出屏幕
-  const windowWidth = 350;
-  const windowHeight = 550;
+  // 使用配置文件中保存的窗口尺寸，如果没有则使用默认值
+  const windowWidth = config.windowWidth || 400;
+  const windowHeight = config.windowHeight || 600;
   
   // 计算窗口的x坐标
   let x = mousePos.x - windowWidth / 2; // 默认窗口中心对齐鼠标
@@ -221,6 +221,23 @@ function createWindow() {
     if (clipboardTimer) {
       clearTimeout(clipboardTimer);
       clipboardTimer = null;
+    }
+  });
+
+  // 监听窗口即将关闭事件，保存窗口尺寸
+  win.on('close', () => {
+    try {
+      // 获取当前窗口尺寸
+      const size = win.getSize();
+      // 更新配置文件
+      const configPath = path.join(__dirname, 'conf', 'settings.conf');
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      config.windowWidth = size[0];
+      config.windowHeight = size[1];
+      fs.writeFileSync(configPath, JSON.stringify(config, null, 4));
+      console.log('[主进程] 窗口尺寸已保存:', size);
+    } catch (error) {
+      console.error('[主进程] 保存窗口尺寸时出错:', error);
     }
   });
 
