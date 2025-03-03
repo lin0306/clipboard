@@ -17,8 +17,8 @@ function createWindow() {
   const mousePos = screen.getCursorScreenPoint();
   
   // 计算窗口位置，确保不超出屏幕
-  const windowWidth = 400;
-  const windowHeight = 600;
+  const windowWidth = 350;
+  const windowHeight = 550;
   
   // 计算窗口的x坐标
   let x = mousePos.x - windowWidth / 2; // 默认窗口中心对齐鼠标
