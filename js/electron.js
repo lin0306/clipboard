@@ -40,6 +40,16 @@ class ElectronManager {
         });
     }
 
+     // 打开应用程序
+     static openSetting() {
+        ipcRenderer.send('open-settings');
+    }
+
+      // 关闭应用程序
+      static closeSetting() { 
+        ipcRenderer.send('close-settings');
+    }
+
     // 关闭应用程序
     static closeApp() {
         ipcRenderer.send('close-window');

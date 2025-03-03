@@ -15,11 +15,11 @@ function createWindow() {
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width, height } = primaryDisplay.workAreaSize;
   const mousePos = screen.getCursorScreenPoint();
-  
+
   // 使用配置文件中保存的窗口尺寸，如果没有则使用默认值
   const windowWidth = config.windowWidth || 400;
   const windowHeight = config.windowHeight || 600;
-  
+
   // 计算窗口的x坐标
   let x = mousePos.x - windowWidth / 2; // 默认窗口中心对齐鼠标
   if (x < 0) { // 如果超出左边界
@@ -27,7 +27,7 @@ function createWindow() {
   } else if (x + windowWidth > width) { // 如果超出右边界
     x = width - windowWidth;
   }
-  
+
   // 计算窗口的y坐标
   let y = mousePos.y - windowHeight / 2; // 默认窗口中心对齐鼠标
   if (y < 0) { // 如果超出上边界
@@ -35,7 +35,7 @@ function createWindow() {
   } else if (y + windowHeight > height) { // 如果超出下边界
     y = height - windowHeight;
   }
-  
+
   // 创建浏览器窗口
   const win = new BrowserWindow({
     width: windowWidth,
@@ -49,7 +49,6 @@ function createWindow() {
     icon: 'images/logo.png',
     x: x,
     y: y,
-    backgroundColor: nativeTheme.shouldUseDarkColors ? '#1e1e1e' : '#f5f7fa',
     transparent: false
   });
 
@@ -80,19 +79,19 @@ function createWindow() {
       const currentText = clipboard.readText();
       const currentFiles = clipboard.readBuffer('FileNameW');
       const currentImage = clipboard.readImage();
-      
+
       // 检查图片变化
       if (!currentImage.isEmpty()) {
         const currentImageBuffer = currentImage.toPNG();
         const isImageChanged = lastImage !== null && Buffer.compare(currentImageBuffer, lastImage) !== 0;
-      
+
         if (isImageChanged) {
           console.log('[主进程] 检测到剪贴板中有图片');
           console.log('[主进程] 检测到新的图片内容');
           lastImage = currentImageBuffer;
           const timestamp = Date.now();
           const tempDir = path.join(config.tempPath || path.join(__dirname, 'temp'));
-          
+
           // 检查是否存在相同内容的图片文件
           let existingImagePath = null;
           if (fs.existsSync(tempDir)) {
@@ -110,7 +109,7 @@ function createWindow() {
           } else {
             fs.mkdirSync(tempDir, { recursive: true });
           }
-          
+
           let imagePath;
           if (existingImagePath) {
             // 使用已存在的图片文件
@@ -122,7 +121,7 @@ function createWindow() {
             fs.writeFileSync(imagePath, currentImageBuffer);
             console.log('[主进程] 图片已保存到临时目录:', imagePath);
           }
-          
+
           // 添加更严格的渲染进程状态检查
           if (win && !win.isDestroyed()) {
             const webContents = win.webContents;
@@ -180,7 +179,7 @@ function createWindow() {
         try {
           const filesString = currentFiles.toString('utf16le').replace(/\x00/g, '');
           const files = filesString.split('\r\n').filter(Boolean);
-          
+
           // 检查是否与上次的文件列表不同
           if (JSON.stringify(files) !== JSON.stringify(lastFiles)) {
             lastFiles = files;
@@ -250,6 +249,56 @@ function createWindow() {
   // 监听关闭窗口的请求
   ipcMain.on('close-window', () => {
     win.close();
+  });
+
+  // 打开设置窗口
+  ipcMain.on('open-settings', () => {
+
+    // 读取当前主题配置
+    const configPath = path.join(__dirname, 'conf', 'settings.conf');
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    const savedTheme = config.theme || 'light';
+
+    const settingsWindow = new BrowserWindow({
+      width: 800,
+      height: 600,
+      frame: false,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        nativeWindowOpen: true
+      },
+    });
+
+    settingsWindow.loadFile('components/settings.html');
+    // 打开调试工具，设置为单独窗口
+    settingsWindow.webContents.openDevTools({ mode: 'detach' });
+
+    // 在页面加载完成后发送主题设置
+    settingsWindow.webContents.on('did-finish-load', () => {
+      settingsWindow.webContents.send('change-theme', savedTheme);
+    });
+
+    // 为当前设置窗口创建一个专门的关闭事件处理函数
+    const closeSettingsHandler = () => {
+      if (!settingsWindow.isDestroyed()) {
+        settingsWindow.close();
+      }
+    };
+
+    // 注册关闭事件监听
+    const closeSettingsChannel = 'close-settings-' + Date.now();
+    ipcMain.on(closeSettingsChannel, closeSettingsHandler);
+
+    // 当窗口关闭时，移除事件监听器
+    settingsWindow.on('closed', () => {
+      ipcMain.removeListener(closeSettingsChannel, closeSettingsHandler);
+    });
+
+    // 将新的channel ID发送给渲染进程
+    settingsWindow.webContents.on('did-finish-load', () => {
+      settingsWindow.webContents.send('settings-channel', closeSettingsChannel);
+    });
   });
 
   // 监听重启应用的请求

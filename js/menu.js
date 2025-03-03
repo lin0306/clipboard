@@ -34,8 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 程序菜单项事件处理
     settingMenu.addEventListener('click', () => {
         // 打开设置窗口
-        // window.electron.openSettings();
-        message.info("设置功能开发中");
+        ElectronManager.openSetting();
     });
 
     reloadMenu.addEventListener('click', () => {
