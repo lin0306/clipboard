@@ -48,41 +48,41 @@
 }
 
 .tags-img {
-  background-image: url('./right_arrow.svg');
+  background-image: url('./images/right_arrow.svg');
 }
 
 .custom-tag-delete {
-  background-image: url('./trash.svg');
+  background-image: url('./images/trash.svg');
 }
 
 .set-tag-item::before {
-  background-image: url('./drag.svg');
+  background-image: url('./images/drag.svg');
 }
 
 .more-button {
-  background-image: url('./more.svg');
+  background-image: url('./images/more.svg');
 }
 
 .top-button {
-  background-image: url('./top.svg');
+  background-image: url('./images/top.svg');
 }
 
 .top-button.topped {
-  background-image: url('./untop.svg');
+  background-image: url('./images/untop.svg');
 }
 
 #close-button-img {
-  background-image: url('./close.svg');
+  background-image: url('./images/close.svg');
 }
 
 #unfixation-button-img {
-  background-image: url('./unfixation.svg');
+  background-image: url('./images/unfixation.svg');
 }
 
 #fixation-button-img {
-  background-image: url('./fixation.svg');
+  background-image: url('./images/fixation.svg');
 }
 
 .themes-hook {
-  background-image: url("./hook.svg");
+  background-image: url("./images/hook.svg");
 }
