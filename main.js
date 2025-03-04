@@ -6,7 +6,6 @@ function createWindow() {
   // 读取配置文件
   const configPath = path.join(__dirname, 'conf', 'settings.conf');
   const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-  console.log(config);
   const savedTheme = config.theme || 'light';
   console.log('读取到的主题配置:', savedTheme);
 

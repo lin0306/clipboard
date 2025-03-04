@@ -44,6 +44,7 @@
   --scrollbar-hover-color: rgba(128, 128, 128, 0.5);
   --confirm-hover-bg-color: #4d4d4d;
   --clipboard-tag-border-color: #808080;
+  --active-border-color: #747474;
 }
 
 .tags-img {
