@@ -55,6 +55,9 @@
   --secondary-btn-color: #d6d6d6b4;
   --secondary-btn-hover-color: #b5b5b5;
   --secondary-btn-hober-border-color: #7d7d7d;
+  --msg-bg-color: #fafafa;
+  --msg-text-color: #000000;
+  --msg-shadow-color: rgba(0, 0, 0, 0.2);
 }
 
 .tags-img {

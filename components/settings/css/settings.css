@@ -264,21 +264,29 @@ select:hover {
     position: fixed;
     bottom: 35px;
     right: 35px;
+    width: 150px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .btn {
-    width: 100px;
-    height: 30px;
+    width: 60px;
+    height: 20px;
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
     padding: 2px 10px;
+    margin: 0px 6px;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .reset-btn {
     background-color: var(--secondary-btn-color);
     color: var(--text-secondary);
+    border: 1px solid var(--secondary-btn-color);
 }
 
 .reset-btn:hover {
@@ -289,6 +297,7 @@ select:hover {
 .save-btn {
     background-color: var(--primary-btn-color);
     color: var(--text-primary);
+    border: 1px solid var(--primary-btn-color);
 }
 
 .save-btn:hover {

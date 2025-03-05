@@ -1,9 +1,19 @@
-.message-notification {
+.message-line {
     position: fixed;
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 997;
+    top: 60px;
+}
+
+.message-notification {
     padding: 7px 16px;
     border-radius: 4px;
-    background-color: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background-color: var(--msg-bg-color);
+    box-shadow: 0 4px 12px var(--msg-shadow-color);
     opacity: 0;
     transform: translateY(-100%);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -12,7 +22,7 @@
     align-items: center;
     gap: 8px;
     transform: translateX(-50%) translateY(-100%);
-    color: #000000;
+    color: var(--msg-text-color);
     font-size: 13px;
 }
 

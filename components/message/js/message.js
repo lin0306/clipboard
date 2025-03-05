@@ -1,17 +1,17 @@
 class Message {
   constructor() {
     this.defaultDuration = 2000;
-    this.defaultPosition = { top: '50px', left: '30%' };
     this.loadingOverlay = null;
   }
 
   show(text, type = 'success', duration = this.defaultDuration) {
+    const messageLine = document.createElement('div');
+    messageLine.classList.add('message-line');
     const message = document.createElement('div');
     message.className = `message-notification ${type}`;
     message.textContent = text;
-    message.style.top = this.defaultPosition.top;
-    message.style.left = this.defaultPosition.left;
-    document.body.appendChild(message);
+    messageLine.appendChild(message);
+    document.body.appendChild(messageLine);
 
     // 触发重排以应用动画
     message.offsetHeight;

@@ -1,3 +1,4 @@
+let settingConfig = null;
 document.addEventListener('DOMContentLoaded', () => {
     // 初始化设置菜单交互
     const menuItems = document.querySelectorAll('.settings-menu li');
@@ -31,8 +32,21 @@ document.addEventListener('DOMContentLoaded', () => {
             // 添加active类到当前选中项
             item.classList.add('active');
             containers[index].classList.add('active');
+            // 切换时，重置未保存的所有数据
+            setGeneralData(settingConfig);
         });
     });
+
+    // 通用设置重置按钮点击事件
+    document.getElementById("general-reset").addEventListener('click', () => {
+        setGeneralData(settingConfig);
+    });
+
+    // 通用设置保存按钮点击事件
+    document.getElementById("general-save").addEventListener('click', () => {
+        message.success('保存成功');
+    });
+
 });
 
 document.addEventListener('mousedown', (e) => {
@@ -50,7 +64,13 @@ ipcRenderer.on('init-config', (event, config) => {
 });
 
 function initData(config) {
+    settingConfig = config;
     console.log('页面数据初始化', config);
+    setGeneralData(config);
+}
+
+function setGeneralData(config) {
+    console.log('通用设置初始化');
     const powerOnSelfStart = document.getElementById("power-on-self-start");
     const replaceGlobalHotkey = document.getElementById("replace-global-hotkey");
     const rememberWindowSize = document.getElementById("remember-window-size");
