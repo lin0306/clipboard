@@ -73,12 +73,12 @@
 
 .clear-dialog-cancel:hover {
   background-color: var(--item-hover-bg);
-    color: var(--text-primary);
+  color: var(--text-primary);
 }
 
 .clear-dialog-confirm {
   background-color: var(--accent-color);
-    color: var(--text-primary);
+  color: var(--text-primary);
 }
 
 .clear-dialog-confirm:hover {

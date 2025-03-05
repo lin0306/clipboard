@@ -45,8 +45,17 @@
                 <div class="operate"><input type="checkbox" class="switch" id="replace-global-hotkey"></div>
             </div>
             <div class="line">
-                <div class="little">记住窗口大小</div>
+                <div class="little">关闭程序时记住窗口大小</div>
                 <div class="operate"><input type="checkbox" class="switch" id="remember-window-size"></div>
+            </div>
+            <div class="line">
+                <div class="little"></div>
+                <div class="operate window-size">
+                    <label>高:</label>
+                    <input type="input" id="window-height">
+                    <label>宽:</label>
+                    <input type="input" id="window-width">
+                </div>
             </div>
             <div class="line">
                 <div class="little">语言</div>
@@ -65,7 +74,13 @@
             <div class="split-line"></div>
             <div class="line">
                 <div class="little">调试工具</div>
-                <div class="operate"><botton class="leave-for" id="leave-for" /></div>
+                <div class="operate">
+                    <botton class="leave-for" id="leave-for" />
+                </div>
+            </div>
+            <div class="fixed-btn">
+                <botton class="btn reset-btn" id="general-reset">重置</botton>
+                <botton class="btn save-btn" id="general-save">保存</botton>
             </div>
         </div>
         <div class="storage-container">

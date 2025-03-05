@@ -57,7 +57,8 @@
 
 .tag-dialog-input-group input:focus,
 .tag-dialog-input-group textarea:focus {
-    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-color);
 }
 
 .tag-dialog-input-group textarea {

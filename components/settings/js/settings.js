@@ -16,11 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
             this.parentNode.querySelector('.arrow-icon').classList.remove('rotate');
         });
     });
-    document.querySelectorAll('option').forEach(option => {
-        option.addEventListener('click', () => {
-            document.querySelectorAll('.arrow-icon').classList.remove('rotate');
-        });
-    });
 
     // 默认激活第一个标签页
     menuItems[0].classList.add('active');
@@ -37,4 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
             containers[index].classList.add('active');
         });
     });
+});
+
+document.addEventListener('mousedown', (e) => {
+    if (!e.target.closest('.select-wrapper')) {
+        document.querySelectorAll('select').forEach(select => {
+            if (select.value === select.dataset.originalValue) {
+                select.parentElement.querySelector('.arrow-icon').classList.remove('rotate');
+            }
+        });
+    }
 });

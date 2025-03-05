@@ -259,9 +259,10 @@ function createWindow() {
     const savedTheme = config.theme || 'light';
 
     const settingsWindow = new BrowserWindow({
-      width: 800,
-      height: 600,
+      width: 650,
+      height: 500,
       frame: false,
+      resizable: false,
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: false,
