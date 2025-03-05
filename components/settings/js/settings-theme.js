@@ -23,7 +23,7 @@ function loadThemeCSS(theme) {
     const themeLink = document.createElement('link');
     themeLink.id = 'theme-css';
     themeLink.rel = 'stylesheet';
-    themeLink.href = `../themes/${theme}/base.css`;
+    themeLink.href = `../../themes/${theme}/base.css`;
     document.head.appendChild(themeLink);
 }
 

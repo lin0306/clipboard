@@ -269,7 +269,7 @@ function createWindow() {
       },
     });
 
-    settingsWindow.loadFile('components/settings.html');
+    settingsWindow.loadFile('components/settings/settings.html');
     // 打开调试工具，设置为单独窗口
     settingsWindow.webContents.openDevTools({ mode: 'detach' });
 
