@@ -66,7 +66,6 @@
     height: calc(100vh - 25px);
     background-color: var(--bg-primary);
     padding: 20px;
-    font-size: 14px;
 }
 
 .general-container,
@@ -100,7 +99,6 @@
     justify-content: flex-start;
     align-items: center;
 }
-
 .operate {
     display: flex;
     justify-content: flex-end;
@@ -126,7 +124,7 @@ input[type='checkbox'].switch {
     height: 20px;
     background: var(--checkbox-bg-color);
     border-radius: 10px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: border-color .3s, background-color .3s;
 }
 
 input[type='checkbox'].switch::after {
@@ -151,18 +149,16 @@ input[type='checkbox'].switch:checked {
 input[type='checkbox'].switch:checked::after {
     content: '';
     position: absolute;
-    left: calc(100% - 18px);
+    left: 55%;
     top: 2px;
-    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 /* Switch开关样式 end */
 
 /* 前往按钮样式 start */
 .leave-for {
     width: 20px;
     height: 20px;
-    background-color: transparent;
+    background-color:transparent;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -173,40 +169,18 @@ input[type='checkbox'].switch:checked::after {
 .leave-for:hover {
     opacity: 1;
 }
-
 /* 前往按钮样式 end */
 
 /* 下拉框容器样式 start */
 .select-wrapper {
-    height: 25px;
     position: relative;
     width: 150px;
-    border-radius: 4px;
+    border-radius: 6px;
     box-shadow: 0 2px 6px var(--shadow-color);
     border: 1px solid var(--border-color);
 }
 
-select {
-    width: 100%;
-    height: 100%;
-    border: none;
-    font-size: 12px;
-    border-radius: 4px;
-    padding: 1px 34px 1px 15px;
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    appearance: none;
-    -webkit-appearance: none;
-    box-shadow: none;
-}
-
-select:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--accent-color);
-}
-
-.arrow-container {
+.select-wrapper .arrow-container {
     position: absolute;
     right: 12px;
     top: 50%;
@@ -233,6 +207,30 @@ select:focus {
 select:focus~.arrow-container .arrow-icon {
     transform: rotate(270deg);
 }
+
+/* 下拉框样式增强 */
+select {
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 36px 8px 16px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    appearance: none;
+    -webkit-appearance: none;
+    box-shadow: none;
+}
+
+select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+select:hover {
+    border-color: var(--border-color-hover);
+}
+/* 下拉框容器样式 end */
 
 /* 下拉框容器样式 end */
 .window-size label {
