@@ -59,7 +59,7 @@ function createWindow() {
     win.webContents.send('change-theme', savedTheme);
   });
 
-  // // 打开调试工具，设置为单独窗口
+  // 打开调试工具，设置为单独窗口
   // win.webContents.openDevTools({ mode: 'detach' });
 
   let lastText = clipboard.readText();
@@ -230,19 +230,17 @@ function createWindow() {
       // 更新配置文件
       const configPath = path.join(__dirname, 'conf', 'settings.conf');
       const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-      config.windowWidth = size[0];
-      config.windowHeight = size[1];
-      fs.writeFileSync(configPath, JSON.stringify(config, null, 4));
-      console.log('[主进程] 窗口尺寸已保存:', size);
+      if (config.rememberWindowSize && config.rememberWindowSize === 1) {
+        config.windowWidth = size[0];
+        config.windowHeight = size[1];
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 4));
+        console.log('[主进程] 窗口尺寸已保存:', size);
+      } else{
+        console.log('[主进程] 已设置窗口大小不监听，不更新窗口大小');
+      }
     } catch (error) {
       console.error('[主进程] 保存窗口尺寸时出错:', error);
     }
-  });
-
-  // 监听窗口移动请求
-  ipcMain.on('move-window', (event, offsetX, offsetY) => {
-    const [x, y] = win.getPosition();
-    win.setPosition(x + offsetX, y + offsetY);
   });
 
   // 监听关闭窗口的请求
@@ -277,6 +275,7 @@ function createWindow() {
     // 在页面加载完成后发送主题设置
     settingsWindow.webContents.on('did-finish-load', () => {
       settingsWindow.webContents.send('change-theme', savedTheme);
+      settingsWindow.webContents.send('init-config', config);
     });
 
     // 为当前设置窗口创建一个专门的关闭事件处理函数

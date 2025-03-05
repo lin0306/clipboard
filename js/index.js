@@ -1,3 +1,6 @@
+const clipboardList = document.getElementById('clipboard-list');
+const emptyState = document.getElementById('empty-state');
+const tagsContainer = document.querySelector('.tags-container');
 // 当前选中项的索引
 let selectedIndex = 0;
 

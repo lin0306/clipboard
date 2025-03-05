@@ -65,22 +65,27 @@
   border: none;
 }
 
+.clear-dialog-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-color);
+}
+
 .clear-dialog-cancel {
-  background-color: var(--bg-primary);
+  background-color: var(--secondary-btn-color);
   color: var(--text-secondary);
-  border: 1px solid var(--border-color);
 }
 
 .clear-dialog-cancel:hover {
-  background-color: var(--item-hover-bg);
-  color: var(--text-primary);
+  background-color: var(--secondary-btn-hover-color);
+  border: 1px solid var(--secondary-btn-hober-border-color);
 }
 
 .clear-dialog-confirm {
-  background-color: var(--accent-color);
+  background-color: var(--primary-btn-color);
   color: var(--text-primary);
 }
 
 .clear-dialog-confirm:hover {
-  background-color: var(--confirm-hover-bg-color);
+  background-color: var(--primary-btn-hover-color);
+  border: 1px solid var(--primary-btn-hober-border-color);
 }

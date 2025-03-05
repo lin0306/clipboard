@@ -49,6 +49,12 @@
   --checkbox-color: #fff;
   --checkbox-shadow-bg-color: #999;
   --checkbox-check-color: rgb(88, 88, 88);
+  --primary-btn-color: #262626;
+  --primary-btn-hover-color: #979797;
+  --primary-btn-hober-border-color: #dcdcdc;
+  --secondary-btn-color: #616161b4;
+  --secondary-btn-hover-color: #575757;
+  --secondary-btn-hober-border-color: #dcdcdc;
 }
 
 .tags-img {

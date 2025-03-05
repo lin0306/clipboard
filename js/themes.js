@@ -62,7 +62,7 @@ function changeTheme(theme) {
   
     // 更新搜索图标
     const searchIcon = document.getElementById('search-icon');
-    searchIcon.src = `themes/${theme}/search.svg`;
+    searchIcon.src = `themes/${theme}/images/search.svg`;
     console.log('已更新搜索图标:', theme);
 
     // 更新主题菜单勾选图标
@@ -96,7 +96,7 @@ function loadThemeCSS(theme) {
     // 更新空状态图片
     const emptyStateImg = document.querySelector('#empty-state img');
     if (emptyStateImg) {
-      emptyStateImg.src = `themes/${theme}/empty.svg`;
+      emptyStateImg.src = `themes/${theme}/images/empty.svg`;
     }
 }
 // 更新主题配置

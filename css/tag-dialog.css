@@ -70,9 +70,12 @@
     justify-content: flex-end;
     gap: 8px;
     margin-top: 15px;
+    height: 32px;
 }
 
 .tag-dialog-button {
+    height: 30px;
+    width: 60px;
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
@@ -81,29 +84,29 @@
     transition: all 0.2s ease;
 }
 
+.tag-dialog-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
 .tag-dialog-cancel {
-    background-color: var(--bg-primary);
+    background-color: var(--secondary-btn-color);
     color: var(--text-secondary);
-    border: 1px solid var(--border-color);
 }
 
 .tag-dialog-cancel:hover {
-    background-color: var(--item-hover-bg);
-    color: var(--text-primary);
+    background-color: var(--secondary-btn-hover-color);
+    border: 1px solid var(--secondary-btn-hober-border-color);
 }
 
 .tag-dialog-confirm {
-    background-color: var(--accent-color);
+    background-color: var(--primary-btn-color);
     color: var(--text-primary);
 }
 
 .tag-dialog-confirm:hover {
-    background-color: var(--confirm-hover-bg-color);
-}
-
-.tag-dialog-button:hover {
-    opacity: 0.9;
-    transform: scale(1.02);
+    background-color: var(--primary-btn-hover-color);
+    border: 1px solid var(--primary-btn-hober-border-color);
 }
 
 .tag-dialog-error {

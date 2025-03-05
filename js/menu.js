@@ -65,6 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 清空剪贴板
     clearClipboardMenu.addEventListener('click', () => {
         clearDialogOverlay.classList.add('show');
+        const clearBtn = document.querySelector('.clear-dialog-cancel');
+        clearBtn.focus();
     });
 
     // 清空确认弹窗 - 确认按钮
