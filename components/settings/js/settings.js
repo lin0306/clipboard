@@ -5,22 +5,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 初始化select元素交互
     document.querySelectorAll('select').forEach(select => {
-        select.addEventListener('focus', () => {
-            select.parentElement.querySelector('.arrow-icon').classList.add('rotate');
-        });
-        select.addEventListener('blur', () => {
-            select.parentElement.querySelector('.arrow-icon').classList.remove('rotate');
-        });
         select.addEventListener('change', () => {
-            this.parentNode.querySelector('.arrow-icon').classList.remove('rotate');
+            select.blur();
         });
     });
 
-    document.getElementById("remember-window-size").addEventListener('change', (e) => {
-        console.log(e);
+    document.getElementById("remember-window-size").addEventListener('change', () => {
+        const checked = document.getElementById("remember-window-size").checked;
         const windowHeight = document.getElementById("window-height");
         const windowWidth = document.getElementById("window-width");
-    })
+        windowHeight.disabled = checked;
+        windowWidth.disabled = checked;
+    });
 
     // 默认激活第一个标签页
     menuItems[0].classList.add('active');
@@ -72,14 +68,16 @@ function initData(config) {
     // 处理窗口尺寸输入框
     windowHeight.value = parseInt(config.windowHeight) || 600;
     windowWidth.value = parseInt(config.windowWidth) || 800;
-    windowHeight.disabled = !config.rememberWindowSize;
-    windowWidth.disabled = !config.rememberWindowSize;
+    windowHeight.disabled = config.rememberWindowSize;
+    windowWidth.disabled = config.rememberWindowSize;
 
+    console.log(config.languages);
     // 绑定语言选项
     Array.from(languages.options).forEach(option => {
-        if (option.value === config.language) {
+        console.log(option.value)
+        if (option.value === config.languages) {
             option.selected = true;
-            languages.dispatchEvent(new Event('change'));
         }
     });
+    languages.dispatchEvent(new Event('change'));
 }
