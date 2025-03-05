@@ -11,11 +11,16 @@ document.addEventListener('DOMContentLoaded', () => {
         select.addEventListener('blur', () => {
             select.parentElement.querySelector('.arrow-icon').classList.remove('rotate');
         });
-        select.addEventListener('change', function () {
-            this.blur();
+        select.addEventListener('change', () => {
             this.parentNode.querySelector('.arrow-icon').classList.remove('rotate');
         });
     });
+
+    document.getElementById("remember-window-size").addEventListener('change', (e) => {
+        console.log(e);
+        const windowHeight = document.getElementById("window-height");
+        const windowWidth = document.getElementById("window-width");
+    })
 
     // 默认激活第一个标签页
     menuItems[0].classList.add('active');
