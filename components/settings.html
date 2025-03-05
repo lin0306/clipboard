@@ -37,7 +37,34 @@
     </div>
     <div class="settings-container">
         <div class="general-container">
-            <div>111</div>
+            <div class="line">
+                <div class="little">开机自启</div>
+                <div class="operate"><input type="checkbox" class="switch" id="bootstrap"></div>
+            </div>
+            <div class="line">
+                <div class="little">替换全局热键（Windows适用）</div>
+                <div class="operate"><input type="checkbox" class="switch" id="replace-global-hotkey"></div>
+            </div>
+            <div class="line">
+                <div class="little">记住窗口大小</div>
+                <div class="operate"><input type="checkbox" class="switch" id="remember-window-size"></div>
+            </div>
+            <div class="line">
+                <div class="little">语言</div>
+                <div class="operate">
+                    <div class="select">
+                        <select for="languages" id="languages">
+                            <option value="chinese">中文</option>
+                            <option value="english">英文</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="split-line"></div>
+            <div class="line">
+                <div class="little">调试工具</div>
+                <div class="operate"><img class="leave-for" id="leave-for" /></div>
+            </div>
         </div>
         <div class="storage-container">
             <div>222</div>

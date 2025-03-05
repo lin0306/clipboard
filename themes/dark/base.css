@@ -45,6 +45,10 @@
   --confirm-hover-bg-color: #4d4d4d;
   --clipboard-tag-border-color: #808080;
   --active-border-color: #747474;
+  --checkbox-bg-color: #ccc;
+  --checkbox-color: #fff;
+  --checkbox-shadow-bg-color: #999;
+  --checkbox-check-color: rgb(88, 88, 88);
 }
 
 .tags-img {
@@ -85,4 +89,7 @@
 
 .themes-hook {
   background-image: url("./images/hook.svg");
+}
+.leave-for {
+  background-image: url('./images/right_arrow.svg');
 }
