@@ -90,6 +90,11 @@
 .themes-hook {
   background-image: url("./images/hook.svg");
 }
+
 .leave-for {
   background-image: url('./images/right_arrow.svg');
 }
+
+/* .arrow-icon {
+  background-image: url('./images/right_arrow.svg');
+} */

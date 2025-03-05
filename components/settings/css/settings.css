@@ -59,7 +59,7 @@
 
 /* 设置内容区域样式 */
 .settings-container {
-    width: 76%;
+    width: 77%;
     position: fixed;
     right: 0;
     top: 25px;
@@ -108,7 +108,7 @@
 .split-line {
     height: 0.07em;
     background-color: var(--submenu-border-color);
-    margin: 0px 1px;
+    margin: 10px 0px;
     pointer-events: none;
 }
 
@@ -152,9 +152,9 @@ input[type='checkbox'].switch:checked::after {
     left: 55%;
     top: 2px;
 }
-
 /* Switch开关样式 end */
 
+/* 前往按钮样式 start */
 .leave-for {
     width: 20px;
     height: 20px;
@@ -168,4 +168,70 @@ input[type='checkbox'].switch:checked::after {
 
 .leave-for:hover {
     opacity: 1;
+}
+/* 前往按钮样式 end */
+
+/* 下拉框容器样式 */
+.select-wrapper {
+    position: relative;
+    width: 150px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px var(--shadow-color);
+    border: 1px solid var(--border-color);
+}
+
+.select-wrapper .arrow-container {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+}
+
+.arrow-icon {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23666'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: var(--select-arrow-filter, brightness(0.8));
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+    will-change: transform;
+}
+
+
+select:focus ~ .arrow-container .arrow-icon {
+    transform: rotate(180deg);
+}
+
+@keyframes arrow-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(180deg); }
+}
+
+/* 下拉框样式增强 */
+select {
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 36px 8px 16px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    appearance: none;
+    -webkit-appearance: none;
+    box-shadow: none;
+}
+
+select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+select:hover {
+    border-color: var(--border-color-hover);
 }
