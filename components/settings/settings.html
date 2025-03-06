@@ -86,7 +86,24 @@
             </div>
         </div>
         <div class="storage-container">
-            <div>222</div>
+            <div class="line">
+                <div class="little">数据存储位置</div>
+            </div>
+            <div class="line">
+                <div class="operate">
+                    <input type="input" class="file-path-input" id="data-storage">
+                    <input type="file" class="file-select-input" webkitdirectory="true" id="data-storage-select">
+                </div>
+            </div>
+            <div class="line">
+                <div class="little">临时文件存储位置</div>
+            </div>
+            <div class="line">
+                <div class="operate">
+                    <input type="input" class="file-path-input" id="temp-storage">
+                    <input type="file" class="file-select-input" webkitdirectory="true" id="temp-storage-select">
+                </div>
+            </div>
         </div>
         <div class="shortcut-key-container">
             <div>333</div>
@@ -97,17 +114,18 @@
     </div>
     <div class="restart-dialog-overlay">
         <div class="restart-dialog">
-          <h2>确认重启程序</h2>
-          <p>此修改需要重启程序才能生效，需要立即重启吗？</p>
-          <div class="restart-dialog-buttons">
-            <button class="restart-dialog-button restart-dialog-cancel">取消</button>
-            <button class="restart-dialog-button restart-dialog-confirm">确定</button>
-          </div>
+            <h2>确认重启程序</h2>
+            <p>此修改需要重启程序才能生效，需要立即重启吗？</p>
+            <div class="restart-dialog-buttons">
+                <button class="restart-dialog-button restart-dialog-cancel">取消</button>
+                <button class="restart-dialog-button restart-dialog-confirm">确定</button>
+            </div>
         </div>
-      </div>
+    </div>
 </body>
 <script src="../../js/electron.js"></script>
 <script src="js/settings-theme.js"></script>
 <script src="js/settings.js"></script>
 <script src="../message/js/message.js"></script>
+
 </html>

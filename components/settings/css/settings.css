@@ -306,3 +306,59 @@ select:hover {
 }
 
 /* 固定按钮样式 end */
+/* 文件路径输入框样式 */
+.file-path-input {
+    width: 320px;
+    flex: 1;
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 13px;
+    margin-right: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 6px var(--shadow-color);
+}
+
+.file-path-input:hover {
+    border-color: var(--border-color-hover);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.file-path-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+/* 文件选择按钮样式 */
+.file-select-input {
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+    max-width: 150px;
+}
+
+.file-select-input::before {
+    content: '选择文件夹';
+    display: inline-block;
+    width: 70px;
+    height: 100%;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background-color: var(--primary-btn-color);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    border: 1px solid var(--primary-btn-color);
+    margin-left: 8px;
+}
+
+.file-select-input::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.file-select-input::file-selector-button {
+    visibility: hidden;
+}
