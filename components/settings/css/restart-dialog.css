@@ -73,6 +73,7 @@
 .restart-dialog-cancel {
   background-color: var(--secondary-btn-color);
   color: var(--text-secondary);
+  border: 1px solid var(--secondary-btn-color);
 }
 
 .restart-dialog-cancel:hover {
@@ -83,6 +84,7 @@
 .restart-dialog-confirm {
   background-color: var(--primary-btn-color);
   color: var(--text-primary);
+  border: 1px solid var(--primary-btn-color);
 }
 
 .restart-dialog-confirm:hover {

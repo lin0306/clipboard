@@ -92,6 +92,7 @@
 .tag-dialog-cancel {
     background-color: var(--secondary-btn-color);
     color: var(--text-secondary);
+    border: 1px solid var(--secondary-btn-color);
 }
 
 .tag-dialog-cancel:hover {
@@ -102,6 +103,7 @@
 .tag-dialog-confirm {
     background-color: var(--primary-btn-color);
     color: var(--text-primary);
+    border: 1px solid var(--primary-btn-color);
 }
 
 .tag-dialog-confirm:hover {
