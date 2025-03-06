@@ -1,3 +1,6 @@
+const path = require('path');
+const fs = require('fs');
+
 let settingConfig = null;
 // 获取重启弹窗容器元素
 const restartDialogOverlay = document.querySelector('.restart-dialog-overlay');
@@ -58,6 +61,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const languagesElement = document.getElementById("languages");
         const languagesSelectIndex = languagesElement.selectedIndex;
         const languagesValue = languagesElement.options[languagesSelectIndex].value;
+        // 没有更新数据，忽略
+        if (
+            (powerOnSelfStart ? 1 : 0) === (Boolean(settingConfig.powerOnSelfStart) ? 1 : 0)
+            && (replaceGlobalHotkey ? 1 : 0) === (Boolean(settingConfig.replaceGlobalHotkey) ? 1 : 0)
+            && (fixedWindowSize ? 1 : 0) === (Boolean(settingConfig.fixedWindowSize) ? 1 : 0)
+            && fixedWindowSize === Boolean(settingConfig.fixedWindowSize)
+            && parseInt(windowHeight) === parseInt(settingConfig.windowHeight)
+            && parseInt(windowWidth) === parseInt(settingConfig.windowWidth)
+            && languagesValue === settingConfig.languages
+        ) {
+            return;
+        }
         saveGeneralData(powerOnSelfStart, replaceGlobalHotkey, fixedWindowSize, windowHeight, windowWidth, languagesValue);
         saveGeneralDataToFile(powerOnSelfStart, replaceGlobalHotkey, fixedWindowSize, windowHeight, windowWidth, languagesValue);
         message.success('保存成功');
