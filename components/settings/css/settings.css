@@ -318,3 +318,19 @@ select:hover {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 2px 6px var(--shadow-color);
 }
+
+/* 快捷键按键样式 */
+.key {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin: 0 2px;
+    font-size: 12px;
+    box-shadow: 0 1px 2px var(--shadow-color);
+}
+
+.key:hover {
+    background-color: var(--hover-bg-color);
+    border-color: var(--border-color-hover);
+}

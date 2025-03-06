@@ -109,6 +109,7 @@ function initData(config) {
     console.log('页面数据初始化', config);
     setGeneralData(config);
     setStorageData(config);
+    initShortcutKeys();
 }
 
 // 通用设置初始化
@@ -179,6 +180,61 @@ function setStorageData(config) {
     dataStorage.value = config.dbPath;
     tempStorage.value = config.tempPath;
 }
+
+
+// 初始化快捷键配置
+function initShortcutKeys() {
+    console.log('初始化快捷键配置');
+    const container = document.querySelector('.shortcut-key-container');
+    container.innerHTML = '';
+    const configPath = path.join(__dirname, '../../conf', 'shortcut-key.conf');
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    // 使用Object.entries()将对象转换为二维数组
+    let entriesArray = Object.entries(config);
+    console.log(entriesArray);
+    let map = new Map();
+    entriesArray.forEach(([key, value]) => {
+        map.set(key, value);
+    });
+    console.log(map[0]);
+    console.log(map);
+    // for (let k in map) {
+    //     console.log(k);
+    //     console.log(map[k]);
+    // }
+    // window.electron.readConfig('shortcut-key.conf')
+    //     .then(data => {
+    //         Object.entries(data).forEach(([name, keys]) => {
+    //             const line = document.createElement('div');
+    //             line.className = 'line';
+
+    //             const title = document.createElement('div');
+    //             title.className = 'little';
+    //             title.textContent = name;
+
+    //             const keysContainer = document.createElement('div');
+    //             keysContainer.className = 'operate';
+    //             keys.split('+').forEach(key => {
+    //                 const keySpan = document.createElement('span');
+    //                 keySpan.className = 'key';
+    //                 keySpan.textContent = key.trim();
+    //                 keysContainer.appendChild(keySpan);
+    //                 if (key !== keys.split('+').pop()) {
+    //                     keysContainer.appendChild(document.createTextNode(' + '));
+    //                 }
+    //             });
+
+    //             line.appendChild(title);
+    //             line.appendChild(keysContainer);
+    //             container.appendChild(line);
+    //         });
+    //     })
+    //     .catch(err => {
+    //         console.error('读取快捷键配置失败:', err);
+    //     });
+}
+
+
 
 // 打开重启弹窗
 function openRestartDialog() {
