@@ -337,6 +337,7 @@ select:hover {
     overflow: hidden;
     flex: 1;
     max-width: 150px;
+    outline: none;
 }
 
 .file-select-input::before {
@@ -361,4 +362,17 @@ select:hover {
 
 .file-select-input::file-selector-button {
     visibility: hidden;
+}
+.file-select-input:hover::before {
+    background-color: var(--primary-btn-hover-color);
+    border-color: var(--primary-btn-hober-border-color);
+    opacity: 0.9;
+    transition: all 0.3s ease;
+}
+
+.file-select-input:focus::before {
+    box-shadow: 0 0 0 1px var(--accent-color);
+    border: 1px solid var(--accent-color);
+    opacity: 1;
+    outline: none;
 }
