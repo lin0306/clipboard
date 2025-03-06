@@ -7,6 +7,7 @@
     <title>设置</title>
     <link rel="stylesheet" href="css/settings-program.css">
     <link rel="stylesheet" href="css/settings.css">
+    <link rel="stylesheet" href="css/restart-dialog.css">
     <link rel="stylesheet" href="../message/css/message.css">
 </head>
 
@@ -46,8 +47,8 @@
                 <div class="operate"><input type="checkbox" class="switch" id="replace-global-hotkey"></div>
             </div>
             <div class="line">
-                <div class="little">关闭程序时记住窗口大小</div>
-                <div class="operate"><input type="checkbox" class="switch" id="remember-window-size"></div>
+                <div class="little">窗口大小固定</div>
+                <div class="operate"><input type="checkbox" class="switch" id="fixed-window-size"></div>
             </div>
             <div class="line">
                 <div class="little"></div>
@@ -94,6 +95,16 @@
             <div>444</div>
         </div>
     </div>
+    <div class="restart-dialog-overlay">
+        <div class="restart-dialog">
+          <h2>确认重启程序</h2>
+          <p>此修改需要重启程序才能生效，需要立即重启吗？</p>
+          <div class="restart-dialog-buttons">
+            <button class="restart-dialog-button restart-dialog-cancel">取消</button>
+            <button class="restart-dialog-button restart-dialog-confirm">确定</button>
+          </div>
+        </div>
+      </div>
 </body>
 <script src="../../js/electron.js"></script>
 <script src="js/settings-theme.js"></script>

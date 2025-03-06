@@ -57,13 +57,19 @@ function changeTheme(theme) {
     console.log('已更新DOM类名:', document.body.className);
     localStorage.setItem('theme', theme);
     console.log('已保存主题设置到localStorage');
-    loadThemeCSS(theme);
-    console.log('已加载主题CSS文件:', theme);
-  
+    // 加载主题CSS文件
+    loadThemeCss(theme);
+
     // 更新搜索图标
     const searchIcon = document.getElementById('search-icon');
     searchIcon.src = `themes/${theme}/images/search.svg`;
     console.log('已更新搜索图标:', theme);
+
+    // 更新空状态图片
+    const emptyStateImg = document.querySelector('#empty-state img');
+    if (emptyStateImg) {
+        emptyStateImg.src = `themes/${theme}/images/empty.svg`;
+    }
 
     // 更新主题菜单勾选图标
     const themesHooks = document.querySelectorAll('.themes-hook');
@@ -80,29 +86,26 @@ function changeTheme(theme) {
     console.log('已更新主题勾选图标:', theme);
 }
 
-// 加载主题CSS文件
-function loadThemeCSS(theme) {
-    const existingThemeLink = document.getElementById('theme-css');
-    if (existingThemeLink) {
-      existingThemeLink.remove();
-    }
-  
-    const themeLink = document.createElement('link');
-    themeLink.id = 'theme-css';
-    themeLink.rel = 'stylesheet';
-    themeLink.href = `themes/${theme}/base.css`;
-    document.head.appendChild(themeLink);
-  
-    // 更新空状态图片
-    const emptyStateImg = document.querySelector('#empty-state img');
-    if (emptyStateImg) {
-      emptyStateImg.src = `themes/${theme}/images/empty.svg`;
-    }
-}
 // 更新主题配置
 function updateThemeToConf(theme) {
     const configPath = path.join(__dirname, 'conf', 'settings.conf');
     const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     config.theme = theme;
     fs.writeFileSync(configPath, JSON.stringify(config, null, 4));
+}
+
+function loadThemeCss(theme) {
+    // 加载主题CSS文件
+    const existingThemeLink = document.getElementById('theme-css');
+    if (existingThemeLink) {
+        existingThemeLink.remove();
+    }
+
+    const themeLink = document.createElement('link');
+    themeLink.id = 'theme-css';
+    themeLink.rel = 'stylesheet';
+    themeLink.href = `themes/${theme}/base.css`;
+    document.head.appendChild(themeLink);
+
+    console.log('已加载主题CSS文件:', theme);
 }

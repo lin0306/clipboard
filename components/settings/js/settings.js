@@ -1,4 +1,12 @@
+const path = require('path');
+const fs = require('fs');
+const { electron } = require('process');
 let settingConfig = null;
+// 获取重启弹窗容器元素
+const restartDialogOverlay = document.querySelector('.restart-dialog-overlay');
+const restartDialogCancel = document.querySelector('.restart-dialog-cancel');
+const restartDialogConfirm = document.querySelector('.restart-dialog-confirm');
+
 document.addEventListener('DOMContentLoaded', () => {
     // 初始化设置菜单交互
     const menuItems = document.querySelectorAll('.settings-menu li');
@@ -11,12 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    document.getElementById("remember-window-size").addEventListener('change', () => {
-        const checked = document.getElementById("remember-window-size").checked;
+    // 固定窗口大小开关点击事件
+    document.getElementById("fixed-window-size").addEventListener('change', () => {
+        const checked = document.getElementById("fixed-window-size").checked;
         const windowHeight = document.getElementById("window-height");
         const windowWidth = document.getElementById("window-width");
-        windowHeight.disabled = checked;
-        windowWidth.disabled = checked;
+        windowHeight.disabled = !checked;
+        windowWidth.disabled = !checked;
     });
 
     // 默认激活第一个标签页
@@ -44,9 +53,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 通用设置保存按钮点击事件
     document.getElementById("general-save").addEventListener('click', () => {
+        const powerOnSelfStart = document.getElementById("power-on-self-start").checked;;
+        const replaceGlobalHotkey = document.getElementById("replace-global-hotkey").checked;;
+        const fixedWindowSize = document.getElementById("fixed-window-size").checked;;
+        const windowHeight = document.getElementById("window-height").value;
+        const windowWidth = document.getElementById("window-width").value;
+        const languagesElement = document.getElementById("languages");
+        const languagesSelectIndex = languagesElement.selectedIndex;
+        const languagesValue = languagesElement.options[languagesSelectIndex].value;
+        saveGeneralData(powerOnSelfStart, replaceGlobalHotkey, fixedWindowSize, windowHeight, windowWidth, languagesValue);
+        saveGeneralDataToFile(powerOnSelfStart, replaceGlobalHotkey, fixedWindowSize, windowHeight, windowWidth, languagesValue);
         message.success('保存成功');
+        openRestartDialog();
     });
 
+    // 重启确认弹窗 - 确认按钮
+    restartDialogConfirm.addEventListener('click', async () => {
+        ElectronManager.reloadApp();
+    });
+
+    // 重启确认弹窗 - 取消按钮
+    restartDialogCancel.addEventListener('click', () => {
+        restartDialogOverlay.classList.remove('show');
+    });
 });
 
 document.addEventListener('mousedown', (e) => {
@@ -69,11 +98,12 @@ function initData(config) {
     setGeneralData(config);
 }
 
+// 通用设置初始化
 function setGeneralData(config) {
     console.log('通用设置初始化');
     const powerOnSelfStart = document.getElementById("power-on-self-start");
     const replaceGlobalHotkey = document.getElementById("replace-global-hotkey");
-    const rememberWindowSize = document.getElementById("remember-window-size");
+    const fixedWindowSize = document.getElementById("fixed-window-size");
     const windowHeight = document.getElementById("window-height");
     const windowWidth = document.getElementById("window-width");
     const languages = document.getElementById("languages");
@@ -82,14 +112,14 @@ function setGeneralData(config) {
     powerOnSelfStart.dispatchEvent(new Event('change'));
     replaceGlobalHotkey.checked = Boolean(config.replaceGlobalHotkey);
     replaceGlobalHotkey.dispatchEvent(new Event('change'));
-    rememberWindowSize.checked = Boolean(config.rememberWindowSize);
-    rememberWindowSize.dispatchEvent(new Event('change'));
+    fixedWindowSize.checked = Boolean(config.fixedWindowSize);
+    fixedWindowSize.dispatchEvent(new Event('change'));
 
     // 处理窗口尺寸输入框
     windowHeight.value = parseInt(config.windowHeight) || 600;
     windowWidth.value = parseInt(config.windowWidth) || 800;
-    windowHeight.disabled = config.rememberWindowSize;
-    windowWidth.disabled = config.rememberWindowSize;
+    windowHeight.disabled = !config.fixedWindowSize;
+    windowWidth.disabled = !config.fixedWindowSize;
 
     console.log(config.languages);
     // 绑定语言选项
@@ -100,4 +130,36 @@ function setGeneralData(config) {
         }
     });
     languages.dispatchEvent(new Event('change'));
+}
+
+// 通用设置保存到设置的变量中
+function saveGeneralData(powerOnSelfStart, replaceGlobalHotkey, fixedWindowSize, windowHeight, windowWidth, languagesValue) {
+    settingConfig.powerOnSelfStart = powerOnSelfStart;
+    settingConfig.replaceGlobalHotkey = replaceGlobalHotkey;
+    settingConfig.fixedWindowSize = fixedWindowSize;
+    if (!fixedWindowSize) {
+        settingConfig.windowHeight = windowHeight;
+        settingConfig.windowWidth = windowWidth;
+    }
+    settingConfig.languages = languagesValue;
+}
+
+// 通用设置保存到文件
+function saveGeneralDataToFile(powerOnSelfStart, replaceGlobalHotkey, fixedWindowSize, windowHeight, windowWidth, languagesValue) {
+    const configPath = path.join(__dirname, '../../conf', 'settings.conf');
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    config.powerOnSelfStart = powerOnSelfStart;
+    config.replaceGlobalHotkey = replaceGlobalHotkey;
+    config.fixedWindowSize = fixedWindowSize;
+    if (!fixedWindowSize) {
+        config.windowHeight = windowHeight;
+        config.windowWidth = windowWidth;
+    }
+    config.languages = languagesValue;
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 4));
+}
+
+function openRestartDialog() {
+    restartDialogOverlay.classList.add('show');
+    restartDialogCancel.focus();
 }

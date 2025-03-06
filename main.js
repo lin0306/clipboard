@@ -40,6 +40,7 @@ function createWindow() {
     width: windowWidth,
     height: windowHeight,
     frame: false,
+    resizable: !Boolean(config.fixedWindowSize),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -230,7 +231,7 @@ function createWindow() {
       // 更新配置文件
       const configPath = path.join(__dirname, 'conf', 'settings.conf');
       const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-      if (config.rememberWindowSize && config.rememberWindowSize === 1) {
+      if (!Boolean(config.fixedWindowSize)) {
         config.windowWidth = size[0];
         config.windowHeight = size[1];
         fs.writeFileSync(configPath, JSON.stringify(config, null, 4));

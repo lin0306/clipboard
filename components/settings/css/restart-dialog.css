@@ -1,0 +1,91 @@
+/* 清空剪贴板确认弹窗样式 */
+.restart-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.restart-dialog-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.restart-dialog {
+  background-color: var(--bg-primary);
+  border-radius: 12px;
+  padding: 24px;
+  width: 320px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-20px);
+  transition: transform 0.3s ease;
+}
+
+.restart-dialog-overlay.show .restart-dialog {
+  transform: translateY(0);
+}
+
+.restart-dialog h2 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.restart-dialog p {
+  margin: 0 0 24px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.restart-dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.restart-dialog-button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.restart-dialog-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+.restart-dialog-cancel {
+  background-color: var(--secondary-btn-color);
+  color: var(--text-secondary);
+}
+
+.restart-dialog-cancel:hover {
+  background-color: var(--secondary-btn-hover-color);
+  border: 1px solid var(--secondary-btn-hober-border-color);
+}
+
+.restart-dialog-confirm {
+  background-color: var(--primary-btn-color);
+  color: var(--text-primary);
+}
+
+.restart-dialog-confirm:hover {
+  background-color: var(--primary-btn-hover-color);
+  border: 1px solid var(--primary-btn-hober-border-color);
+}
