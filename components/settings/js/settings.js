@@ -196,8 +196,6 @@ function initShortcutKeys() {
     entriesArray.forEach(([key, value]) => {
         map.set(key, value);
     });
-    console.log(map[0]);
-    console.log(map);
     // for (let k in map) {
     //     console.log(k);
     //     console.log(map[k]);
