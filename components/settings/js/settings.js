@@ -180,46 +180,6 @@ function setStorageData(config) {
     tempStorage.value = config.tempPath;
 }
 
-// 初始化快捷键配置
-function initShortcutKeys() {
-  const container = document.querySelector('.shortcut-key-container');
-  container.innerHTML = '';
-
-  window.electron.readConfig('shortcut-key.conf')
-    .then(data => {
-      Object.entries(data).forEach(([name, keys]) => {
-        const line = document.createElement('div');
-        line.className = 'line';
-
-        const title = document.createElement('div');
-        title.className = 'little';
-        title.textContent = name;
-
-        const keysContainer = document.createElement('div');
-        keysContainer.className = 'operate';
-        keys.split('+').forEach(key => {
-          const keySpan = document.createElement('span');
-          keySpan.className = 'key';
-          keySpan.textContent = key.trim();
-          keysContainer.appendChild(keySpan);
-          if (key !== keys.split('+').pop()) {
-            keysContainer.appendChild(document.createTextNode(' + '));
-          }
-        });
-
-        line.appendChild(title);
-        line.appendChild(keysContainer);
-        container.appendChild(line);
-      });
-    })
-    .catch(err => {
-      console.error('读取快捷键配置失败:', err);
-    });
-}
-
-// 初始化时调用
-initShortcutKeys();
-
 // 打开重启弹窗
 function openRestartDialog() {
     restartDialogOverlay.classList.add('show');
