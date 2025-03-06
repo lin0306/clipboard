@@ -1,6 +1,3 @@
-const path = require('path');
-const fs = require('fs');
-const { electron } = require('process');
 let settingConfig = null;
 // 获取重启弹窗容器元素
 const restartDialogOverlay = document.querySelector('.restart-dialog-overlay');
@@ -96,11 +93,12 @@ function initData(config) {
     settingConfig = config;
     console.log('页面数据初始化', config);
     setGeneralData(config);
+    setStorageData(config);
 }
 
 // 通用设置初始化
 function setGeneralData(config) {
-    console.log('通用设置初始化');
+    console.log('通用设置页面数据初始化');
     const powerOnSelfStart = document.getElementById("power-on-self-start");
     const replaceGlobalHotkey = document.getElementById("replace-global-hotkey");
     const fixedWindowSize = document.getElementById("fixed-window-size");
@@ -121,10 +119,8 @@ function setGeneralData(config) {
     windowHeight.disabled = !config.fixedWindowSize;
     windowWidth.disabled = !config.fixedWindowSize;
 
-    console.log(config.languages);
     // 绑定语言选项
     Array.from(languages.options).forEach(option => {
-        console.log(option.value)
         if (option.value === config.languages) {
             option.selected = true;
         }
@@ -142,6 +138,7 @@ function saveGeneralData(powerOnSelfStart, replaceGlobalHotkey, fixedWindowSize,
         settingConfig.windowWidth = windowWidth;
     }
     settingConfig.languages = languagesValue;
+    console.log('通用设置保存到局部变量成功');
 }
 
 // 通用设置保存到文件
@@ -157,8 +154,18 @@ function saveGeneralDataToFile(powerOnSelfStart, replaceGlobalHotkey, fixedWindo
     }
     config.languages = languagesValue;
     fs.writeFileSync(configPath, JSON.stringify(config, null, 4));
+    console.log('通用设置保存到文件成功');
 }
 
+function setStorageData(config) {
+    console.log('存储设置页面数据初始化');
+    const dataStorage = document.getElementById("data-storage");
+    const tempStorage = document.getElementById("temp-storage");
+    dataStorage.value = config.dbPath;
+    tempStorage.value = config.tempPath;
+}
+
+// 打开重启弹窗
 function openRestartDialog() {
     restartDialogOverlay.classList.add('show');
     restartDialogCancel.focus();

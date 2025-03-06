@@ -90,23 +90,24 @@
                 <div class="little">数据存储位置</div>
             </div>
             <div class="line">
-                <div class="operate">
-                    <input type="input" class="file-path-input" id="data-storage">
-                    <input type="file" class="file-select-input" webkitdirectory="true" id="data-storage-select">
-                </div>
+                    <input type="input" class="file-path-input" id="data-storage" disabled>
             </div>
             <div class="line">
                 <div class="little">临时文件存储位置</div>
             </div>
             <div class="line">
-                <div class="operate">
-                    <input type="input" class="file-path-input" id="temp-storage">
-                    <input type="file" class="file-select-input" webkitdirectory="true" id="temp-storage-select">
-                </div>
+                    <input type="input" class="file-path-input" id="temp-storage" disabled>
+            </div>
+            <div class="line">
+                <div class="warning-line">此处数据存储路径只做查看用，请勿修改文件存储位置或直接修改文件，不当操作将导致数据无法查看、程序崩溃等问题</div>
             </div>
         </div>
         <div class="shortcut-key-container">
             <div>333</div>
+            <div class="fixed-btn">
+                <botton class="btn reset-btn" id="shortcut-key-reset">重置</botton>
+                <botton class="btn save-btn" id="shortcut-key-save">保存</botton>
+            </div>
         </div>
         <div class="as-for-container">
             <div>444</div>
@@ -124,8 +125,8 @@
     </div>
 </body>
 <script src="../../js/electron.js"></script>
+<script src="../message/js/message.js"></script>
 <script src="js/settings-theme.js"></script>
 <script src="js/settings.js"></script>
-<script src="../message/js/message.js"></script>
 
 </html>

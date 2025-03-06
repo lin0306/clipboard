@@ -26,6 +26,34 @@
     font-size: 13px;
 }
 
+.warning-line {
+    padding: 8px 16px 8px 40px;
+    position: relative;
+    color: var(--msg-text-color);
+    font-size: 12px;
+    border-radius: 4px;
+    background-color: var(--msg-bg-color);
+    width: 100%;
+    min-height: 15px;
+    margin-top: 10px;
+    white-space: normal;
+    word-break: break-word;
+    display: inline-block;
+}
+
+.warning-line::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background-image: url('../images/warning.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
 .message-notification.show {
     opacity: 1;
     transform: translateX(-50%) translateY(0);

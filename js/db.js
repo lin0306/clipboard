@@ -4,7 +4,7 @@ const fs = require('fs');
 class ClipboardDB {
     constructor() {
         // 读取配置文件
-        const configPath = path.join(__dirname, 'conf', 'settings.conf');
+        const configPath = path.join('./', 'conf', 'settings.conf');
         const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 
         // 使用配置的数据库路径
@@ -51,6 +51,15 @@ class ClipboardDB {
                     if (err) reject(err);
                     else resolve();
                 });
+            });
+        });
+    }
+
+    close() {
+        return new Promise((resolve, reject) => {
+            this.db.close(err => {
+                if (err) reject(err);
+                else resolve();
             });
         });
     }
@@ -272,7 +281,7 @@ class ClipboardDB {
             this.db.run(
                 'INSERT INTO tags (name, created_at) VALUES (?, ?)',
                 [name, Date.now()],
-                function(err) {
+                function (err) {
                     if (err) reject(err);
                     else resolve(this.lastID);
                 }
@@ -373,6 +382,6 @@ class ClipboardDB {
         });
     }
 }
-
-module.exports = new ClipboardDB();
-window.db = module.exports;
+const clipboardDB = new ClipboardDB();
+module.exports = clipboardDB;
+window.db = clipboardDB;

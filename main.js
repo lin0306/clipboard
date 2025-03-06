@@ -247,6 +247,7 @@ function createWindow() {
   // 监听关闭窗口的请求
   ipcMain.on('close-window', () => {
     win.close();
+    app.exit(0);
   });
 
   // 打开设置窗口
