@@ -38,23 +38,43 @@
 
 .hotkey-dialog-buttons {
     display: flex;
-    gap: 10px;
     justify-content: flex-end;
-}
-
-.hotkey-dialog-button {
-    padding: 8px 20px;
-    border-radius: 4px;
+    gap: 12px;
+  }
+  
+  .hotkey-dialog-button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.hotkey-dialog-confirm {
-    background-color: var(--primary-btn-color);
-    color: var(--text-primary);
-}
-
-.hotkey-dialog-cancel {
+    transition: all 0.2s ease;
+    border: none;
+  }
+  
+  .hotkey-dialog-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-color);
+  }
+  
+  .hotkey-dialog-cancel {
     background-color: var(--secondary-btn-color);
     color: var(--text-secondary);
-}
+    border: 1px solid var(--secondary-btn-color);
+  }
+  
+  .hotkey-dialog-cancel:hover {
+    background-color: var(--secondary-btn-hover-color);
+    border: 1px solid var(--secondary-btn-hober-border-color);
+  }
+  
+  .hotkey-dialog-confirm {
+    background-color: var(--primary-btn-color);
+    color: var(--text-primary);
+    border: 1px solid var(--primary-btn-color);
+  }
+  
+  .hotkey-dialog-confirm:hover {
+    background-color: var(--primary-btn-hover-color);
+    border: 1px solid var(--primary-btn-hober-border-color);
+  }

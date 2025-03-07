@@ -218,6 +218,10 @@ function initShortcutKeys() {
         editImg.src = `../../themes/${localStorage.getItem('theme')}/images/edit.svg`;
         editImg.className = 'edit-img';
         editImg.dataset.id = configKey;
+        editImg.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showHotkeyDialog(configKey);
+        });
         keysContainer.appendChild(editImg);
 
         line.appendChild(title);
@@ -281,17 +285,6 @@ document.querySelector('.hotkey-dialog-confirm').addEventListener('click', () =>
     closeDialog();
 });
 
-// 初始化编辑按钮事件
-function initHotkeyEdit() {
-    document.querySelectorAll('.edit-img').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const item = btn.closest('.line');
-            showHotkeyDialog(item);
-        });
-    });
-}
-
 document.querySelector('.hotkey-dialog-cancel').addEventListener('click', closeDialog);
 
 function closeDialog() {
@@ -299,11 +292,6 @@ function closeDialog() {
     document.removeEventListener('keydown', handleKeyPress);
     newHotkey = '';
 }
-
-// 在DOM加载完成后初始化
-window.addEventListener('DOMContentLoaded', initHotkeyEdit);
-
-
 
 // 打开重启弹窗
 function openRestartDialog() {
