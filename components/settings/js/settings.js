@@ -189,17 +189,10 @@ function initShortcutKeys() {
     container.innerHTML = '';
     const configPath = path.join(__dirname, '../../conf', 'shortcut-key.conf');
     const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-    // 使用Object.entries()将对象转换为二维数组
-    let entriesArray = Object.entries(config);
-    console.log(entriesArray);
-    let map = new Map();
-    entriesArray.forEach(([key, value]) => {
-        map.set(key, value);
-    });
-    // for (let k in map) {
-    //     console.log(k);
-    //     console.log(map[k]);
-    // }
+    for (const name in config) {
+     console.log('name', name);
+     console.log('keys', config[name]);   
+    }
     // window.electron.readConfig('shortcut-key.conf')
     //     .then(data => {
     //         Object.entries(data).forEach(([name, keys]) => {
