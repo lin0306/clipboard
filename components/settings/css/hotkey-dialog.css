@@ -1,0 +1,60 @@
+.hotkey-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.hotkey-dialog {
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    width: 400px;
+}
+
+.hotkey-dialog h2 {
+    margin: 0 0 15px 0;
+    color: var(--text-primary);
+    font-size: 18px;
+}
+
+.hotkey-preview {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    border-radius: 6px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.hotkey-dialog-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.hotkey-dialog-button {
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hotkey-dialog-confirm {
+    background-color: var(--primary-btn-color);
+    color: var(--text-primary);
+}
+
+.hotkey-dialog-cancel {
+    background-color: var(--secondary-btn-color);
+    color: var(--text-secondary);
+}

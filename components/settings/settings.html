@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/settings-program.css">
     <link rel="stylesheet" href="css/settings.css">
     <link rel="stylesheet" href="css/restart-dialog.css">
+    <link rel="stylesheet" href="css/hotkey-dialog.css">
     <link rel="stylesheet" href="../message/css/message.css">
 </head>
 
@@ -54,9 +55,9 @@
                 <div class="little"></div>
                 <div class="operate window-size">
                     <label>高:</label>
-                    <input type="input" id="window-height">
+                    <input type="input" id="window-height" oninput = "value=value.replace(/[^\d]/g,'')">
                     <label>宽:</label>
-                    <input type="input" id="window-width">
+                    <input type="input" id="window-width" oninput = "value=value.replace(/[^\d]/g,'')">
                 </div>
             </div>
             <div class="line">
@@ -103,10 +104,6 @@
             </div>
         </div>
         <div class="shortcut-key-container">
-            <div class="fixed-btn">
-                <botton class="btn reset-btn" id="shortcut-key-reset">重置</botton>
-                <botton class="btn save-btn" id="shortcut-key-save">保存</botton>
-            </div>
         </div>
         <div class="as-for-container">
             <div>444</div>
@@ -119,6 +116,16 @@
             <div class="restart-dialog-buttons">
                 <button class="restart-dialog-button restart-dialog-cancel">取消</button>
                 <button class="restart-dialog-button restart-dialog-confirm">确定</button>
+            </div>
+        </div>
+    </div>
+    <div class="hotkey-dialog-overlay">
+        <div class="hotkey-dialog">
+            <h2>编辑快捷键</h2>
+            <div class="hotkey-preview">请按下新的快捷键组合</div>
+            <div class="hotkey-dialog-buttons">
+                <button class="hotkey-dialog-button hotkey-dialog-cancel">取消</button>
+                <button class="hotkey-dialog-button hotkey-dialog-confirm">确认</button>
             </div>
         </div>
     </div>

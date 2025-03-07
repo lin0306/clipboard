@@ -195,6 +195,7 @@ function initShortcutKeys() {
         let value = config[configKey];
         const line = document.createElement('div');
         line.className = 'line';
+        line.dataset.id = configKey;
 
         const title = document.createElement('div');
         title.className = 'little';
@@ -216,6 +217,7 @@ function initShortcutKeys() {
         const editImg = document.createElement('img');
         editImg.src = `../../themes/${localStorage.getItem('theme')}/images/edit.svg`;
         editImg.className = 'edit-img';
+        editImg.dataset.id = configKey;
         keysContainer.appendChild(editImg);
 
         line.appendChild(title);
@@ -236,6 +238,70 @@ function initShortcutKeys() {
     fixedBtn.appendChild(saveBtn);
     container.appendChild(fixedBtn);
 }
+// 快捷键编辑功能
+const hotkeyDialog = document.querySelector('.hotkey-dialog-overlay');
+let currentHotkeyItem = null;
+let newHotkey = '';
+
+function showHotkeyDialog(item) {
+    currentHotkeyItem = item;
+    hotkeyDialog.style.display = 'flex';
+    document.addEventListener('keydown', handleKeyPress);
+}
+
+function handleKeyPress(e) {
+    e.preventDefault();
+    const keys = [];
+    if (e.ctrlKey) keys.push('Ctrl');
+    if (e.shiftKey) keys.push('Shift');
+    if (e.altKey) keys.push('Alt');
+    if (!['Control', 'Shift', 'Alt', 'Meta'].includes(e.key)) {
+        keys.push(e.key.toUpperCase());
+    }
+    newHotkey = keys.join('+');
+    document.querySelector('.hotkey-preview').textContent = newHotkey;
+}
+
+document.querySelector('.hotkey-dialog-confirm').addEventListener('click', () => {
+    if (newHotkey && currentHotkeyItem) {
+        const configKey = currentHotkeyItem.dataset.id;
+        const configPath = path.join(__dirname, '../../conf', 'shortcut-key.conf');
+        const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        const keysContainer = currentHotkeyItem.querySelector('.operate');
+        keysContainer.innerHTML = '';
+        config[configKey].key.forEach((key, index) => {
+            if (index > 0) keysContainer.appendChild(document.createTextNode(' + '));
+            const keySpan = document.createElement('span');
+            keySpan.className = 'key';
+            keySpan.textContent = key;
+            keysContainer.appendChild(keySpan);
+        });
+        keysContainer.appendChild(currentHotkeyItem.querySelector('.edit-img').cloneNode(true));
+    }
+    closeDialog();
+});
+
+// 初始化编辑按钮事件
+function initHotkeyEdit() {
+    document.querySelectorAll('.edit-img').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const item = btn.closest('.line');
+            showHotkeyDialog(item);
+        });
+    });
+}
+
+document.querySelector('.hotkey-dialog-cancel').addEventListener('click', closeDialog);
+
+function closeDialog() {
+    hotkeyDialog.style.display = 'none';
+    document.removeEventListener('keydown', handleKeyPress);
+    newHotkey = '';
+}
+
+// 在DOM加载完成后初始化
+window.addEventListener('DOMContentLoaded', initHotkeyEdit);
 
 
 
