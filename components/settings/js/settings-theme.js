@@ -11,6 +11,8 @@ function changeTheme(theme) {
     console.log('已更新DOM类名:', document.body.className);
     loadThemeCSS(theme);
     console.log('已加载主题CSS文件:', theme);
+    localStorage.setItem('theme', theme);
+    console.log('已保存主题设置到localStorage');
 }
 
 // 加载主题CSS文件

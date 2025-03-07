@@ -189,40 +189,52 @@ function initShortcutKeys() {
     container.innerHTML = '';
     const configPath = path.join(__dirname, '../../conf', 'shortcut-key.conf');
     const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-    for (const name in config) {
-     console.log('name', name);
-     console.log('keys', config[name]);   
+    for (const configKey in config) {
+        console.log('name', configKey);
+        console.log('keys', config[configKey]);
+        let value = config[configKey];
+        const line = document.createElement('div');
+        line.className = 'line';
+
+        const title = document.createElement('div');
+        title.className = 'little';
+        title.textContent = value['name'];
+
+        const keysContainer = document.createElement('div');
+        keysContainer.className = 'operate';
+        let isFirst = true;
+        value['key'].forEach(key => {
+            if (!isFirst) {
+                keysContainer.appendChild(document.createTextNode(' + '));
+            }
+            isFirst = false;
+            const keySpan = document.createElement('span');
+            keySpan.className = 'key';
+            keySpan.textContent = key.trim();
+            keysContainer.appendChild(keySpan);
+        });
+        const editImg = document.createElement('img');
+        editImg.src = `../../themes/${localStorage.getItem('theme')}/images/edit.svg`;
+        editImg.className = 'edit-img';
+        keysContainer.appendChild(editImg);
+
+        line.appendChild(title);
+        line.appendChild(keysContainer);
+        container.appendChild(line);
     }
-    // window.electron.readConfig('shortcut-key.conf')
-    //     .then(data => {
-    //         Object.entries(data).forEach(([name, keys]) => {
-    //             const line = document.createElement('div');
-    //             line.className = 'line';
-
-    //             const title = document.createElement('div');
-    //             title.className = 'little';
-    //             title.textContent = name;
-
-    //             const keysContainer = document.createElement('div');
-    //             keysContainer.className = 'operate';
-    //             keys.split('+').forEach(key => {
-    //                 const keySpan = document.createElement('span');
-    //                 keySpan.className = 'key';
-    //                 keySpan.textContent = key.trim();
-    //                 keysContainer.appendChild(keySpan);
-    //                 if (key !== keys.split('+').pop()) {
-    //                     keysContainer.appendChild(document.createTextNode(' + '));
-    //                 }
-    //             });
-
-    //             line.appendChild(title);
-    //             line.appendChild(keysContainer);
-    //             container.appendChild(line);
-    //         });
-    //     })
-    //     .catch(err => {
-    //         console.error('读取快捷键配置失败:', err);
-    //     });
+    const fixedBtn = document.createElement('div');
+    fixedBtn.className = 'fixed-btn';
+    const resetBtn = document.createElement('botton');
+    resetBtn.className = 'btn reset-btn';
+    resetBtn.id = 'shortcut-key-reset';
+    resetBtn.textContent = '重置';
+    const saveBtn = document.createElement('botton');
+    saveBtn.className = 'btn save-btn';
+    saveBtn.id = 'shortcut-key-save';
+    saveBtn.textContent = '保存';
+    fixedBtn.appendChild(resetBtn);
+    fixedBtn.appendChild(saveBtn);
+    container.appendChild(fixedBtn);
 }
 
 
