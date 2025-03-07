@@ -88,6 +88,27 @@ document.addEventListener('DOMContentLoaded', () => {
     restartDialogCancel.addEventListener('click', () => {
         restartDialogOverlay.classList.remove('show');
     });
+
+
+    // 快捷键设置弹窗确认按钮点击事件
+    document.querySelector('.hotkey-dialog-confirm').addEventListener('click', () => {
+        const keysArr = newHotkey.split('+');
+        keysArr.forEach(key => {
+            console.log(key);
+        })
+        const line = document.getElementById(currentHotkeyItem);
+        console.log(line);
+        const operate = line.querySelector(".operate");
+        console.log(operate);
+        operate.innerHTML = '';
+        setHotKeyElement(keysArr, operate, currentHotkeyItem);
+        hotkeyDialog.style.display = 'none';
+    });
+
+    // 快捷键设置弹窗取消按钮点击事件
+    document.querySelector('.hotkey-dialog-cancel').addEventListener('click', () => {
+        hotkeyDialog.style.display = 'none';
+    });
 });
 
 document.addEventListener('mousedown', (e) => {
@@ -100,6 +121,7 @@ document.addEventListener('mousedown', (e) => {
     }
 });
 
+// 页面信息初始化
 ipcRenderer.on('init-config', (event, config) => {
     initData(config);
 });
@@ -181,7 +203,6 @@ function setStorageData(config) {
     tempStorage.value = config.tempPath;
 }
 
-
 // 初始化快捷键配置
 function initShortcutKeys() {
     console.log('初始化快捷键配置');
@@ -195,7 +216,7 @@ function initShortcutKeys() {
         let value = config[configKey];
         const line = document.createElement('div');
         line.className = 'line';
-        line.dataset.id = configKey;
+        line.id = configKey;
 
         const title = document.createElement('div');
         title.className = 'little';
@@ -203,26 +224,7 @@ function initShortcutKeys() {
 
         const keysContainer = document.createElement('div');
         keysContainer.className = 'operate';
-        let isFirst = true;
-        value['key'].forEach(key => {
-            if (!isFirst) {
-                keysContainer.appendChild(document.createTextNode(' + '));
-            }
-            isFirst = false;
-            const keySpan = document.createElement('span');
-            keySpan.className = 'key';
-            keySpan.textContent = key.trim();
-            keysContainer.appendChild(keySpan);
-        });
-        const editImg = document.createElement('img');
-        editImg.src = `../../themes/${localStorage.getItem('theme')}/images/edit.svg`;
-        editImg.className = 'edit-img';
-        editImg.dataset.id = configKey;
-        editImg.addEventListener('click', (e) => {
-            e.stopPropagation();
-            showHotkeyDialog(configKey);
-        });
-        keysContainer.appendChild(editImg);
+        setHotKeyElement(value['key'], keysContainer, configKey);
 
         line.appendChild(title);
         line.appendChild(keysContainer);
@@ -242,55 +244,71 @@ function initShortcutKeys() {
     fixedBtn.appendChild(saveBtn);
     container.appendChild(fixedBtn);
 }
+
 // 快捷键编辑功能
 const hotkeyDialog = document.querySelector('.hotkey-dialog-overlay');
 let currentHotkeyItem = null;
 let newHotkey = '';
 
-function showHotkeyDialog(item) {
+// 快捷键设置页面快捷键按键内容设置
+function setHotKeyElement(keys, keysContainer, configKey) {
+    let isFirst = true;
+    keys.forEach(key => {
+        if (!isFirst) {
+            keysContainer.appendChild(document.createTextNode(' + '));
+        }
+        isFirst = false;
+        const keySpan = document.createElement('span');
+        keySpan.className = 'key';
+        keySpan.textContent = StrUtil.capitalize(key.trim());
+        keysContainer.appendChild(keySpan);
+    });
+    const editImg = document.createElement('img');
+    editImg.src = `../../themes/${localStorage.getItem('theme')}/images/edit.svg`;
+    editImg.className = 'edit-img';
+    editImg.dataset.id = configKey;
+    editImg.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showHotkeyDialog(configKey, keys);
+    });
+    keysContainer.appendChild(editImg);
+}
+
+// 快捷键设置弹窗 - 打开弹窗
+function showHotkeyDialog(item, keys) {
     currentHotkeyItem = item;
     hotkeyDialog.style.display = 'flex';
-    document.addEventListener('keydown', handleKeyPress);
-}
+    // 设置打开时展示的快捷键
+    const keysArr = [];
+    keys.forEach(key => {
+        console.log(key);
+        if (key === "ctrl") {
+            keysArr.push('Ctrl');
+        } else if (key === "shift") {
+            keysArr.push('Shift');
+        } else if (key === "alt") {
+            keysArr.push('Alt');
+        } else {
+            keysArr.push(key.toUpperCase());
+        }
+    });
 
-function handleKeyPress(e) {
-    e.preventDefault();
-    const keys = [];
-    if (e.ctrlKey) keys.push('Ctrl');
-    if (e.shiftKey) keys.push('Shift');
-    if (e.altKey) keys.push('Alt');
-    if (!['Control', 'Shift', 'Alt', 'Meta'].includes(e.key)) {
-        keys.push(e.key.toUpperCase());
-    }
-    newHotkey = keys.join('+');
+    newHotkey = keysArr.join('+');
     document.querySelector('.hotkey-preview').textContent = newHotkey;
-}
 
-document.querySelector('.hotkey-dialog-confirm').addEventListener('click', () => {
-    if (newHotkey && currentHotkeyItem) {
-        const configKey = currentHotkeyItem.dataset.id;
-        const configPath = path.join(__dirname, '../../conf', 'shortcut-key.conf');
-        const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-        const keysContainer = currentHotkeyItem.querySelector('.operate');
-        keysContainer.innerHTML = '';
-        config[configKey].key.forEach((key, index) => {
-            if (index > 0) keysContainer.appendChild(document.createTextNode(' + '));
-            const keySpan = document.createElement('span');
-            keySpan.className = 'key';
-            keySpan.textContent = key;
-            keysContainer.appendChild(keySpan);
-        });
-        keysContainer.appendChild(currentHotkeyItem.querySelector('.edit-img').cloneNode(true));
-    }
-    closeDialog();
-});
-
-document.querySelector('.hotkey-dialog-cancel').addEventListener('click', closeDialog);
-
-function closeDialog() {
-    hotkeyDialog.style.display = 'none';
-    document.removeEventListener('keydown', handleKeyPress);
-    newHotkey = '';
+    // 监听键盘事件，获取用户输入的快捷键
+    document.addEventListener('keydown', () => {
+        e.preventDefault();
+        const keys = [];
+        if (e.ctrlKey) keys.push('Ctrl');
+        if (e.shiftKey) keys.push('Shift');
+        if (e.altKey) keys.push('Alt');
+        if (!['Control', 'Shift', 'Alt', 'Meta'].includes(e.key)) {
+            keys.push(e.key.toUpperCase());
+        }
+        newHotkey = keys.join('+');
+        document.querySelector('.hotkey-preview').textContent = newHotkey;
+    });
 }
 
 // 打开重启弹窗
