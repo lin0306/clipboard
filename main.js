@@ -3,14 +3,15 @@ const path = require('path');
 const fs = require('fs');
 
 // 这个设置允许macOS在全屏模式下显示在顶部。由于Windows操作系统没有这个设置，所以在设置之前要检查是否是macOS。这个设置只适用于macOS。
-const is_mac = process.platform==='darwin'
-if(is_mac) {
+const is_mac = process.platform === 'darwin'
+if (is_mac) {
   app.dock.hide();
 }
 
-
 let isOpenWindow = false;
 let isHideWindow = false;
+let x = null;
+let y = null;
 function createWindow() {
   console.log("是否打开了主窗口：" + isOpenWindow);
   if (isOpenWindow) {
@@ -33,20 +34,22 @@ function createWindow() {
   const windowWidth = config.windowWidth || 400;
   const windowHeight = config.windowHeight || 600;
 
-  // 计算窗口的x坐标
-  let x = mousePos.x - windowWidth / 2; // 默认窗口中心对齐鼠标
-  if (x < 0) { // 如果超出左边界
-    x = 0;
-  } else if (x + windowWidth > width) { // 如果超出右边界
-    x = width - windowWidth;
-  }
+  if (isHideWindow) { } else {
+    // 计算窗口的x坐标
+    x = mousePos.x - windowWidth / 2; // 默认窗口中心对齐鼠标
+    if (x < 0) { // 如果超出左边界
+      x = 0;
+    } else if (x + windowWidth > width) { // 如果超出右边界
+      x = width - windowWidth;
+    }
 
-  // 计算窗口的y坐标
-  let y = mousePos.y - windowHeight / 2; // 默认窗口中心对齐鼠标
-  if (y < 0) { // 如果超出上边界
-    y = 0;
-  } else if (y + windowHeight > height) { // 如果超出下边界
-    y = height - windowHeight;
+    // 计算窗口的y坐标
+    y = mousePos.y - windowHeight / 2; // 默认窗口中心对齐鼠标
+    if (y < 0) { // 如果超出上边界
+      y = 0;
+    } else if (y + windowHeight > height) { // 如果超出下边界
+      y = height - windowHeight;
+    }
   }
 
   // 创建浏览器窗口
@@ -267,6 +270,9 @@ function createWindow() {
   ipcMain.on('close-window', () => {
     isOpenWindow = false;
     if (Boolean(config.colsingHideToTaskbar)) {
+      const [currentX, currentY] = win.getPosition();
+      x = currentX;
+      y = currentY;
       win.hide();
       isHideWindow = true;
     } else {
