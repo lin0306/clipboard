@@ -68,6 +68,11 @@ class ElectronManager {
     static openDevTools() {
         ipcRenderer.send('open-devtools');
     }
+
+    // 打开开发者工具
+    static openSettingsDevTools() {
+        ipcRenderer.send('open-settings-devtools');
+    }
 }
 
 // 创建实例并挂载到全局

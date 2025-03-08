@@ -252,8 +252,6 @@ function createWindow() {
 
   // 打开设置窗口
   ipcMain.on('open-settings', () => {
-
-    // 读取当前主题配置
     const configPath = path.join(__dirname, 'conf', 'settings.conf');
     const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     const savedTheme = config.theme || 'light';
@@ -271,7 +269,7 @@ function createWindow() {
     });
 
     settingsWindow.loadFile('components/settings/settings.html');
-    
+
     // 打开调试工具，设置为单独窗口
     // settingsWindow.webContents.openDevTools({ mode: 'detach' });
 
@@ -303,7 +301,7 @@ function createWindow() {
     });
 
     // 监听打开开发者工具的请求
-    ipcMain.on('open-devtools', () => {
+    ipcMain.on('open-settings-devtools', () => {
       if (settingsWindow && !settingsWindow.isDestroyed()) {
         settingsWindow.webContents.openDevTools({ mode: 'detach' });
       }

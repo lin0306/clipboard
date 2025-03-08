@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('debugging-tool').addEventListener('click', () => {
-        ElectronManager.openDevTools();
+        ElectronManager.openSettingsDevTools();
     });
 
     // 通用设置重置按钮点击事件
