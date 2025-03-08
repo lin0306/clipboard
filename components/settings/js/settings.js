@@ -92,14 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 快捷键设置弹窗确认按钮点击事件
     document.querySelector('.hotkey-dialog-confirm').addEventListener('click', () => {
+        console.log('快捷键保存，设置的快捷键：' + newHotkey);
         const keysArr = newHotkey.split('+');
-        keysArr.forEach(key => {
-            console.log(key);
-        })
         const line = document.getElementById(currentHotkeyItem);
-        console.log(line);
         const operate = line.querySelector(".operate");
-        console.log(operate);
         operate.innerHTML = '';
         setHotKeyElement(keysArr, operate, currentHotkeyItem);
         hotkeyDialog.style.display = 'none';
@@ -211,8 +207,6 @@ function initShortcutKeys() {
     const configPath = path.join(__dirname, '../../conf', 'shortcut-key.conf');
     const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     for (const configKey in config) {
-        console.log('name', configKey);
-        console.log('keys', config[configKey]);
         let value = config[configKey];
         const line = document.createElement('div');
         line.className = 'line';
@@ -281,7 +275,6 @@ function showHotkeyDialog(item, keys) {
     // 设置打开时展示的快捷键
     const keysArr = [];
     keys.forEach(key => {
-        console.log(key);
         if (key === "ctrl") {
             keysArr.push('Ctrl');
         } else if (key === "shift") {
@@ -297,7 +290,7 @@ function showHotkeyDialog(item, keys) {
     document.querySelector('.hotkey-preview').textContent = newHotkey;
 
     // 监听键盘事件，获取用户输入的快捷键
-    document.addEventListener('keydown', () => {
+    document.addEventListener('keydown', (e) => {
         e.preventDefault();
         const keys = [];
         if (e.ctrlKey) keys.push('Ctrl');
