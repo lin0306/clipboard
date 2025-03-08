@@ -230,7 +230,14 @@ function initShortcutKeys() {
     resetBtn.className = 'btn reset-btn';
     resetBtn.id = 'shortcut-key-reset';
     resetBtn.textContent = '重置';
+    resetBtn.addEventListener('click', () => {
+        initShortcutKeys();
+    });
     const saveBtn = document.createElement('botton');
+    saveBtn.addEventListener('click', () => {
+        saveHotKeyConfigToFile();
+        message.success('保存成功');
+    })
     saveBtn.className = 'btn save-btn';
     saveBtn.id = 'shortcut-key-save';
     saveBtn.textContent = '保存';
@@ -302,6 +309,24 @@ function showHotkeyDialog(item, keys) {
         newHotkey = keys.join('+');
         document.querySelector('.hotkey-preview').textContent = newHotkey;
     });
+}
+
+function saveHotKeyConfigToFile() {
+    const configPath = path.join(__dirname, '../../conf','shortcut-key.conf');
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    const container = document.querySelector('.shortcut-key-container');
+    const lines = container.querySelectorAll('.line');
+    lines.forEach(line => {
+        const operate = line.querySelector('.operate');
+        const configKey = line.id;
+        const keys = [];
+        operate.querySelectorAll('.key').forEach(key => {
+            keys.push(key.textContent.toLowerCase());
+        });
+        config[configKey]['key'] = keys;
+    });
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 4));
+    console.log('快捷键保存到文件成功');
 }
 
 // 打开重启弹窗

@@ -14,11 +14,12 @@ searchButton.addEventListener('click', () => {
   filterClipboardItems(searchInput.value);
 });
 
-const configPath = path.join(__dirname, 'conf', 'shortcut-key.conf');
-const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+
 
 // 键盘快捷键监听
 document.addEventListener('keydown', (e) => {
+  const configPath = path.join(__dirname, 'conf', 'shortcut-key.conf');
+  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
   if (e.key === 'Escape') {
     const searchContainer = document.querySelector('.clipboard-search');
     searchContainer.style.display = 'none';
