@@ -57,9 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 通用设置保存按钮点击事件
     document.getElementById("general-save").addEventListener('click', () => {
-        const powerOnSelfStart = document.getElementById("power-on-self-start").checked;;
-        const replaceGlobalHotkey = document.getElementById("replace-global-hotkey").checked;;
-        const fixedWindowSize = document.getElementById("fixed-window-size").checked;;
+        const powerOnSelfStart = document.getElementById("power-on-self-start").checked;
+        const replaceGlobalHotkey = document.getElementById("replace-global-hotkey").checked;
+        const colsingHideToTaskbar = document.getElementById("closing-hide-to-taskbar").checked;
+        const fixedWindowSize = document.getElementById("fixed-window-size").checked;
         const windowHeight = document.getElementById("window-height").value;
         const windowWidth = document.getElementById("window-width").value;
         const languagesElement = document.getElementById("languages");
@@ -69,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (
             (powerOnSelfStart ? 1 : 0) === (Boolean(settingConfig.powerOnSelfStart) ? 1 : 0)
             && (replaceGlobalHotkey ? 1 : 0) === (Boolean(settingConfig.replaceGlobalHotkey) ? 1 : 0)
+            && (colsingHideToTaskbar ? 1 : 0) === (Boolean(settingConfig.colsingHideToTaskbar) ? 1 : 0)
             && (fixedWindowSize ? 1 : 0) === (Boolean(settingConfig.fixedWindowSize) ? 1 : 0)
             && fixedWindowSize === Boolean(settingConfig.fixedWindowSize)
             && parseInt(windowHeight) === parseInt(settingConfig.windowHeight)
@@ -77,8 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ) {
             return;
         }
-        saveGeneralData(powerOnSelfStart, replaceGlobalHotkey, fixedWindowSize, windowHeight, windowWidth, languagesValue);
-        saveGeneralDataToFile(powerOnSelfStart, replaceGlobalHotkey, fixedWindowSize, windowHeight, windowWidth, languagesValue);
+        saveGeneralData(powerOnSelfStart, replaceGlobalHotkey, colsingHideToTaskbar, fixedWindowSize, windowHeight, windowWidth, languagesValue);
+        saveGeneralDataToFile(powerOnSelfStart, replaceGlobalHotkey, colsingHideToTaskbar, fixedWindowSize, windowHeight, windowWidth, languagesValue);
         message.success('保存成功');
         openRestartDialog();
     });
@@ -92,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
     restartDialogCancel.addEventListener('click', () => {
         restartDialogOverlay.classList.remove('show');
     });
-
 
     // 快捷键设置弹窗确认按钮点击事件
     document.querySelector('.hotkey-dialog-confirm').addEventListener('click', () => {
@@ -122,11 +123,13 @@ document.addEventListener('mousedown', (e) => {
 });
 
 // 页面信息初始化
-ipcRenderer.on('init-config', (event, config) => {
-    initData(config);
+ipcRenderer.on('init-config', (event) => {
+    initData();
 });
 
-function initData(config) {
+function initData() {
+    const configPath = path.join(__dirname, '../../conf', 'settings.conf');
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     settingConfig = config;
     console.log('页面数据初始化', config);
     setGeneralData(config);
@@ -139,6 +142,7 @@ function setGeneralData(config) {
     console.log('通用设置页面数据初始化');
     const powerOnSelfStart = document.getElementById("power-on-self-start");
     const replaceGlobalHotkey = document.getElementById("replace-global-hotkey");
+    const colsingHideToTaskbar = document.getElementById("closing-hide-to-taskbar");
     const fixedWindowSize = document.getElementById("fixed-window-size");
     const windowHeight = document.getElementById("window-height");
     const windowWidth = document.getElementById("window-width");
@@ -148,6 +152,8 @@ function setGeneralData(config) {
     powerOnSelfStart.dispatchEvent(new Event('change'));
     replaceGlobalHotkey.checked = Boolean(config.replaceGlobalHotkey);
     replaceGlobalHotkey.dispatchEvent(new Event('change'));
+    colsingHideToTaskbar.checked = Boolean(config.colsingHideToTaskbar);
+    colsingHideToTaskbar.dispatchEvent(new Event('change'));
     fixedWindowSize.checked = Boolean(config.fixedWindowSize);
     fixedWindowSize.dispatchEvent(new Event('change'));
 
@@ -167,9 +173,10 @@ function setGeneralData(config) {
 }
 
 // 通用设置保存到设置的变量中
-function saveGeneralData(powerOnSelfStart, replaceGlobalHotkey, fixedWindowSize, windowHeight, windowWidth, languagesValue) {
+function saveGeneralData(powerOnSelfStart, replaceGlobalHotkey, colsingHideToTaskbar, fixedWindowSize, windowHeight, windowWidth, languagesValue) {
     settingConfig.powerOnSelfStart = powerOnSelfStart;
     settingConfig.replaceGlobalHotkey = replaceGlobalHotkey;
+    settingConfig.colsingHideToTaskbar = colsingHideToTaskbar;
     settingConfig.fixedWindowSize = fixedWindowSize;
     if (!fixedWindowSize) {
         settingConfig.windowHeight = windowHeight;
@@ -180,11 +187,12 @@ function saveGeneralData(powerOnSelfStart, replaceGlobalHotkey, fixedWindowSize,
 }
 
 // 通用设置保存到文件
-function saveGeneralDataToFile(powerOnSelfStart, replaceGlobalHotkey, fixedWindowSize, windowHeight, windowWidth, languagesValue) {
+function saveGeneralDataToFile(powerOnSelfStart, replaceGlobalHotkey, colsingHideToTaskbar, fixedWindowSize, windowHeight, windowWidth, languagesValue) {
     const configPath = path.join(__dirname, '../../conf', 'settings.conf');
     const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     config.powerOnSelfStart = powerOnSelfStart;
     config.replaceGlobalHotkey = replaceGlobalHotkey;
+    config.colsingHideToTaskbar = colsingHideToTaskbar;
     config.fixedWindowSize = fixedWindowSize;
     if (!fixedWindowSize) {
         config.windowHeight = windowHeight;
@@ -195,6 +203,7 @@ function saveGeneralDataToFile(powerOnSelfStart, replaceGlobalHotkey, fixedWindo
     console.log('通用设置保存到文件成功');
 }
 
+// 存储设置初始化
 function setStorageData(config) {
     console.log('存储设置页面数据初始化');
     const dataStorage = document.getElementById("data-storage");
@@ -315,6 +324,7 @@ function showHotkeyDialog(item, keys) {
     });
 }
 
+// 快捷键设置弹窗 - 保存快捷键配置到文件
 function saveHotKeyConfigToFile() {
     const configPath = path.join(__dirname, '../../conf', 'shortcut-key.conf');
     const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));

@@ -1,8 +1,22 @@
-const { app, BrowserWindow, ipcMain, clipboard, Menu, nativeTheme } = require('electron');
+const { app, BrowserWindow, ipcMain, clipboard, Menu, Tray } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
+// 这个设置允许macOS在全屏模式下显示在顶部。由于Windows操作系统没有这个设置，所以在设置之前要检查是否是macOS。这个设置只适用于macOS。
+const is_mac = process.platform==='darwin'
+if(is_mac) {
+  app.dock.hide();
+}
+
+
+let isOpenWindow = false;
+let isHideWindow = false;
 function createWindow() {
+  console.log("是否打开了主窗口：" + isOpenWindow);
+  if (isOpenWindow) {
+    return;
+  }
+  isOpenWindow = true;
   // 读取配置文件
   const configPath = path.join(__dirname, 'conf', 'settings.conf');
   const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
@@ -52,12 +66,24 @@ function createWindow() {
     transparent: false
   });
 
+  // 窗口置顶
+  // 这个设置允许在Keynote演示模式下显示在顶部。BrowserWindow中有一项alwaysOnTop。
+  // 当我设置为true时，其他应用程序会被覆盖在顶部，但Keynote演示模式下不行。
+  // 所以我需要设置mainWindow.setAlwaysOnTop(true, "screen-saver")。
+  win.setAlwaysOnTop(true, "screen-saver")
+  // 这个设置允许在切换到其他工作区时显示。
+  win.setVisibleOnAllWorkspaces(true)
+
   // 加载应用的 index.html
   win.loadFile('index.html');
 
   // 在页面加载完成后发送主题设置
   win.webContents.on('did-finish-load', () => {
+    console.log('[主进程] 发送主题设置到渲染进程');
     win.webContents.send('change-theme', savedTheme);
+    // 启动剪贴板监听
+    console.log('[主进程] 窗口加载完成，开始监听剪贴板');
+    checkClipboard();
   });
 
   // 打开调试工具，设置为单独窗口
@@ -208,13 +234,6 @@ function createWindow() {
     clipboardTimer = setTimeout(checkClipboard, 100); // 每100毫秒检查一次
   }
 
-  // 窗口加载完成后的处理
-  win.webContents.on('did-finish-load', () => {
-    // 启动剪贴板监听
-    console.log('[主进程] 窗口加载完成，开始监听剪贴板');
-    checkClipboard();
-  });
-
   // 监听窗口关闭事件，清理定时器
   win.on('closed', () => {
     if (clipboardTimer) {
@@ -246,67 +265,18 @@ function createWindow() {
 
   // 监听关闭窗口的请求
   ipcMain.on('close-window', () => {
-    win.close();
-    app.exit(0);
+    isOpenWindow = false;
+    if (Boolean(config.colsingHideToTaskbar)) {
+      win.hide();
+      isHideWindow = true;
+    } else {
+      win.close();
+      app.exit(0);
+    }
   });
 
   // 打开设置窗口
-  ipcMain.on('open-settings', () => {
-    const configPath = path.join(__dirname, 'conf', 'settings.conf');
-    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-    const savedTheme = config.theme || 'light';
-
-    const settingsWindow = new BrowserWindow({
-      width: 650,
-      height: 500,
-      frame: false,
-      resizable: false,
-      webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
-        nativeWindowOpen: true
-      },
-    });
-
-    settingsWindow.loadFile('components/settings/settings.html');
-
-    // 打开调试工具，设置为单独窗口
-    // settingsWindow.webContents.openDevTools({ mode: 'detach' });
-
-    // 在页面加载完成后发送主题设置
-    settingsWindow.webContents.on('did-finish-load', () => {
-      settingsWindow.webContents.send('change-theme', savedTheme);
-      settingsWindow.webContents.send('init-config', config);
-    });
-
-    // 为当前设置窗口创建一个专门的关闭事件处理函数
-    const closeSettingsHandler = () => {
-      if (!settingsWindow.isDestroyed()) {
-        settingsWindow.close();
-      }
-    };
-
-    // 注册关闭事件监听
-    const closeSettingsChannel = 'close-settings-' + Date.now();
-    ipcMain.on(closeSettingsChannel, closeSettingsHandler);
-
-    // 当窗口关闭时，移除事件监听器
-    settingsWindow.on('closed', () => {
-      ipcMain.removeListener(closeSettingsChannel, closeSettingsHandler);
-    });
-
-    // 将新的channel ID发送给渲染进程
-    settingsWindow.webContents.on('did-finish-load', () => {
-      settingsWindow.webContents.send('settings-channel', closeSettingsChannel);
-    });
-
-    // 监听打开开发者工具的请求
-    ipcMain.on('open-settings-devtools', () => {
-      if (settingsWindow && !settingsWindow.isDestroyed()) {
-        settingsWindow.webContents.openDevTools({ mode: 'detach' });
-      }
-    });
-  });
+  ipcMain.on('open-settings', createSettingsWindow);
 
   // 监听重启应用的请求
   ipcMain.on('reload-app', () => {
@@ -328,10 +298,26 @@ function createWindow() {
       win.webContents.openDevTools({ mode: 'detach' });
     }
   });
+
+  //创建系统托盘右键菜单
+  createTray(win);
 }
 
-// 当 Electron 完成初始化并准备创建浏览器窗口时调用此方法
-app.whenReady().then(createWindow);
+const gotTheLock = app.requestSingleInstanceLock()
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // 当运行第二个实例时,将会聚焦到mainWindow这个窗口
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore()
+      mainWindow.focus()
+      mainWindow.show()
+    }
+  })
+  // 当 Electron 完成初始化并准备创建浏览器窗口时调用此方法
+  app.whenReady().then(createWindow);
+}
 
 // 在所有窗口关闭时退出应用
 app.on('window-all-closed', () => {
@@ -345,3 +331,123 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+// 是否已经打开设置窗口
+let isOpenSettingsWindow = false;
+// 创建设置窗口
+function createSettingsWindow() {
+  if (isOpenSettingsWindow) {
+    return;
+  }
+  isOpenSettingsWindow = true;
+  const configPath = path.join(__dirname, 'conf', 'settings.conf');
+  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const savedTheme = config.theme || 'light';
+
+  const settingsWindow = new BrowserWindow({
+    width: 650,
+    height: 500,
+    frame: false,
+    resizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      nativeWindowOpen: true
+    },
+  });
+
+  settingsWindow.loadFile('components/settings/settings.html');
+
+  // 打开调试工具，设置为单独窗口
+  // settingsWindow.webContents.openDevTools({ mode: 'detach' });
+
+  // 在页面加载完成后发送主题设置
+  settingsWindow.webContents.on('did-finish-load', () => {
+    settingsWindow.webContents.send('change-theme', savedTheme);
+    settingsWindow.webContents.send('init-config');
+  });
+
+  // 为当前设置窗口创建一个专门的关闭事件处理函数
+  const closeSettingsHandler = () => {
+    if (!settingsWindow.isDestroyed()) {
+      settingsWindow.close();
+    }
+  };
+
+  // 注册关闭事件监听
+  const closeSettingsChannel = 'close-settings-' + Date.now();
+  ipcMain.on(closeSettingsChannel, closeSettingsHandler);
+
+  // 当窗口关闭时，移除事件监听器
+  settingsWindow.on('closed', () => {
+    ipcMain.removeListener(closeSettingsChannel, closeSettingsHandler);
+    isOpenSettingsWindow = false;
+  });
+
+  // 将新的channel ID发送给渲染进程
+  settingsWindow.webContents.on('did-finish-load', () => {
+    settingsWindow.webContents.send('settings-channel', closeSettingsChannel);
+  });
+
+  // 监听打开开发者工具的请求
+  ipcMain.on('open-settings-devtools', () => {
+    if (settingsWindow && !settingsWindow.isDestroyed()) {
+      settingsWindow.webContents.openDevTools({ mode: 'detach' });
+    }
+  });
+}
+
+// 系统托盘对象
+function createTray(win) {
+  console.log("是否隐藏了主窗口：" + isHideWindow);
+  if (isHideWindow) {
+    return;
+  }
+  const trayMenuTemplate = [
+    {
+      label: '打开主窗口',
+      click: function () {
+        createWindow();
+      }
+    },
+    {
+      label: '设置',
+      click: function () {
+        createSettingsWindow();
+      }
+    },
+    {
+      label: '帮助',
+      click: function () { }
+    },
+    {
+      label: '关于',
+      click: function () { }
+    },
+    {
+      label: '退出',
+      click: function () {
+        app.quit();
+        app.quit(); //因为程序设定关闭为最小化，所以调用两次关闭，防止最大化时一次不能关闭的情况
+      }
+    }
+  ];
+
+  //系统托盘图标目录
+  const trayIcon = path.join(__dirname, 'images', 'logo.png');
+
+  const appTray = new Tray(trayIcon);
+
+  //图标的上下文菜单
+  const contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
+
+  //设置此托盘图标的悬停提示内容
+  appTray.setToolTip('我的剪贴板');
+
+  //设置此图标的上下文菜单
+  appTray.setContextMenu(contextMenu);
+  //单击右下角小图标显示应用
+  appTray.on('click', function () {
+    win.show();
+  });
+}
