@@ -236,7 +236,7 @@ function createWindow() {
         config.windowHeight = size[1];
         fs.writeFileSync(configPath, JSON.stringify(config, null, 4));
         console.log('[主进程] 窗口尺寸已保存:', size);
-      } else{
+      } else {
         console.log('[主进程] 已设置窗口大小不监听，不更新窗口大小');
       }
     } catch (error) {
@@ -271,8 +271,9 @@ function createWindow() {
     });
 
     settingsWindow.loadFile('components/settings/settings.html');
+    
     // 打开调试工具，设置为单独窗口
-    settingsWindow.webContents.openDevTools({ mode: 'detach' });
+    // settingsWindow.webContents.openDevTools({ mode: 'detach' });
 
     // 在页面加载完成后发送主题设置
     settingsWindow.webContents.on('did-finish-load', () => {
@@ -299,6 +300,13 @@ function createWindow() {
     // 将新的channel ID发送给渲染进程
     settingsWindow.webContents.on('did-finish-load', () => {
       settingsWindow.webContents.send('settings-channel', closeSettingsChannel);
+    });
+
+    // 监听打开开发者工具的请求
+    ipcMain.on('open-devtools', () => {
+      if (settingsWindow && !settingsWindow.isDestroyed()) {
+        settingsWindow.webContents.openDevTools({ mode: 'detach' });
+      }
     });
   });
 

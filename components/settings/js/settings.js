@@ -12,22 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuItems = document.querySelectorAll('.settings-menu li');
     const containers = document.querySelectorAll('.settings-container > div');
 
-    // 初始化select元素交互
-    document.querySelectorAll('select').forEach(select => {
-        select.addEventListener('change', () => {
-            select.blur();
-        });
-    });
-
-    // 固定窗口大小开关点击事件
-    document.getElementById("fixed-window-size").addEventListener('change', () => {
-        const checked = document.getElementById("fixed-window-size").checked;
-        const windowHeight = document.getElementById("window-height");
-        const windowWidth = document.getElementById("window-width");
-        windowHeight.disabled = !checked;
-        windowWidth.disabled = !checked;
-    });
-
     // 默认激活第一个标签页
     menuItems[0].classList.add('active');
     containers[0].classList.add('active');
@@ -44,6 +28,26 @@ document.addEventListener('DOMContentLoaded', () => {
             // 切换时，重置未保存的所有数据
             setGeneralData(settingConfig);
         });
+    });
+
+    // 初始化select元素交互
+    document.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', () => {
+            select.blur();
+        });
+    });
+
+    // 固定窗口大小开关点击事件
+    document.getElementById("fixed-window-size").addEventListener('change', () => {
+        const checked = document.getElementById("fixed-window-size").checked;
+        const windowHeight = document.getElementById("window-height");
+        const windowWidth = document.getElementById("window-width");
+        windowHeight.disabled = !checked;
+        windowWidth.disabled = !checked;
+    });
+
+    document.getElementById('debugging-tool').addEventListener('click', () => {
+        ElectronManager.openDevTools();
     });
 
     // 通用设置重置按钮点击事件
@@ -312,7 +316,7 @@ function showHotkeyDialog(item, keys) {
 }
 
 function saveHotKeyConfigToFile() {
-    const configPath = path.join(__dirname, '../../conf','shortcut-key.conf');
+    const configPath = path.join(__dirname, '../../conf', 'shortcut-key.conf');
     const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     const container = document.querySelector('.shortcut-key-container');
     const lines = container.querySelectorAll('.line');
