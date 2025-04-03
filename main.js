@@ -307,20 +307,19 @@ function createWindow() {
 
   //创建系统托盘右键菜单
   createTray(win);
+
+  // 设置应用程序开机自启动
+  app.setLoginItemSettings({
+    openAtLogin: Boolean(config.powerOnSelfStart),
+    openAsHidden: false, // 设置为 true 可以隐藏启动时的窗口
+    args: [] // 自定义参数
+  });
 }
 
 const gotTheLock = app.requestSingleInstanceLock()
 if (!gotTheLock) {
   app.quit()
 } else {
-  app.on('second-instance', (event, commandLine, workingDirectory) => {
-    // 当运行第二个实例时,将会聚焦到mainWindow这个窗口
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore()
-      mainWindow.focus()
-      mainWindow.show()
-    }
-  })
   // 当 Electron 完成初始化并准备创建浏览器窗口时调用此方法
   app.whenReady().then(createWindow);
 }
@@ -361,6 +360,14 @@ function createSettingsWindow() {
       nativeWindowOpen: true
     },
   });
+
+  // 窗口置顶
+  // 这个设置允许在Keynote演示模式下显示在顶部。BrowserWindow中有一项alwaysOnTop。
+  // 当我设置为true时，其他应用程序会被覆盖在顶部，但Keynote演示模式下不行。
+  // 所以我需要设置mainWindow.setAlwaysOnTop(true, "screen-saver")。
+  settingsWindow.setAlwaysOnTop(true, "screen-saver")
+  // 这个设置允许在切换到其他工作区时显示。
+  settingsWindow.setVisibleOnAllWorkspaces(true)
 
   settingsWindow.loadFile('components/settings/settings.html');
 
